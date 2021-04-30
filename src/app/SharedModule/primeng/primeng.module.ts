@@ -1,0 +1,52 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ChipsModule } from 'primeng/chips';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ButtonModule } from 'primeng/button';
+import { StepsModule } from 'primeng/steps';
+import { PasswordModule } from 'primeng/password';
+import { TreeModule } from 'primeng/tree';
+import { TreeTableModule } from 'primeng/treetable';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { MenuModule } from 'primeng/menu';
+
+const primeng = [
+  AutoCompleteModule,
+  CalendarModule,
+  CheckboxModule,
+  ChipsModule,
+  DropdownModule,
+  InputTextModule,
+  InputTextareaModule,
+  KeyFilterModule,
+  MultiSelectModule,
+  ButtonModule,
+  StepsModule,
+  PasswordModule,
+  TreeModule,
+  TreeTableModule,
+  ProgressSpinnerModule,
+  MessageModule,
+  MessagesModule,
+  ToastModule,
+  TableModule,
+  MenuModule,
+];
+
+@NgModule({
+  declarations: [],
+  imports: [CommonModule, primeng],
+  exports: [primeng],
+})
+export class PrimengModule {}

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "livesession-6ed26": {
+      "hosting": {
+        "LiveSessionChatAdmin": [
+          "livesession-6ed26"
+        ]
+      }
+    }
+  }
+}

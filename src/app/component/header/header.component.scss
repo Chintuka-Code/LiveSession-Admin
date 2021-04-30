@@ -1,0 +1,31 @@
+.bell-count {
+  position: absolute;
+  padding: 0.3rem 0.5rem;
+  border-radius: 50%;
+  right: 7px;
+  top: 0;
+  background-color: #ee6e83;
+}
+
+a.notifications-dropdown {
+  background-color: #fff !important;
+}
+
+.arrow {
+  transition: all 250ms ease-in-out;
+}
+
+.arrow-swing {
+  transform: rotate(180deg);
+}
+
+.header-logo {
+  width: 150px;
+  object-fit: contain;
+  a {
+    img {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+}

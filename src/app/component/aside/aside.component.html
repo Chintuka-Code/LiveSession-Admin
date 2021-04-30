@@ -1,0 +1,76 @@
+<!-- Aside Bar -->
+<div class="page-sidebar">
+  <ul class="list-unstyled accordion-menu">
+    <li class="sidebar-title">Main</li>
+
+    <li
+      routerLinkActive="active-page"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a class="nav-link" [routerLink]="['/main']"
+        ><i class="fas fa-house-user px-3"></i>Home</a
+      >
+    </li>
+
+    <li class="sidebar-title">Apps</li>
+
+    <li routerLinkActive="active-page">
+      <a [routerLink]="['live-session-chat']"
+        ><i class="fas fa-comment-dots px-3"></i>Live Session Chat</a
+      >
+    </li>
+
+    <li class="sidebar-title">Tabs</li>
+
+    <li routerLinkActive="active-page">
+      <a href="javascript:void(0)" (click)="accordion_list($event)"
+        ><i class="fas fa-user-tag px-3"></i>User<i
+          class="fas fa-chevron-right dropdown-icon"
+        ></i
+      ></a>
+      <ul class="d-none">
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['create-user']"
+            ><i class="fas fa-user-plus"></i>Create User Account</a
+          >
+        </li>
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['user-details', 'admin']"
+            ><i class="fas fa-id-card"></i>View User's Account</a
+          >
+        </li>
+        <li>
+          <a [routerLink]="['students-details', 'students']"
+            ><i class="fas fa-user-graduate"></i>View Student's Account</a
+          >
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <a href="javascript:void(0)" (click)="accordion_list($event)"
+        ><i data-feather="gift"></i>Plugins<i
+          class="fas fa-chevron-right dropdown-icon"
+        ></i
+      ></a>
+
+      <ul class="d-none">
+        <li>
+          <a href="block-ui.html"><i class="far fa-circle"></i>Block UI</a>
+        </li>
+        <li>
+          <a href="session-timeout.html"
+            ><i class="far fa-circle"></i>Session Timeout</a
+          >
+        </li>
+        <li>
+          <a href="tree-view.html"><i class="far fa-circle"></i>Tree View</a>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <a href="#"><i data-feather="check-circle"></i>Documentation</a>
+    </li>
+  </ul>
+</div>

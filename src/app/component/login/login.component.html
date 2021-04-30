@@ -1,0 +1,62 @@
+<div class="login-page" *ngIf="!spinner; else showspinner">
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-12 col-lg-4">
+        <div class="card login-box-container">
+          <div class="card-body">
+            <div class="authent-logo">
+              <img class="logo" src="../../assets/images/logo.png" alt="" />
+            </div>
+            <div class="authent-text">
+              <p>Please Sign-in to your account.</p>
+            </div>
+
+            <form [formGroup]="login_form" (ngSubmit)="login()">
+              <div class="mb-3">
+                <div class="form-floating">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="name@example.com"
+                    formControlName="email"
+                  />
+                  <label for="floatingInput">Email address</label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-floating">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="floatingPassword"
+                    formControlName="password"
+                    placeholder="Password"
+                  />
+                  <label for="floatingPassword">Password</label>
+                </div>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-info m-b-xs">
+                  Sign In
+                </button>
+              </div>
+            </form>
+            <div class="authent-reg">
+              <p>
+                <a href="register.html">Forgot Password</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

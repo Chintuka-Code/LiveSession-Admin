@@ -1,0 +1,69 @@
+<div *ngIf="!spinner; else showspinner">
+  <h5>Active User</h5>
+  <p-table
+    #usertable
+    [value]="user_data"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="p-datatable-customers"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['name', 'email']"
+  >
+    <ng-template pTemplate="caption" class="w-100">
+      <div class="p-d-flex w-100">
+        <span class="p-input-icon-left p-ml-auto w-100">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="usertable.filterGlobal($event.target.value, 'contains')"
+            placeholder="Search keyword"
+            class="w-100"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Type</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>
+          {{ user.name }}
+        </td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.user_type }}</td>
+        <td class="position-relative">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-ellipsis-h"
+            class="p-button-rounded p-button-text"
+            (click)="menu.toggle($event)"
+          ></button>
+
+          <p-menu #menu [popup]="true" [model]="items"></p-menu>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">No User found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
