@@ -64,6 +64,7 @@ const routes: Routes = [
       },
       {
         path: 'create-course',
+        data: { role: 'C10' },
         loadChildren: () =>
           import('../create-course/create-course.module').then(
             (m) => m.CreateCourseModule

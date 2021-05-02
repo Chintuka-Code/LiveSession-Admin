@@ -1,1 +1,52 @@
-<p>create-course works!</p>
+<div class="container-fluid" *ngIf="!spinner; else showspinner">
+  <form [formGroup]="create_course_form" (ngSubmit)="get_course_data()">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <span class="p-float-label w-100">
+            <input
+              type="text"
+              id="inputtext"
+              formControlName="course_name"
+              class="form-control"
+              pInputText
+            />
+            <label for="inputtext">InputText</label>
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <span class="p-float-label w-100">
+            <p-multiSelect
+              inputId="multiselect"
+              [options]="subject"
+              optionLabel="subject_name"
+              optionValue="doc_id"
+              [filter]="true"
+              display="chip"
+              [style]="{ minWidth: '100%' }"
+              formControlName="subject_ids"
+            ></p-multiSelect>
+            <label for="multiselect">Select Subject</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 mt-3">
+        <button
+          label="Create Course"
+          type="submit"
+          pButton
+          [disabled]="create_course_form.invalid"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
