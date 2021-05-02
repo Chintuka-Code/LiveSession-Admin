@@ -31,40 +31,68 @@
       <ul class="d-none">
         <li routerLinkActive="active-page">
           <a [routerLink]="['create-user']"
-            ><i class="fas fa-user-plus"></i>Create User Account</a
+            ><i class="fas fa-user-plus"></i>Create User</a
           >
         </li>
         <li routerLinkActive="active-page">
           <a [routerLink]="['user-details', 'admin']"
-            ><i class="fas fa-id-card"></i>View User's Account</a
+            ><i class="fas fa-id-card"></i>View Users</a
           >
         </li>
         <li>
           <a [routerLink]="['students-details', 'students']"
-            ><i class="fas fa-user-graduate"></i>View Student's Account</a
+            ><i class="fas fa-user-graduate"></i>View Students</a
           >
         </li>
       </ul>
     </li>
 
-    <li>
+    <li routerLinkActive="active-page">
       <a href="javascript:void(0)" (click)="accordion_list($event)"
-        ><i data-feather="gift"></i>Plugins<i
+        ><i class="fas fa-book px-3"></i>Subject<i
           class="fas fa-chevron-right dropdown-icon"
         ></i
       ></a>
 
       <ul class="d-none">
         <li>
-          <a href="block-ui.html"><i class="far fa-circle"></i>Block UI</a>
-        </li>
-        <li>
-          <a href="session-timeout.html"
-            ><i class="far fa-circle"></i>Session Timeout</a
+          <a
+            [routerLink]="['create-subject']"
+            routerLinkActive="router-link-active"
+            ><i class="far fa-circle"></i>Create Subject</a
           >
         </li>
         <li>
-          <a href="tree-view.html"><i class="far fa-circle"></i>Tree View</a>
+          <a
+            [routerLink]="['view-subject']"
+            routerLinkActive="router-link-active"
+            ><i class="far fa-circle"></i>View Subject</a
+          >
+        </li>
+      </ul>
+    </li>
+
+    <li routerLinkActive="active-page">
+      <a href="javascript:void(0)" (click)="accordion_list($event)"
+        ><i class="fab fa-contao px-3"></i>Course<i
+          class="fas fa-chevron-right dropdown-icon"
+        ></i
+      ></a>
+
+      <ul class="d-none">
+        <li>
+          <a
+            [routerLink]="['create-course']"
+            routerLinkActive="router-link-active"
+            ><i class="far fa-circle"></i>Create Course</a
+          >
+        </li>
+        <li>
+          <a
+            [routerLink]="['view-course']"
+            routerLinkActive="router-link-active"
+            ><i class="far fa-circle"></i>View Course</a
+          >
         </li>
       </ul>
     </li>

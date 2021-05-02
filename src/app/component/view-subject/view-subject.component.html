@@ -1,8 +1,8 @@
 <div *ngIf="!spinner; else showspinner">
-  <h5>Active User</h5>
+  <h5>Subject</h5>
   <p-table
-    #usertable
-    [value]="user_data"
+    #subjecttable
+    [value]="subject"
     dataKey="id"
     [rows]="10"
     [showCurrentPageReport]="true"
@@ -10,7 +10,7 @@
     styleClass="p-datatable-customers"
     [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [globalFilterFields]="['name', 'email']"
+    [globalFilterFields]="['subject_name']"
   >
     <ng-template pTemplate="caption" class="w-100">
       <div class="p-d-flex w-100">
@@ -19,7 +19,7 @@
           <input
             pInputText
             type="text"
-            (input)="usertable.filterGlobal($event.target.value, 'contains')"
+            (input)="subjecttable.filterGlobal($event.target.value, 'contains')"
             placeholder="Search keyword"
             class="w-100"
           />
@@ -29,18 +29,16 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Name</th>
-        <th>Email</th>
-        <th>Type</th>
+        <th>CreatedAt</th>
         <th>Action</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-user>
+    <ng-template pTemplate="body" let-subject>
       <tr>
         <td>
-          {{ user.name }}
+          {{ subject.subject_name }}
         </td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.user_type }}</td>
+        <td>{{ subject.created_at.toDate() | date: "medium" }}</td>
         <td class="position-relative">
           <button
             pButton
@@ -55,7 +53,7 @@
             #menu
             [popup]="true"
             [model]="items"
-            (click)="set_dynamic_url(user.doc_id)"
+            (click)="update_subject(subject)"
           ></p-menu>
         </td>
       </tr>

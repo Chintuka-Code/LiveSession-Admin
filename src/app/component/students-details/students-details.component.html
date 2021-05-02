@@ -51,7 +51,12 @@
             (click)="menu.toggle($event)"
           ></button>
 
-          <p-menu #menu [popup]="true" [model]="items"></p-menu>
+          <p-menu
+            #menu
+            [popup]="true"
+            (click)="set_dynamic_url(student.doc_id)"
+            [model]="items"
+          ></p-menu>
         </td>
       </tr>
     </ng-template>

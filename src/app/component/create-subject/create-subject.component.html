@@ -1,0 +1,59 @@
+<div class="container-fluid mt-3" *ngIf="!spinner; else showspinner">
+  <form [formGroup]="create_subject_form" (ngSubmit)="create_subject()">
+    <ng-container formArrayName="subject">
+      <div class="row my-4" *ngFor="let _ of subject.controls; index as i">
+        <div class="col-10">
+          <span class="p-float-label w-100">
+            <input
+              type="text"
+              id="inputtext"
+              pInputText
+              [formControlName]="i"
+              class="form-control"
+            />
+            <label for="inputtext">Subject Name</label>
+          </span>
+        </div>
+        <div class="col-2 d-flex">
+          <div>
+            <button
+              pButton
+              pRipple
+              type="button"
+              (click)="addsubject()"
+              icon="pi pi-plus"
+              class="p-button-rounded p-button-success"
+            ></button>
+          </div>
+
+          <div style="margin-left: 1rem">
+            <button
+              pButton
+              pRipple
+              type="button"
+              (click)="remove_subject(i)"
+              icon="pi pi-minus"
+              class="p-button-rounded p-button-danger"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="col-12">
+      <button
+        label="Next"
+        type="submit"
+        icon="pi pi-book"
+        pButton
+        [disabled]="create_subject_form.invalid"
+        style="margin-left: 0.5rem"
+      ></button>
+    </div>
+  </form>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

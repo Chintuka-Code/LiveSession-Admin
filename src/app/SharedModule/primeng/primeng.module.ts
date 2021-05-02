@@ -20,7 +20,6 @@ import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
-
 const primeng = [
   AutoCompleteModule,
   CalendarModule,

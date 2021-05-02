@@ -36,15 +36,51 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'edit-user',
+        path: 'edit-user/:user_id',
         loadChildren: () =>
           import('../edit-user/edit-user.module').then((m) => m.EditUserModule),
       },
       {
-        path: 'view-user-profile',
+        path: 'view-user-profile/:user_id',
         loadChildren: () =>
           import('../view-user-profile/view-user-profile.module').then(
             (m) => m.ViewUserProfileModule
+          ),
+      },
+      {
+        path: 'create-subject',
+        data: { role: 'SUB01' },
+        loadChildren: () =>
+          import('../create-subject/create-subject.module').then(
+            (m) => m.CreateSubjectModule
+          ),
+      },
+      {
+        path: 'view-subject',
+        loadChildren: () =>
+          import('../view-subject/view-subject.module').then(
+            (m) => m.ViewSubjectModule
+          ),
+      },
+      {
+        path: 'create-course',
+        loadChildren: () =>
+          import('../create-course/create-course.module').then(
+            (m) => m.CreateCourseModule
+          ),
+      },
+      {
+        path: 'view-course',
+        loadChildren: () =>
+          import('../view-course/view-course.module').then(
+            (m) => m.ViewCourseModule
+          ),
+      },
+      {
+        path: 'edit-course',
+        loadChildren: () =>
+          import('../edit-course/edit-course.module').then(
+            (m) => m.EditCourseModule
           ),
       },
     ],

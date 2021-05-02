@@ -1,1 +1,127 @@
-<p>edit-user works!</p>
+<ng-container *ngIf="!spinner; else showspinner">
+  <!-- General Information Form -->
+  <div class="personal-details container-fluid py-3" *ngIf="!permission">
+    <form [formGroup]="personal_info">
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <span class="p-float-label w-100">
+            <input
+              type="text"
+              id="inputtext"
+              formControlName="name"
+              pInputText
+              class="form-control"
+            />
+            <label for="inputtext">Enter your Name</label>
+          </span>
+        </div>
+        <div class="col-12 col-md-4">
+          <span class="p-float-label w-100">
+            <input
+              type="text"
+              class="form-control"
+              id="inputtext-left"
+              pInputText
+              formControlName="email"
+            />
+            <label for="inputtext-left">Enter your Email</label>
+          </span>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <span class="p-float-label w-100">
+            <p-dropdown
+              inputId="dropdown"
+              [autoDisplayFirst]="false"
+              [options]="user_type"
+              [autoWidth]="false"
+              [style]="{ minWidth: '100%' }"
+              formControlName="user_type"
+            ></p-dropdown>
+            <label for="dropdown">Enter User Type</label>
+          </span>
+        </div>
+
+        <div class="col-12 col-md-4 mt-5">
+          <button
+            label="Next"
+            type="button"
+            icon="pi pi-search"
+            pButton
+            [disabled]="personal_info.invalid"
+            (click)="permission = !permission"
+          ></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Permission Form -->
+  <div class="permission" *ngIf="permission">
+    <!-- Permission Tree -->
+    <p-treeTable
+      [value]="permissions"
+      [columns]="cols"
+      selectionMode="checkbox"
+      [(selection)]="selected_permission"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-rowNode
+        let-rowData="rowData"
+        let-columns="columns"
+      >
+        <tr>
+          <td *ngFor="let col of columns; let i = index">
+            <p-treeTableToggler
+              [rowNode]="rowNode"
+              *ngIf="i == 0"
+            ></p-treeTableToggler>
+            <p-treeTableCheckbox
+              [value]="rowNode"
+              *ngIf="i == 0"
+            ></p-treeTableCheckbox>
+            {{ rowData[col.field] }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-treeTable>
+
+    <!-- Button Controls -->
+    <div class="d-flex mt-3 w-100">
+      <div>
+        <p-button
+          label="Back"
+          class="ml-3"
+          icon="pi pi-angle-left"
+          (onClick)="permission = !permission"
+        ></p-button>
+      </div>
+
+      <div class="button-second">
+        <button
+          pButton
+          label="Create"
+          icon="pi pi-user-plus"
+          iconPos="right"
+          [disabled]="selected_permission.length <= 0"
+          (click)="get_personal_info()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<!-- Success Message -->
+<!-- <p-toast position="bottom-center"></p-toast> -->
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

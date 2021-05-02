@@ -16,13 +16,12 @@ export class PermissionService {
       this.firebase_store
         .collection('user', (ref) =>
           ref
-            .where('email', '==', 'admin01@gmail.com')
+            .where('email', '==', localStorage.getItem('email'))
             .where('permissions', 'array-contains', role)
         )
         .get()
         .subscribe((res: any) => {
           const data = FormativeData.format_firebase_get_request_data(res);
-
           if (data.length > 0) {
             resolve(true);
           } else {

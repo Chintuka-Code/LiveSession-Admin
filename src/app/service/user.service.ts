@@ -41,4 +41,12 @@ export class UserService {
       .collection('user', (ref) => ref.where('user_type', '==', 'Students'))
       .get();
   }
+
+  get_user_by_id(id) {
+    return this.firebase_store.collection('user').doc(id).get();
+  }
+
+  update_user_by_id(data, id) {
+    return this.firebase_store.collection('user').doc(id).update(data);
+  }
 }

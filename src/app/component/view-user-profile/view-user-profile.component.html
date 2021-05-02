@@ -1,1 +1,12 @@
-<p>view-user-profile works!</p>
+<div *ngIf="!spinner; else showspinner">
+  <ul>
+    <li>Name : {{ user_info.name }}</li>
+    <li>Email : {{ user_info.email }}</li>
+  </ul>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
