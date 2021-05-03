@@ -78,10 +78,25 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'edit-course',
+        path: 'edit-course/:course_id',
         loadChildren: () =>
           import('../edit-course/edit-course.module').then(
             (m) => m.EditCourseModule
+          ),
+      },
+      {
+        path: 'create-student',
+        data: { role: 'CS10' },
+        loadChildren: () =>
+          import('../create-student/create-student.module').then(
+            (m) => m.CreateStudentModule
+          ),
+      },
+      {
+        path: 'student-profile/:student_id',
+        loadChildren: () =>
+          import('../student-profile/student-profile.module').then(
+            (m) => m.StudentProfileModule
           ),
       },
     ],

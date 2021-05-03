@@ -20,6 +20,7 @@ import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
+import { DialogModule } from 'primeng/dialog';
 const primeng = [
   AutoCompleteModule,
   CalendarModule,
@@ -41,6 +42,7 @@ const primeng = [
   ToastModule,
   TableModule,
   MenuModule,
+  DialogModule,
 ];
 
 @NgModule({

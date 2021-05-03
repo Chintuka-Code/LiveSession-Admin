@@ -1,0 +1,12 @@
+<div *ngIf="!spinner; else showspinner">
+  <ul>
+    <li>Name : {{ student_info.name }}</li>
+    <li>Email : {{ student_info.email }}</li>
+  </ul>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

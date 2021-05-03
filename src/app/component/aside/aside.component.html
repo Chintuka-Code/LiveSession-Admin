@@ -15,6 +15,31 @@
     <li class="sidebar-title">Apps</li>
 
     <li routerLinkActive="active-page">
+      <a href="javascript:void(0)" (click)="accordion_list($event)"
+        ><i class="fas fa-user-tag px-3"></i>Institute<i
+          class="fas fa-chevron-right dropdown-icon"
+        ></i
+      ></a>
+      <ul class="d-none px-3">
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['view-subject']">
+            <span class="pointer-none"
+              ><i class="fas fa-book px-3"></i>Subject</span
+            >
+          </a>
+        </li>
+
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['view-course']">
+            <span class="pointer-none"
+              ><i class="fab fa-contao px-3"></i>Course</span
+            >
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li routerLinkActive="active-page">
       <a [routerLink]="['live-session-chat']"
         ><i class="fas fa-comment-dots px-3"></i>Live Session Chat</a
       >
@@ -22,21 +47,16 @@
 
     <li class="sidebar-title">Tabs</li>
 
+    <!-- Admin -->
     <li routerLinkActive="active-page">
-      <a href="javascript:void(0)" (click)="accordion_list($event)"
-        ><i class="fas fa-user-tag px-3"></i>User<i
-          class="fas fa-chevron-right dropdown-icon"
-        ></i
-      ></a>
-      <ul class="d-none">
-        <li routerLinkActive="active-page">
-          <a [routerLink]="['create-user']"
-            ><i class="fas fa-user-plus"></i>Create User</a
-          >
-        </li>
+      <a [routerLink]="['user-details', 'admin']">
+        <i class="fas fa-user-tag px-3"></i>Admin
+      </a>
+      <!-- <ul class="d-none px-3">
+      
         <li routerLinkActive="active-page">
           <a [routerLink]="['user-details', 'admin']"
-            ><i class="fas fa-id-card"></i>View Users</a
+            ><i class="fas fa-id-card"></i>View Admin</a
           >
         </li>
         <li>
@@ -44,57 +64,13 @@
             ><i class="fas fa-user-graduate"></i>View Students</a
           >
         </li>
-      </ul>
+      </ul> -->
     </li>
 
     <li routerLinkActive="active-page">
-      <a href="javascript:void(0)" (click)="accordion_list($event)"
-        ><i class="fas fa-book px-3"></i>Subject<i
-          class="fas fa-chevron-right dropdown-icon"
-        ></i
-      ></a>
-
-      <ul class="d-none">
-        <li>
-          <a
-            [routerLink]="['create-subject']"
-            routerLinkActive="router-link-active"
-            ><i class="far fa-circle"></i>Create Subject</a
-          >
-        </li>
-        <li>
-          <a
-            [routerLink]="['view-subject']"
-            routerLinkActive="router-link-active"
-            ><i class="far fa-circle"></i>View Subject</a
-          >
-        </li>
-      </ul>
-    </li>
-
-    <li routerLinkActive="active-page">
-      <a href="javascript:void(0)" (click)="accordion_list($event)"
-        ><i class="fab fa-contao px-3"></i>Course<i
-          class="fas fa-chevron-right dropdown-icon"
-        ></i
-      ></a>
-
-      <ul class="d-none">
-        <li>
-          <a
-            [routerLink]="['create-course']"
-            routerLinkActive="router-link-active"
-            ><i class="far fa-circle"></i>Create Course</a
-          >
-        </li>
-        <li>
-          <a
-            [routerLink]="['view-course']"
-            routerLinkActive="router-link-active"
-            ><i class="far fa-circle"></i>View Course</a
-          >
-        </li>
-      </ul>
+      <a [routerLink]="['students-details', 'students']"
+        ><i class="fas fa-user-tag px-3"></i>Student</a
+      >
     </li>
 
     <li>

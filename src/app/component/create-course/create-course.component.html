@@ -1,48 +1,61 @@
-<div class="container-fluid" *ngIf="!spinner; else showspinner">
-  <form [formGroup]="create_course_form" (ngSubmit)="get_course_data()">
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <div class="form-group">
-          <span class="p-float-label w-100">
-            <input
-              type="text"
-              id="inputtext"
-              formControlName="course_name"
-              class="form-control"
-              pInputText
-            />
-            <label for="inputtext">InputText</label>
-          </span>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <div class="form-group">
-          <span class="p-float-label w-100">
-            <p-multiSelect
-              inputId="multiselect"
-              [options]="subject"
-              optionLabel="subject_name"
-              optionValue="doc_id"
-              [filter]="true"
-              display="chip"
-              [style]="{ minWidth: '100%' }"
-              formControlName="subject_ids"
-            ></p-multiSelect>
-            <label for="multiselect">Select Subject</label>
-          </span>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6 mt-3">
-        <button
-          label="Create Course"
-          type="submit"
-          pButton
-          [disabled]="create_course_form.invalid"
-        ></button>
-      </div>
+<div class="card" *ngIf="!spinner; else showspinner">
+  <div class="card-body">
+    <div class="header">
+      <h3 class="">Create Course</h3>
+      <button class="btn btn-primary">
+        <a [routerLink]="['../view-course']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
     </div>
-  </form>
+    <div class="container-fluid">
+      <form [formGroup]="create_course_form" (ngSubmit)="get_course_data()">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <span class="p-float-label w-100">
+                <input
+                  type="text"
+                  id="inputtext"
+                  formControlName="course_name"
+                  class="form-control"
+                  pInputText
+                />
+                <label for="inputtext">InputText</label>
+              </span>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <span class="p-float-label w-100">
+                <p-multiSelect
+                  inputId="multiselect"
+                  [options]="subject"
+                  optionLabel="subject_name"
+                  optionValue="doc_id"
+                  [filter]="true"
+                  display="chip"
+                  [style]="{ minWidth: '100%' }"
+                  formControlName="subject_ids"
+                ></p-multiSelect>
+                <label for="multiselect">Select Subject</label>
+              </span>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 mt-3">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="create_course_form.invalid"
+            >
+              Create Course
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <ng-template #showspinner>

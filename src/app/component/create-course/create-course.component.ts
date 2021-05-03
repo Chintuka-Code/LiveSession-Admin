@@ -79,7 +79,13 @@ export class CreateCourseComponent implements OnInit {
     this.spinner = true;
     try {
       const data = this.create_course_form.getRawValue();
+      data['disabled'] = false;
       const response = await this.course_service.create_course(data);
+      Swal.fire({
+        icon: 'success',
+        title: 'Yeah...',
+        text: 'Course Created',
+      });
       this.create_course_form.reset();
       this.spinner = false;
     } catch (error) {

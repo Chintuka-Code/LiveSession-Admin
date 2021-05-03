@@ -10,11 +10,20 @@ export class SubjectService {
 
   create_subject(data) {
     data['created_at'] = this.timestamp;
+    data['disabled'] = false;
     return this.firebase_store.collection('subject').add(data);
   }
 
   get_all_subject() {
-    return this.firebase_store.collection('subject').get();
+    return this.firebase_store
+      .collection('subject', (ref) => ref.where('disabled', '==', false))
+      .get();
+  }
+
+  get_all_disabled_subject() {
+    return this.firebase_store
+      .collection('subject', (ref) => ref.where('disabled', '==', true))
+      .get();
   }
 
   update_subject(data) {
@@ -22,5 +31,16 @@ export class SubjectService {
       .collection('subject')
       .doc(data.doc_id)
       .update({ subject_name: data.subject_name });
+  }
+
+  disabled_subject(data) {
+    return this.firebase_store
+      .collection('subject')
+      .doc(data.doc_id)
+      .update({ disabled: data.disabled });
+  }
+
+  get_subject_by_id(id) {
+    return this.firebase_store.collection('subject').doc(id).get();
   }
 }

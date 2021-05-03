@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PermissionService } from 'src/app/service/permission.service';
+import { StudentsService } from 'src/app/service/students.service';
 import { UserService } from 'src/app/service/user.service';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
@@ -18,12 +19,13 @@ export class StudentsDetailsComponent implements OnInit {
   constructor(
     private user_service: UserService,
     private permission_service: PermissionService,
-    private router: Router
+    private router: Router,
+    private student_service: StudentsService
   ) {}
 
   get_users_data() {
     this.spinner = true;
-    this.user_service.get_students_details().subscribe((res: any) => {
+    this.student_service.get_student_details().subscribe((res: any) => {
       this.students_data = FormativeData.format_firebase_get_request_data(res);
       this.spinner = false;
     });
@@ -65,20 +67,20 @@ export class StudentsDetailsComponent implements OnInit {
       },
     ];
 
-    if (this.user_profile.permissions.includes('S10')) {
-      this.items[0].items.push({
-        label: 'Edit',
-        icon: 'pi pi-user-edit',
-        command: () => {
-          this.menu_type = 'edit';
-        },
-      });
-    }
+    // if (this.user_profile.permissions.includes('S10')) {
+    //   this.items[0].items.push({
+    //     label: 'Edit',
+    //     icon: 'pi pi-user-edit',
+    //     command: () => {
+    //       this.menu_type = 'edit';
+    //     },
+    //   });
+    // }
   }
 
   set_dynamic_url(id) {
     if (this.menu_type === 'view') {
-      this.router.navigate(['main/view-user-profile', id]);
+      this.router.navigate(['main/student-profile', id]);
     } else {
       this.router.navigate(['main/edit-user', id]);
     }
