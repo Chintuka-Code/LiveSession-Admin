@@ -1,0 +1,76 @@
+<section *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Add Student into {{ batch_details.batch_name }} batch</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../../view-batch']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+
+      <p-table
+        [value]="students"
+        [(selection)]="selected_student"
+        dataKey="name"
+        #dt1
+        [globalFilterFields]="['name', 'email']"
+      >
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex w-100">
+            <span class="p-input-icon-left p-ml-auto w-100">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                placeholder="Search keyword"
+                class="form-control"
+              />
+            </span>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+
+            <th>Name</th>
+            <th>Email</th>
+            <th>Created At</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="student"></p-tableCheckbox>
+            </td>
+
+            <td>{{ student.name }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.createdAt.toDate() | date: "medium" }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <div class="footer mt-3">
+        <button
+          class="btn btn-primary"
+          (click)="add_student()"
+          [disabled]="selected_student.length == 0"
+        >
+          Add Student
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

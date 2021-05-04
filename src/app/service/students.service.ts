@@ -33,4 +33,17 @@ export class StudentsService {
   get_student_by_id(id) {
     return this.firebase_store.collection('student').doc(id).get();
   }
+
+  get_unassigned_batch_students() {
+    return this.firebase_store
+      .collection('student', (ref) => ref.where('batch_ids', '==', []))
+      .get();
+  }
+
+  add_student_into_batch(data) {
+    return this.firebase_store
+      .collection('student')
+      .doc(data.doc_id)
+      .update({ batch_ids: data.batch_ids });
+  }
 }

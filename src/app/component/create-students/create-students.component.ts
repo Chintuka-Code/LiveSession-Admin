@@ -4,9 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
+import { Observable } from 'rxjs';
 import { PermissionService } from 'src/app/service/permission.service';
 import { StudentsService } from 'src/app/service/students.service';
 import Swal from 'sweetalert2';
+import { interval } from 'rxjs';
 @Component({
   selector: 'app-create-students',
   templateUrl: './create-students.component.html',
@@ -18,6 +20,8 @@ export class CreateStudentsComponent implements OnInit {
   header: boolean = true;
   spinner: boolean = false;
   student_create_form: FormGroup;
+  ref: Observable<any>;
+  subscription;
   constructor(
     private ngxCsvParser: NgxCsvParser,
     private student_service: StudentsService,
@@ -69,6 +73,7 @@ export class CreateStudentsComponent implements OnInit {
   async create_student() {
     this.spinner = true;
     const user = [];
+
     await Promise.all(
       this.student_record.map(async (student) => {
         const data = {
@@ -77,15 +82,15 @@ export class CreateStudentsComponent implements OnInit {
           password: 'datatrained',
           disabled: false,
           permission: ['S00'],
+          batch_ids: [],
         };
 
         try {
           // to check row is empty or not
           if (data.email) {
-            const response = await this.student_service.user_authentication(
+            let response: any = await this.student_service.user_authentication(
               data
             );
-
             user.push({ data, uid: response.user.uid });
           }
         } catch (error) {
@@ -111,7 +116,6 @@ export class CreateStudentsComponent implements OnInit {
       })
     );
 
-    console.log(user);
     Swal.fire({
       icon: 'success',
       title: 'Yeah...',
@@ -134,6 +138,7 @@ export class CreateStudentsComponent implements OnInit {
     data['password'] = 'datatrained';
     data['disabled'] = false;
     data['permission'] = ['S00'];
+    data['batch_ids'] = [];
     try {
       const response = await this.student_service.user_authentication(data);
       const create_user = await this.student_service.create_student(

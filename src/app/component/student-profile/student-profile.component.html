@@ -1,8 +1,150 @@
 <div *ngIf="!spinner; else showspinner">
-  <ul>
-    <li>Name : {{ student_info.name }}</li>
-    <li>Email : {{ student_info.email }}</li>
-  </ul>
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="heading">{{ student_info.name }}</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../../students-details/students']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+
+      <div class="container-fluid student-details">
+        <ul>
+          <li>
+            <strong>Name</strong> <span> {{ student_info.name }} </span>
+          </li>
+          <li>
+            <strong>Email</strong> <span> {{ student_info.email }} </span>
+          </li>
+          <li>
+            <strong>Created At</strong>
+            <span>
+              {{ student_info.createdAt.toDate() | date: "medium" }}
+            </span>
+          </li>
+          <li class="batch-details" *ngIf="student_info.batch_ids.length != 0">
+            <strong class="batch-heading">Batch</strong>
+            <div class="details">
+              <p-accordion>
+                <p-accordionTab
+                  *ngFor="let batch of student_info.batch_ids"
+                  [header]="batch.batch_details.batch_name"
+                >
+                  <div class="batch-details">
+                    <!-- Batch Information -->
+                    <ul class="dialog-list">
+                      <li>
+                        <strong>Batch Name</strong>
+                        <span> {{ batch.batch_details.batch_name }} </span>
+                      </li>
+                      <li>
+                        <strong>Batch Duration</strong>
+                        <span> {{ batch.batch_details.batch_duration }} </span>
+                      </li>
+                      <li>
+                        <strong>Batch Start Date</strong>
+                        <span>
+                          {{
+                            batch.batch_details.batch_start_date.toDate()
+                              | date: "mediumDate"
+                          }}
+                        </span>
+                      </li>
+                      <li>
+                        <strong>Batch End Date</strong>
+                        <span>
+                          {{
+                            batch.batch_details.batch_end_date.toDate()
+                              | date: "mediumDate"
+                          }}
+                        </span>
+                      </li>
+                      <li>
+                        <strong>Batch Start Time</strong>
+                        <span>
+                          {{
+                            batch.batch_details.batch_start_time.toDate()
+                              | date: "mediumTime"
+                          }}
+                        </span>
+                      </li>
+                      <li>
+                        <strong>Batch End Time</strong>
+                        <span
+                          >{{
+                            batch.batch_details.batch_end_time.toDate()
+                              | date: "mediumTime"
+                          }}
+                        </span>
+                      </li>
+                      <li>
+                        <strong>Batch Active Days</strong>
+                        <ul>
+                          <li
+                            *ngFor="let item of batch.batch_details.active_days"
+                          >
+                            <span> {{ item }} </span>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+
+                    <div class="sub-details">
+                      <strong> Course </strong>
+
+                      <p-accordion>
+                        <p-accordionTab
+                          [header]="
+                            batch.batch_details.course_details.course_name
+                          "
+                        >
+                          <ul>
+                            <li>
+                              <strong>Course Name</strong>
+                              <span>
+                                {{
+                                  batch.batch_details.course_details.course_name
+                                }}
+                              </span>
+                            </li>
+                            <li>
+                              <strong>Created At</strong>
+                              <span>
+                                {{
+                                  batch.batch_details.course_details.created_at.toDate()
+                                    | date: "medium"
+                                }}
+                              </span>
+                            </li>
+                          </ul>
+                        </p-accordionTab>
+                      </p-accordion>
+                    </div>
+
+                    <div class="sub-details mt-3">
+                      <strong>Subject</strong>
+
+                      <p-accordion>
+                        <p-accordionTab header="Subject">
+                          <ul>
+                            <li *ngFor="let subject of batch.subject_details">
+                              <strong> {{ subject.subject_name }} </strong>
+                            </li>
+                          </ul>
+                        </p-accordionTab>
+                      </p-accordion>
+                    </div>
+                  </div>
+                </p-accordionTab>
+              </p-accordion>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
 <ng-template #showspinner>

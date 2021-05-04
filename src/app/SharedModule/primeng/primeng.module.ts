@@ -21,6 +21,8 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
+import { AccordionModule } from 'primeng/accordion';
+
 const primeng = [
   AutoCompleteModule,
   CalendarModule,
@@ -43,6 +45,7 @@ const primeng = [
   TableModule,
   MenuModule,
   DialogModule,
+  AccordionModule,
 ];
 
 @NgModule({

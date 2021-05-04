@@ -1,0 +1,36 @@
+:host {
+  ::ng-deep {
+    .p-menu {
+      position: absolute !important;
+      top: 60px !important;
+      left: 0 !important;
+    }
+  }
+}
+
+.dialog-container {
+  padding: 0.5rem;
+
+  .dialog-list {
+    list-style: none;
+    li {
+      min-height: 40px;
+      padding: 0.5rem;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      margin: 1rem 0;
+      span {
+        padding-left: 1rem;
+      }
+      ul {
+        list-style: none;
+        li {
+          background: #fff;
+        }
+      }
+      .tree {
+        padding-top: 1rem;
+      }
+    }
+  }
+}

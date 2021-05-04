@@ -99,6 +99,35 @@ const routes: Routes = [
             (m) => m.StudentProfileModule
           ),
       },
+      {
+        path: 'view-batch',
+        loadChildren: () =>
+          import('../view-batch/view-batch.module').then(
+            (m) => m.ViewBatchModule
+          ),
+      },
+      {
+        path: 'edit-batch/:batch_id',
+        loadChildren: () =>
+          import('../edit-batch/edit-batch.module').then(
+            (m) => m.EditBatchModule
+          ),
+      },
+      {
+        path: 'create-batch',
+        data: { role: 'B10' },
+        loadChildren: () =>
+          import('../create-batch/create-batch.module').then(
+            (m) => m.CreateBatchModule
+          ),
+      },
+      {
+        path: 'add-student-into-batch/:batch_id',
+        loadChildren: () =>
+          import(
+            '../add-student-into-batch/add-student-into-batch.module'
+          ).then((m) => m.AddStudentIntoBatchModule),
+      },
     ],
   },
 ];
