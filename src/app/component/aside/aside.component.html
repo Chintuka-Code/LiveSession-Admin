@@ -1,5 +1,5 @@
 <!-- Aside Bar -->
-<div class="page-sidebar">
+<div class="page-sidebar" *ngIf="!spinner; else showspinner">
   <ul class="list-unstyled accordion-menu">
     <li class="sidebar-title">Main</li>
 
@@ -47,7 +47,10 @@
       </ul>
     </li>
 
-    <li routerLinkActive="active-page">
+    <li
+      routerLinkActive="active-page"
+      *ngIf="user.permissions.includes('LS00')"
+    >
       <a [routerLink]="['live-session-chat']"
         ><i class="fas fa-comment-dots px-3"></i>Live Session Chat</a
       >
@@ -86,3 +89,9 @@
     </li>
   </ul>
 </div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

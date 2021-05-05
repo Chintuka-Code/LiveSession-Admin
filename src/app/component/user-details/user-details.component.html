@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="!spinner; else showspinner">
   <div class="card-body">
     <div class="header">
       <h3 class="">Active User</h3>
@@ -9,7 +9,7 @@
       </button>
     </div>
 
-    <div *ngIf="!spinner; else showspinner">
+    <div>
       <p-table
         #usertable
         [value]="user_data"

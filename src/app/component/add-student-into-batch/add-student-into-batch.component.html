@@ -10,6 +10,16 @@
         </button>
       </div>
 
+      <div class="sub-header">
+        <button
+          class="btn btn-primary"
+          (click)="add_student()"
+          [disabled]="selected_student.length == 0"
+        >
+          Add Student
+        </button>
+      </div>
+
       <p-table
         [value]="students"
         [(selection)]="selected_student"
@@ -56,7 +66,7 @@
         </ng-template>
       </p-table>
 
-      <div class="footer mt-3">
+      <!-- <div class="footer mt-3">
         <button
           class="btn btn-primary"
           (click)="add_student()"
@@ -64,7 +74,7 @@
         >
           Add Student
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>

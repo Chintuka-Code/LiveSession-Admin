@@ -1,0 +1,49 @@
+<section *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Add Admin Into Batch</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../../user-details/admin']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+
+      <div>
+        <h6 class="h6">Batches List</h6>
+        <div class="mt-4">
+          <span class="p-float-label w-100">
+            <p-multiSelect
+              inputId="dropdown"
+              [autoDisplayFirst]="false"
+              [options]="batch"
+              optionLabel="batch_name"
+              optionValue="doc_id"
+              [style]="{ minWidth: '100%' }"
+              [(ngModel)]="selected_batch"
+              display="chip"
+            ></p-multiSelect>
+            <label for="dropdown">select batch</label>
+          </span>
+        </div>
+
+        <div class="w-100 mt-3">
+          <button
+            class="btn btn-primary"
+            [disabled]="selected_batch.length == 0"
+            (click)="add_admin_into_batch()"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

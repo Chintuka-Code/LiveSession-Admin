@@ -86,6 +86,7 @@ export class CreateUserComponent implements OnInit {
       this.selected_permission
     );
     user_info['disabled'] = false;
+    user_info['batch_ids'] = [];
     try {
       const response = await this.user_service.user_authentication(user_info);
       const user_created = await this.user_service.create_user(

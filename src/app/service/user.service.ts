@@ -49,4 +49,11 @@ export class UserService {
   update_user_by_id(data, id) {
     return this.firebase_store.collection('user').doc(id).update(data);
   }
+
+  add_admin_into_batch(batch, id) {
+    return this.firebase_store
+      .collection('user')
+      .doc(id)
+      .update({ batch_ids: batch });
+  }
 }

@@ -75,14 +75,35 @@ export class UserDetailsComponent implements OnInit {
       });
     }
 
+    if (this.user_profile.permissions.includes('LSS11')) {
+      this.items[0].items.push({
+        label: 'Live Session Setting',
+        icon: 'pi pi-user-edit',
+        command: () => {
+          this.menu_type = 'live_session';
+        },
+      });
+    }
+
     this.spinner = false;
   }
 
   set_dynamic_url(id) {
-    if (this.menu_type === 'view') {
-      this.router.navigate(['main/view-user-profile', id]);
-    } else {
-      this.router.navigate(['main/edit-user', id]);
+    switch (this.menu_type) {
+      case 'view':
+        this.router.navigate(['main/view-user-profile', id]);
+        break;
+
+      case 'edit':
+        this.router.navigate(['main/edit-user', id]);
+        break;
+
+      case 'live_session':
+        this.router.navigate(['main/assign-batch-to-admin', id]);
+        break;
+
+      default:
+        console.log('');
     }
   }
 

@@ -91,7 +91,10 @@ export class CreateStudentsComponent implements OnInit {
             let response: any = await this.student_service.user_authentication(
               data
             );
-            user.push({ data, uid: response.user.uid });
+
+            // user.push({ data, uid: response.user.uid });
+            console.log(response.user.uid);
+            await this.student_service.create_student(data, response.user.uid);
           }
         } catch (error) {
           Swal.fire({
@@ -106,15 +109,15 @@ export class CreateStudentsComponent implements OnInit {
         }
       })
     );
-
-    await Promise.all(
-      user.map(async (record) => {
-        await await this.student_service.create_student(
-          record.data,
-          record.uid
-        );
-      })
-    );
+    console.log(user);
+    // await Promise.all(
+    //   user.map(async (record) => {
+    //     await await this.student_service.create_student(
+    //       record.data,
+    //       record.uid
+    //     );
+    //   })
+    // );
 
     Swal.fire({
       icon: 'success',
