@@ -13,10 +13,17 @@ export class StudentsService {
   timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
   user_authentication(data) {
-    return this.firebase_auth.createUserWithEmailAndPassword(
-      data.email,
-      data.password
-    );
+    // return this.firebase_auth.createUserWithEmailAndPassword(
+    //   data.email,
+    //   data.password
+    // );
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(data.email, data.password);
+  }
+
+  log(data) {
+    return firebase.auth().signOut();
   }
 
   create_student(data, id) {

@@ -1,0 +1,420 @@
+<section *ngIf="!spinner; else showspinner">
+  <!-- batch list -->
+  <div class="row p-0 m-0">
+    <div class="batch-list">
+      <ul>
+        <li>
+          <a href=""
+            ><span class="badge rounded-pill bg-secondary text-dark"
+              >1820</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href=""
+            ><span class="badge rounded-pill bg-secondary text-dark"
+              >1820</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href=""
+            ><span class="badge rounded-pill bg-secondary text-dark"
+              >1820</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href=""
+            ><span class="badge rounded-pill bg-secondary text-dark"
+              >1820</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href=""
+            ><span class="badge rounded-pill bg-secondary text-dark"
+              >1820</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href=""
+            ><span class="badge rounded-pill bg-secondary text-dark"
+              >1820</span
+            ></a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- chat module -->
+  <div class="row">
+    <div class="col-sm-12 col-md-4 m-b-md">
+      <div class="card">
+        <div class="card-body">
+          <div class="email-list">
+            <ul class="list-unstyled">
+              <li class="active">
+                <a class="javascript:void(0)">
+                  <div class="email-list-item">
+                    <div class="email-author">
+                      <img
+                        src="../../assets/images/avatars/profile-image-1.png"
+                        alt=""
+                      />
+                      <span class="author-name">Lisa Lunsford</span>
+                      <span class="email-date">5</span>
+                    </div>
+                    <div class="email-info">
+                      <span class="email-subject">
+                        sit amet semper ante efficitur et
+                      </span>
+                      <span class="email-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <div class="email-list-item">
+                    <div class="email-author">
+                      <img
+                        src="../../assets/images/avatars/profile-image-3.jpg"
+                        alt=""
+                      />
+                      <span class="author-name">John Doe</span>
+                      <span class="email-date">5</span>
+                    </div>
+                    <div class="email-info">
+                      <span class="email-subject">
+                        est dolor fringilla mauris, nec tristique magna
+                      </span>
+                      <span class="email-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <div class="email-list-item">
+                    <div class="email-author">
+                      <img
+                        src="../../assets/images/avatars/profile-image.png"
+                        alt=""
+                      />
+                      <span class="author-name">Lisa Lunsford</span>
+                      <span class="email-date">5</span>
+                    </div>
+                    <div class="email-info">
+                      <span class="email-subject">
+                        sit amet semper ante efficitur et
+                      </span>
+                      <span class="email-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <div class="email-list-item">
+                    <div class="email-author">
+                      <img
+                        src="../../assets/images/avatars/profile-image-2.png"
+                        alt=""
+                      />
+                      <span class="author-name">John Doe</span>
+                      <span class="email-date">5</span>
+                    </div>
+                    <div class="email-info">
+                      <span class="email-subject">
+                        est dolor fringilla mauris, nec tristique magna
+                      </span>
+                      <span class="email-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <div class="email-list-item">
+                    <div class="email-author">
+                      <img
+                        src="../../assets/images/avatars/profile-image-1.png"
+                        alt=""
+                      />
+                      <span class="author-name">Lisa Lunsford</span>
+                      <span class="email-date">5</span>
+                    </div>
+                    <div class="email-info">
+                      <span class="email-subject">
+                        sit amet semper ante efficitur et
+                      </span>
+                      <span class="email-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <div class="email-list-item">
+                    <div class="email-author">
+                      <img
+                        src="../../assets/images/avatars/profile-image-3.jpg"
+                        alt=""
+                      />
+                      <span class="author-name">John Doe</span>
+                      <span class="email-date">5</span>
+                    </div>
+                    <div class="email-info">
+                      <span class="email-subject">
+                        est dolor fringilla mauris, nec tristique magna
+                      </span>
+                      <span class="email-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- chat container -->
+    <div class="col-sm-12 col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div
+            class="chat-header d-flex justify-content-between align-items-center"
+          >
+            <h3 class="h3">Mohmadsabban@gmail.com</h3>
+            <div class="control d-flex">
+              <div class="batch_list">
+                <p-dropdown
+                  [options]="groupedCities"
+                  placeholder="Transfer Chat"
+                  [group]="true"
+                  [style]="{ minWidth: '100%' }"
+                >
+                  <ng-template let-group pTemplate="group">
+                    <div class="p-d-flex p-ai-center">
+                      <span>{{ group.label }}</span>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+              </div>
+              <div class="control">
+                <button type="button" class="btn btn-danger">End Chat</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-body px-2" id="chat-body">
+            <div class="d-flex">
+              <button
+                pButton
+                pRipple
+                pTooltip="Load more"
+                type="button"
+                icon="pi pi-cloud-download"
+                class="p-button-rounded p-button-outlined m-auto"
+              ></button>
+            </div>
+
+            <div class="post-comments d-flex flex-column">
+              <div class="post-comm">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac.
+                </span>
+              </div>
+              <div class="post-comm align-self-end">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac.
+                </span>
+              </div>
+              <div class="post-comm">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac.
+                </span>
+              </div>
+              <div class="post-comm align-self-end">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac.
+                </span>
+              </div>
+              <div class="post-comm">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Cumque itaque ut nesciunt qui aliquid consequuntur illum vel
+                  eius voluptatum impedit!
+                </span>
+              </div>
+              <div class="post-comm align-self-end">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Cumque itaque ut nesciunt qui aliquid consequuntur illum vel
+                  eius voluptatum impedit!
+                </span>
+              </div>
+              <div class="post-comm">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac.
+                </span>
+              </div>
+              <div class="post-comm align-self-end">
+                <img
+                  src="../../assets/images/avatars/profile-image-2.png"
+                  class="comment-img"
+                  alt=""
+                />
+                <div class="comment-container">
+                  <span class="comment-author">
+                    Sonny Rosas
+                    <small class="comment-date">5min</small>
+                  </span>
+                </div>
+                <span class="comment-text">
+                  Mauris ultrices convallis massa, nec facilisis enim interdum
+                  ac. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Cumque itaque ut nesciunt qui aliquid consequuntur illum vel
+                  eius voluptatum impedit!
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-footer">
+            <div class="row p-0 align-items-center">
+              <div class="col-10">
+                <textarea
+                  name="text"
+                  placeholder="Write Something"
+                  id=""
+                  cols="30"
+                  rows="1"
+                  class="form-control"
+                  (input)="textarea_auto_increment($event)"
+                ></textarea>
+              </div>
+              <div class="chat-control col-2 d-flex align-items-center pl-0">
+                <div class="attachment">
+                  <input type="file" multiple />
+                  <i class="fas fa-paperclip"></i>
+                </div>
+                <div class="send">
+                  <button type="button">
+                    <i class="far fa-paper-plane"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

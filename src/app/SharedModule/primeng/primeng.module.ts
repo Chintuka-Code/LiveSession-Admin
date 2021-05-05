@@ -22,6 +22,8 @@ import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
 import { AccordionModule } from 'primeng/accordion';
+import { BadgeModule } from 'primeng/badge';
+import { TooltipModule } from 'primeng/tooltip';
 
 const primeng = [
   AutoCompleteModule,
@@ -46,6 +48,8 @@ const primeng = [
   MenuModule,
   DialogModule,
   AccordionModule,
+  BadgeModule,
+  TooltipModule,
 ];
 
 @NgModule({

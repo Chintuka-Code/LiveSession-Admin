@@ -135,6 +135,13 @@ const routes: Routes = [
             (m) => m.AssignBatchToAdminModule
           ),
       },
+      {
+        path: 'live-session-chat',
+        loadChildren: () =>
+          import('../live-session-chat/live-session-chat.module').then(
+            (m) => m.LiveSessionChatModule
+          ),
+      },
     ],
   },
 ];

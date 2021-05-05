@@ -85,27 +85,14 @@ export class CreateStudentsComponent implements OnInit {
           batch_ids: [],
         };
 
-        try {
-          // to check row is empty or not
-          if (data.email) {
-            let response: any = await this.student_service.user_authentication(
-              data
-            );
+        // to check row is empty or not
+        if (data.email) {
+          let response: any = await this.student_service.user_authentication(
+            data
+          );
 
-            // user.push({ data, uid: response.user.uid });
-            console.log(response.user.uid);
-            await this.student_service.create_student(data, response.user.uid);
-          }
-        } catch (error) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops..',
-            text: error.message,
-            footer: data.email,
-          }).then(() => {
-            this.spinner = false;
-            this.bulk = false;
-          });
+          user.push({ data, uid: response.user.uid });
+          console.log(response.user.uid);
         }
       })
     );
