@@ -56,4 +56,12 @@ export class UserService {
       .doc(id)
       .update({ batch_ids: batch });
   }
+
+  get_all_admin_account() {
+    return this.firebase_store
+      .collection('user', (ref) =>
+        ref.where('permissions', 'array-contains', 'LS00')
+      )
+      .get();
+  }
 }

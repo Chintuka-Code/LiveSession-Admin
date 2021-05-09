@@ -117,8 +117,9 @@ export class CreateStudentsComponent implements OnInit {
 
   validation() {
     this.student_create_form = this.fb.group({
-      name: ['', Validators.required],
+      // name: ['', Validators.required],
       email: ['', Validators.required],
+      // date_of_joining:['',Validators.required]
     });
   }
 
@@ -129,6 +130,9 @@ export class CreateStudentsComponent implements OnInit {
     data['disabled'] = false;
     data['permission'] = ['S00'];
     data['batch_ids'] = [];
+    data['date_of_joining'] = null;
+    data['first_time'] = true;
+    data['name'] = null;
     try {
       const response = await this.student_service.user_authentication(data);
       const create_user = await this.student_service.create_student(

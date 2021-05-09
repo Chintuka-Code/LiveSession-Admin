@@ -1,192 +1,67 @@
 <section *ngIf="!spinner; else showspinner">
-  <!-- batch list -->
-  <div class="row p-0 m-0">
-    <div class="batch-list">
-      <ul>
-        <li>
-          <a href=""
-            ><span class="badge rounded-pill bg-secondary text-dark"
-              >1820</span
-            ></a
-          >
-        </li>
-        <li>
-          <a href=""
-            ><span class="badge rounded-pill bg-secondary text-dark"
-              >1820</span
-            ></a
-          >
-        </li>
-        <li>
-          <a href=""
-            ><span class="badge rounded-pill bg-secondary text-dark"
-              >1820</span
-            ></a
-          >
-        </li>
-        <li>
-          <a href=""
-            ><span class="badge rounded-pill bg-secondary text-dark"
-              >1820</span
-            ></a
-          >
-        </li>
-        <li>
-          <a href=""
-            ><span class="badge rounded-pill bg-secondary text-dark"
-              >1820</span
-            ></a
-          >
-        </li>
-        <li>
-          <a href=""
-            ><span class="badge rounded-pill bg-secondary text-dark"
-              >1820</span
-            ></a
-          >
-        </li>
-      </ul>
-    </div>
-  </div>
-
   <!-- chat module -->
   <div class="row">
     <div class="col-sm-12 col-md-4 m-b-md">
       <div class="card">
+        <div class="card-body p-0 p-2">
+          <div class="row align-items-center">
+            <!-- batch area -->
+            <div class="col-7">
+              <p-dropdown
+                [options]="batch"
+                placeholder="Select a Batch"
+                optionLabel="batch_name"
+                [style]="{ minWidth: '100%', 'border-radius': '10px' }"
+                [(ngModel)]="selected_batch"
+                display="chip"
+                (onChange)="get_all_student_chat()"
+              >
+              </p-dropdown>
+            </div>
+
+            <div class="col-5">
+              <button type="button" class="btn btn-danger">End All Chat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- student list -->
+      <div class="card">
         <div class="card-body">
           <div class="email-list">
             <ul class="list-unstyled">
-              <li class="active">
-                <a class="javascript:void(0)">
-                  <div class="email-list-item">
-                    <div class="email-author">
-                      <img
-                        src="../../assets/images/avatars/profile-image-1.png"
-                        alt=""
-                      />
-                      <span class="author-name">Lisa Lunsford</span>
-                      <span class="email-date">5</span>
+              <ng-container *ngIf="active_student_list; else nodata">
+                <li
+                  *ngFor="let student of active_student_list"
+                  (click)="get_selected_student_chat(student)"
+                  style="cursor: pointer"
+                >
+                  <a class="javascript:void(0)">
+                    <div class="email-list-item">
+                      <div class="email-author">
+                        <img
+                          src="../../assets/images/avatars/profile-image-1.png"
+                          alt=""
+                        />
+                        <span class="author-name">
+                          {{ student.student_name }}
+                        </span>
+                        <span class="email-date">
+                          {{ student.admin_unread_count }}
+                        </span>
+                      </div>
                     </div>
-                    <div class="email-info">
-                      <span class="email-subject">
-                        sit amet semper ante efficitur et
-                      </span>
-                      <span class="email-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </li>
+                  </a>
+                </li>
+              </ng-container>
+
               <li>
-                <a href="#">
-                  <div class="email-list-item">
-                    <div class="email-author">
-                      <img
-                        src="../../assets/images/avatars/profile-image-3.jpg"
-                        alt=""
-                      />
-                      <span class="author-name">John Doe</span>
-                      <span class="email-date">5</span>
-                    </div>
-                    <div class="email-info">
-                      <span class="email-subject">
-                        est dolor fringilla mauris, nec tristique magna
-                      </span>
-                      <span class="email-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <div class="email-list-item">
-                    <div class="email-author">
-                      <img
-                        src="../../assets/images/avatars/profile-image.png"
-                        alt=""
-                      />
-                      <span class="author-name">Lisa Lunsford</span>
-                      <span class="email-date">5</span>
-                    </div>
-                    <div class="email-info">
-                      <span class="email-subject">
-                        sit amet semper ante efficitur et
-                      </span>
-                      <span class="email-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <div class="email-list-item">
-                    <div class="email-author">
-                      <img
-                        src="../../assets/images/avatars/profile-image-2.png"
-                        alt=""
-                      />
-                      <span class="author-name">John Doe</span>
-                      <span class="email-date">5</span>
-                    </div>
-                    <div class="email-info">
-                      <span class="email-subject">
-                        est dolor fringilla mauris, nec tristique magna
-                      </span>
-                      <span class="email-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <div class="email-list-item">
-                    <div class="email-author">
-                      <img
-                        src="../../assets/images/avatars/profile-image-1.png"
-                        alt=""
-                      />
-                      <span class="author-name">Lisa Lunsford</span>
-                      <span class="email-date">5</span>
-                    </div>
-                    <div class="email-info">
-                      <span class="email-subject">
-                        sit amet semper ante efficitur et
-                      </span>
-                      <span class="email-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <div class="email-list-item">
-                    <div class="email-author">
-                      <img
-                        src="../../assets/images/avatars/profile-image-3.jpg"
-                        alt=""
-                      />
-                      <span class="author-name">John Doe</span>
-                      <span class="email-date">5</span>
-                    </div>
-                    <div class="email-info">
-                      <span class="email-subject">
-                        est dolor fringilla mauris, nec tristique magna
-                      </span>
-                      <span class="email-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                      </span>
-                    </div>
-                  </div>
-                </a>
+                <ng-template #nodata>
+                  <h4 class="h4 warnning">
+                    Please Select A batch from the dropdown above
+                  </h4>
+                </ng-template>
               </li>
             </ul>
           </div>
@@ -195,20 +70,28 @@
     </div>
 
     <!-- chat container -->
-    <div class="col-sm-12 col-md-8">
+    <div class="col-sm-12 col-md-8" *ngIf="selected_batch">
       <div class="card">
         <div class="card-body">
           <div
             class="chat-header d-flex justify-content-between align-items-center"
           >
-            <h3 class="h3">Mohmadsabban@gmail.com</h3>
-            <div class="control d-flex">
+            <h3 class="h3" *ngIf="selected_student">
+              {{ selected_student.student_name }}
+            </h3>
+            <div
+              class="control d-flex"
+              *ngIf="selected_student && selected_student.sme_id == admin_id"
+            >
               <div class="batch_list">
                 <p-dropdown
-                  [options]="groupedCities"
+                  #transfer_admin_id
+                  [options]="transfer_admin"
                   placeholder="Transfer Chat"
-                  [group]="true"
-                  [style]="{ minWidth: '100%' }"
+                  (onChange)="transfer_chat(transfer_admin_id)"
+                  optionLabel="name"
+                  optionValue="doc_id"
+                  [style]="{ minWidth: '100%', 'border-radius': '10px' }"
                 >
                   <ng-template let-group pTemplate="group">
                     <div class="p-d-flex p-ai-center">
@@ -218,7 +101,13 @@
                 </p-dropdown>
               </div>
               <div class="control">
-                <button type="button" class="btn btn-danger">End Chat</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="end_chat()"
+                >
+                  End Chat
+                </button>
               </div>
             </div>
           </div>
@@ -232,157 +121,46 @@
                 type="button"
                 icon="pi pi-cloud-download"
                 class="p-button-rounded p-button-outlined m-auto"
+                [disabled]="!selected_student_chat_message"
+                (click)="load_more()"
               ></button>
             </div>
 
             <div class="post-comments d-flex flex-column">
-              <div class="post-comm">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
+              <ng-container *ngIf="selected_student_chat_message">
+                <div
+                  class="post-comm"
+                  *ngFor="let message of selected_student_chat_message"
+                  [ngClass]="
+                    message.sender_type === 'admin'
+                      ? 'align-self-end'
+                      : 'align-self-start'
+                  "
+                >
+                  <img
+                    src="../../assets/images/avatars/profile-image-2.png"
+                    class="comment-img"
+                    alt=""
+                  />
+                  <div class="comment-container">
+                    <span class="comment-author">
+                      {{ message.sender_name }}
+                      <small class="comment-date">5min</small>
+                    </span>
+                  </div>
+                  <span class="comment-text">
+                    {{ message.message }}
                   </span>
                 </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac.
-                </span>
-              </div>
-              <div class="post-comm align-self-end">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
-                  </span>
-                </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac.
-                </span>
-              </div>
-              <div class="post-comm">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
-                  </span>
-                </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac.
-                </span>
-              </div>
-              <div class="post-comm align-self-end">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
-                  </span>
-                </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac.
-                </span>
-              </div>
-              <div class="post-comm">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
-                  </span>
-                </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Cumque itaque ut nesciunt qui aliquid consequuntur illum vel
-                  eius voluptatum impedit!
-                </span>
-              </div>
-              <div class="post-comm align-self-end">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
-                  </span>
-                </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Cumque itaque ut nesciunt qui aliquid consequuntur illum vel
-                  eius voluptatum impedit!
-                </span>
-              </div>
-              <div class="post-comm">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
-                  </span>
-                </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac.
-                </span>
-              </div>
-              <div class="post-comm align-self-end">
-                <img
-                  src="../../assets/images/avatars/profile-image-2.png"
-                  class="comment-img"
-                  alt=""
-                />
-                <div class="comment-container">
-                  <span class="comment-author">
-                    Sonny Rosas
-                    <small class="comment-date">5min</small>
-                  </span>
-                </div>
-                <span class="comment-text">
-                  Mauris ultrices convallis massa, nec facilisis enim interdum
-                  ac. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Cumque itaque ut nesciunt qui aliquid consequuntur illum vel
-                  eius voluptatum impedit!
-                </span>
-              </div>
+              </ng-container>
             </div>
           </div>
 
           <div class="chat-footer">
-            <div class="row p-0 align-items-center">
+            <div
+              class="row p-0 align-items-center"
+              *ngIf="has_sme; else startchat"
+            >
               <div class="col-10">
                 <textarea
                   name="text"
@@ -392,6 +170,7 @@
                   rows="1"
                   class="form-control"
                   (input)="textarea_auto_increment($event)"
+                  #textarea
                 ></textarea>
               </div>
               <div class="chat-control col-2 d-flex align-items-center pl-0">
@@ -400,11 +179,29 @@
                   <i class="fas fa-paperclip"></i>
                 </div>
                 <div class="send">
-                  <button type="button">
+                  <button
+                    type="button"
+                    [disabled]="textarea.value == ''"
+                    (click)="send_message(textarea)"
+                  >
                     <i class="far fa-paper-plane"></i>
                   </button>
                 </div>
               </div>
+            </div>
+
+            <div class="row p-0">
+              <ng-template #startchat>
+                <div class="col-12">
+                  <button
+                    class="btn btn-success w-100"
+                    [disabled]="!selected_student"
+                    (click)="assign_chat_to_admin()"
+                  >
+                    Start Chat
+                  </button>
+                </div>
+              </ng-template>
             </div>
           </div>
         </div>

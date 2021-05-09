@@ -35,4 +35,14 @@ export class FormativeData {
 
     return response;
   }
+
+  static formative_snapshot_data(res) {
+    const format_data = res.map((e) => {
+      const data = e.payload.doc.data();
+      data['doc_id'] = e.payload.doc.id;
+      return data;
+    });
+
+    return format_data;
+  }
 }

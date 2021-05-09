@@ -5,7 +5,7 @@
       <h3 *ngIf="bulk" class="">Bulk Student Registration</h3>
 
       <div class="d-flex align-items-center">
-        <div
+        <!-- <div
           class="form-check form-switch d-flex align-items-center"
           style="padding-right: 1rem; cursor: pointer"
         >
@@ -22,7 +22,7 @@
             for="flexSwitchCheckDefault"
             >Bulk Registration</label
           >
-        </div>
+        </div> -->
         <button class="btn btn-primary">
           <a [routerLink]="['../students-details/student']">
             <i class="fas fa-arrow-left"></i> Back
@@ -63,7 +63,7 @@
           (ngSubmit)="create_student_single()"
         >
           <div class="row">
-            <div class="col-12 col-md-6">
+            <!-- <div class="col-12 col-md-4">
               <span class="p-float-label w-100">
                 <input
                   type="text"
@@ -74,8 +74,8 @@
                 />
                 <label for="inputtext">Student Name</label>
               </span>
-            </div>
-            <div class="col-12 col-md-6">
+            </div> -->
+            <div class="col-12 col-md-12">
               <span class="p-float-label w-100">
                 <input
                   type="text"
@@ -87,6 +87,20 @@
                 <label for="inputtext">Student Email</label>
               </span>
             </div>
+
+            <!-- <div class="col-12 col-md-4">
+              <span class="p-float-label w-100">
+                <input
+                  type="text"
+                  id="inputtext"
+                  class="form-control"
+                  pInputText
+                  formControlName="data_of_joining"
+                />
+                <label for="inputtext">Student Email</label>
+              </span>
+            </div> -->
+
             <div class="col-12 col-md-6 mt-3">
               <button
                 type="submit"
