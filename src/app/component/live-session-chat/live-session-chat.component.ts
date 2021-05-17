@@ -6,6 +6,7 @@ import { FormativeData } from 'src/app/utilities/formative_data';
 import { filter, map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
+import { AttachmentService } from 'src/app/service/attachment.service';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -25,11 +26,14 @@ export class LiveSessionChatComponent implements OnInit {
   admin_id: string = localStorage.getItem('uid');
   @ViewChild('textarea') textarea: ElementRef;
   transfer_admin: any[];
+  files: any[] = [];
+  message_sending: boolean = false;
 
   constructor(
     private chat_service: ChatService,
     private batch_service: BatchService,
-    private user_service: UserService
+    private user_service: UserService,
+    private attachment_service: AttachmentService
   ) {}
 
   textarea_auto_increment(event) {
@@ -134,8 +138,16 @@ export class LiveSessionChatComponent implements OnInit {
     this.spinner = false;
   }
 
+  // attachment
+  attchment(event) {
+    for (let i = 0; i < event.target.files.length; i++) {
+      this.files.push(event.target.files[i]);
+    }
+  }
+
   // send message
   async send_message(message) {
+    this.message_sending = true;
     const message_obj = {
       message: message.value,
       sme_id: null,
@@ -146,6 +158,14 @@ export class LiveSessionChatComponent implements OnInit {
     this.textarea.nativeElement.value = '';
 
     try {
+      if (this.files.length > 0) {
+        const files: any = await this.attachment_service.upload_files(
+          this.files
+        );
+        message_obj['attachment'] = FormativeData.concat_url_with_files(
+          files.files_paths
+        );
+      }
       await this.chat_service.create_chat_message(
         message_obj,
         this.selected_student.doc_id
@@ -154,10 +174,11 @@ export class LiveSessionChatComponent implements OnInit {
         this.selected_student.doc_id,
         this.selected_student.student_unread_count + 1
       );
+      this.message_sending = false;
+      this.scroll_chat_container();
     } catch (error) {
       console.log(error);
     }
-    this.scroll_chat_container();
   }
 
   end_chat() {
@@ -208,7 +229,6 @@ export class LiveSessionChatComponent implements OnInit {
     this.spinner = true;
     this.user_service.get_all_admin_account().subscribe((res) => {
       this.transfer_admin = FormativeData.format_firebase_get_request_data(res);
-      console.log(this.transfer_admin);
       this.spinner = false;
     });
   }

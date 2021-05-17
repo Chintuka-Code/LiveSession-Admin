@@ -74,7 +74,12 @@
       <div class="card">
         <div class="card-body">
           <div
-            class="chat-header d-flex justify-content-between align-items-center"
+            class="
+              chat-header
+              d-flex
+              justify-content-between
+              align-items-center
+            "
           >
             <h3 class="h3" *ngIf="selected_student">
               {{ selected_student.student_name }}
@@ -142,15 +147,35 @@
                     class="comment-img"
                     alt=""
                   />
-                  <div class="comment-container">
+                  <div class="comment-container pb-2">
                     <span class="comment-author">
                       {{ message.sender_name }}
                       <small class="comment-date">5min</small>
                     </span>
                   </div>
+                  <p-divider></p-divider>
                   <span class="comment-text">
                     {{ message.message }}
                   </span>
+
+                  <div
+                    class="attachment"
+                    *ngIf="message.attachment?.length > 0"
+                  >
+                    <p-divider></p-divider>
+                    <small>Attachments</small>
+                    <ul
+                      class="d-flex flex-wrap"
+                      style="list-style: none; margin: 0; padding: 0"
+                    >
+                      <li
+                        class="mr-2"
+                        *ngFor="let file of message.attachment; index as i"
+                      >
+                        <a [href]="file" target="_blank">file{{ i }}</a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </ng-container>
             </div>
@@ -175,17 +200,30 @@
               </div>
               <div class="chat-control col-2 d-flex align-items-center pl-0">
                 <div class="attachment">
-                  <input type="file" multiple />
+                  <input type="file" multiple (change)="attchment($event)" />
                   <i class="fas fa-paperclip"></i>
                 </div>
                 <div class="send">
-                  <button
-                    type="button"
-                    [disabled]="textarea.value == ''"
-                    (click)="send_message(textarea)"
-                  >
-                    <i class="far fa-paper-plane"></i>
-                  </button>
+                  <ng-container *ngIf="!message_sending; else wait">
+                    <button
+                      type="button"
+                      [disabled]="textarea.value == '' && files.length == 0"
+                      (click)="send_message(textarea)"
+                    >
+                      <i class="far fa-paper-plane"></i>
+                    </button>
+                  </ng-container>
+
+                  <ng-template #wait>
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-spin pi-spinner"
+                      class="p-button-rounded"
+                      disabled="true"
+                    ></button>
+                  </ng-template>
                 </div>
               </div>
             </div>

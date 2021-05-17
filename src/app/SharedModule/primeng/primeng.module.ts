@@ -24,6 +24,7 @@ import { DialogModule } from 'primeng/dialog';
 import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
+import { DividerModule } from 'primeng/divider';
 
 const primeng = [
   AutoCompleteModule,
@@ -50,6 +51,7 @@ const primeng = [
   AccordionModule,
   BadgeModule,
   TooltipModule,
+  DividerModule,
 ];
 
 @NgModule({

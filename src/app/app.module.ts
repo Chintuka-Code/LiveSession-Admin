@@ -8,6 +8,7 @@ import { PrimengModule } from './SharedModule/primeng/primeng.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
+import { SharedUtilitiesModule } from './SharedModule/shared-utilities/shared-utilities.module';
 @NgModule({
   declarations: [AppComponent, PagenotfoundComponent],
   imports: [
@@ -18,6 +19,7 @@ import { environment } from '../environments/environment';
     PrimengModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    SharedUtilitiesModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

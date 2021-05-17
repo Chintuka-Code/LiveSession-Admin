@@ -4,6 +4,7 @@ import { SpinnerComponent } from '../../component/spinner/spinner.component';
 import { PrimengModule } from '../primeng/primeng.module';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [SpinnerComponent],
   imports: [
@@ -12,12 +13,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgxCsvParserModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
   ],
   exports: [
     SpinnerComponent,
     NgxCsvParserModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
   ],
 })
 export class SharedUtilitiesModule {}

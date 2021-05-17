@@ -12,4 +12,6 @@ export const environment = {
     messagingSenderId: '414853175482',
     appId: '1:414853175482:web:3efb3f6a1feb2d6f5e4a83',
   },
+  ATTACHMENT_URL: 'https://files.datatrained.com/upload-files',
+  FILES_URL: 'https://files.datatrained.com',
 };

@@ -1,3 +1,5 @@
+import { environment } from '../../environments/environment';
+
 export class FormativeData {
   // formalized data which is accepted by tree
   static format(data) {
@@ -44,5 +46,9 @@ export class FormativeData {
     });
 
     return format_data;
+  }
+
+  static concat_url_with_files(data: string[]) {
+    return data.map((path) => environment.FILES_URL + '/' + path);
   }
 }
