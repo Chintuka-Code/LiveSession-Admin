@@ -150,7 +150,13 @@
                   <div class="comment-container pb-2">
                     <span class="comment-author">
                       {{ message.sender_name }}
-                      <small class="comment-date">5min</small>
+                      <small class="comment-date">
+                        {{
+                          message.created_at.toDate()
+                            | amFromUnix
+                            | amDateFormat: "hh:mmA"
+                        }}</small
+                      >
                     </span>
                   </div>
 

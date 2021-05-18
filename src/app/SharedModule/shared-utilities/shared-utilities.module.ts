@@ -5,6 +5,8 @@ import { PrimengModule } from '../primeng/primeng.module';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MomentModule } from 'ngx-moment';
+
 @NgModule({
   declarations: [SpinnerComponent],
   imports: [
@@ -14,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    MomentModule
   ],
   exports: [
     SpinnerComponent,
@@ -21,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    MomentModule
   ],
 })
 export class SharedUtilitiesModule {}
