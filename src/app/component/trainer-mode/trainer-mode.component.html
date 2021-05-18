@@ -7,7 +7,11 @@
         <div class="card-body">
           <div class="email-list">
             <ul class="list-unstyled">
-              <li style="cursor: pointer">
+              <li
+                style="cursor: pointer"
+                *ngFor="let item of batch"
+                (click)="get_selected_batch_all_chat(item)"
+              >
                 <a class="javascript:void(0)">
                   <div class="email-list-item">
                     <div class="email-author">
@@ -15,8 +19,10 @@
                         src="../../assets/images/avatars/profile-image-1.png"
                         alt=""
                       />
-                      <span class="author-name"> Batch Name </span>
-                      <span class="email-date"> 2 </span>
+                      <span class="author-name"> {{ item.batch_name }} </span>
+                      <span class="email-date">
+                        {{ item.active ? 1 : 0 }}
+                      </span>
                     </div>
                   </div>
                 </a>
@@ -28,7 +34,7 @@
     </div>
 
     <!-- chat container -->
-    <div class="col-sm-12 col-md-8">
+    <div class="col-sm-12 col-md-8" *ngIf="selected_batch">
       <div class="card">
         <div class="card-body">
           <ng-container>
@@ -41,7 +47,7 @@
                 align-items-center
               "
             >
-              <h3 class="h3">Batch Name</h3>
+              <h3 class="h3">{{ selected_batch.batch_name }}</h3>
             </div>
 
             <div class="chat-body px-2" id="chat-body">

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { environment } from '../../environments/environment';
 
 export class FormativeData {
@@ -50,5 +51,9 @@ export class FormativeData {
 
   static concat_url_with_files(data: string[]) {
     return data.map((path) => environment.FILES_URL + '/' + path);
+  }
+
+  static formative_date(date, format) {
+    return new DatePipe('en-US').transform(date, format);
   }
 }

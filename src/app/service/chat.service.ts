@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +75,23 @@ export class ChatService {
       .collection('chat')
       .doc(data.doc_id)
       .update({ sme_id: null, admin_unread_count: 0, student_unread_count: 0 });
+  }
+
+  // for trainer mode
+  get_selected_batch_chat(batch) {
+    return this.firebase_store
+      .collection('chat', (ref) => ref.where('batch_id', '==', batch.batch_id))
+      .get();
+  }
+
+  get_chat_message_trainer_mode(chat_id) {
+    console.log(chat_id);
+    return this.firebase_store
+      .collection('chat')
+      .doc(chat_id)
+      .collection('chat_message', (ref) =>
+        ref.orderBy('created_at', 'desc').limit(5)
+      )
+      .valueChanges();
   }
 }
