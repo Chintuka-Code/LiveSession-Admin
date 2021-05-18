@@ -175,7 +175,9 @@ export class LiveSessionChatComponent implements OnInit {
         this.selected_student.student_unread_count + 1
       );
       this.message_sending = false;
-      this.scroll_chat_container();
+      setTimeout(() => {
+        this.scroll_chat_container();
+      }, 100);
     } catch (error) {
       console.log(error);
     }

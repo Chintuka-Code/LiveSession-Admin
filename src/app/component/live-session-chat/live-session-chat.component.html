@@ -153,10 +153,13 @@
                       <small class="comment-date">5min</small>
                     </span>
                   </div>
-                  <p-divider></p-divider>
-                  <span class="comment-text">
-                    {{ message.message }}
-                  </span>
+
+                  <ng-container *ngIf="message.message">
+                    <p-divider></p-divider>
+                    <span class="comment-text">
+                      {{ message.message }}
+                    </span>
+                  </ng-container>
 
                   <div
                     class="attachment"
@@ -172,7 +175,14 @@
                         class="mr-2"
                         *ngFor="let file of message.attachment; index as i"
                       >
-                        <a [href]="file" target="_blank">file{{ i }}</a>
+                        <a
+                          [href]="file"
+                          target="_blank"
+                          [ngClass]="{
+                            'text-white': message.sender_type === 'student'
+                          }"
+                          >file{{ i }}</a
+                        >
                       </li>
                     </ul>
                   </div>
