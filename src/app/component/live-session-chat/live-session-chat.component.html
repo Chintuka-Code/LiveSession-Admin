@@ -20,7 +20,14 @@
             </div>
 
             <div class="col-5">
-              <button type="button" class="btn btn-danger">End All Chat</button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                [disabled]="!end_all_chat_button"
+                (click)="end_all_chat()"
+              >
+                End All Chat
+              </button>
             </div>
           </div>
         </div>
@@ -31,7 +38,7 @@
         <div class="card-body">
           <div class="email-list">
             <ul class="list-unstyled">
-              <ng-container *ngIf="active_student_list; else nodata">
+              <ng-container *ngIf="active_student_list.length > 0; else nodata">
                 <li
                   *ngFor="let student of active_student_list"
                   (click)="get_selected_student_chat(student)"
@@ -73,191 +80,201 @@
     <div class="col-sm-12 col-md-8" *ngIf="selected_batch">
       <div class="card">
         <div class="card-body">
-          <div
-            class="
-              chat-header
-              d-flex
-              justify-content-between
-              align-items-center
-            "
-          >
-            <h3 class="h3" *ngIf="selected_student">
-              {{ selected_student.student_name }}
-            </h3>
+          <ng-container *ngIf="selected_student; else warning">
             <div
-              class="control d-flex"
-              *ngIf="selected_student && selected_student.sme_id == admin_id"
+              class="
+                chat-header
+                d-flex
+                justify-content-between
+                align-items-center
+              "
             >
-              <div class="batch_list">
-                <p-dropdown
-                  #transfer_admin_id
-                  [options]="transfer_admin"
-                  placeholder="Transfer Chat"
-                  (onChange)="transfer_chat(transfer_admin_id)"
-                  optionLabel="name"
-                  optionValue="doc_id"
-                  [style]="{ minWidth: '100%', 'border-radius': '10px' }"
-                >
-                  <ng-template let-group pTemplate="group">
-                    <div class="p-d-flex p-ai-center">
-                      <span>{{ group.label }}</span>
-                    </div>
-                  </ng-template>
-                </p-dropdown>
-              </div>
-              <div class="control">
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  (click)="end_chat()"
-                >
-                  End Chat
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="chat-body px-2" id="chat-body">
-            <div class="d-flex">
-              <button
-                pButton
-                pRipple
-                pTooltip="Load more"
-                type="button"
-                icon="pi pi-cloud-download"
-                class="p-button-rounded p-button-outlined m-auto"
-                [disabled]="!selected_student_chat_message"
-                (click)="load_more()"
-              ></button>
-            </div>
-
-            <div class="post-comments d-flex flex-column">
-              <ng-container *ngIf="selected_student_chat_message">
-                <div
-                  class="post-comm"
-                  *ngFor="let message of selected_student_chat_message"
-                  [ngClass]="
-                    message.sender_type === 'admin'
-                      ? 'align-self-end'
-                      : 'align-self-start'
-                  "
-                >
-                  <img
-                    src="../../assets/images/avatars/profile-image-2.png"
-                    class="comment-img"
-                    alt=""
-                  />
-                  <div class="comment-container pb-2">
-                    <span class="comment-author">
-                      {{ message.sender_name }}
-                      <small class="comment-date">
-                        {{
-                          message.created_at.toDate()
-                            | amFromUnix
-                            | amDateFormat: "hh:mmA"
-                        }}</small
-                      >
-                    </span>
-                  </div>
-
-                  <ng-container *ngIf="message.message">
-                    <p-divider></p-divider>
-                    <span class="comment-text">
-                      {{ message.message }}
-                    </span>
-                  </ng-container>
-
-                  <div
-                    class="attachment"
-                    *ngIf="message.attachment?.length > 0"
+              <h3 class="h3" *ngIf="selected_student">
+                {{ selected_student.student_name }}
+              </h3>
+              <div
+                class="control d-flex"
+                *ngIf="selected_student && selected_student.sme_id == admin_id"
+              >
+                <div class="batch_list">
+                  <p-dropdown
+                    #transfer_admin_id
+                    [options]="transfer_admin"
+                    placeholder="Transfer Chat"
+                    (onChange)="transfer_chat(transfer_admin_id)"
+                    optionLabel="name"
+                    optionValue="doc_id"
+                    [style]="{ minWidth: '100%', 'border-radius': '10px' }"
                   >
-                    <p-divider></p-divider>
-                    <small>Attachments</small>
-                    <ul
-                      class="d-flex flex-wrap"
-                      style="list-style: none; margin: 0; padding: 0"
-                    >
-                      <li
-                        class="mr-2"
-                        *ngFor="let file of message.attachment; index as i"
-                      >
-                        <a
-                          [href]="file"
-                          target="_blank"
-                          [ngClass]="{
-                            'text-white': message.sender_type === 'student'
-                          }"
-                          >file{{ i }}</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
+                    <ng-template let-group pTemplate="group">
+                      <div class="p-d-flex p-ai-center">
+                        <span>{{ group.label }}</span>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
                 </div>
-              </ng-container>
-            </div>
-          </div>
-
-          <div class="chat-footer">
-            <div
-              class="row p-0 align-items-center"
-              *ngIf="has_sme; else startchat"
-            >
-              <div class="col-10">
-                <textarea
-                  name="text"
-                  placeholder="Write Something"
-                  id=""
-                  cols="30"
-                  rows="1"
-                  class="form-control"
-                  (input)="textarea_auto_increment($event)"
-                  #textarea
-                ></textarea>
-              </div>
-              <div class="chat-control col-2 d-flex align-items-center pl-0">
-                <div class="attachment">
-                  <input type="file" multiple (change)="attchment($event)" />
-                  <i class="fas fa-paperclip"></i>
-                </div>
-                <div class="send">
-                  <ng-container *ngIf="!message_sending; else wait">
-                    <button
-                      type="button"
-                      [disabled]="textarea.value == '' && files.length == 0"
-                      (click)="send_message(textarea)"
-                    >
-                      <i class="far fa-paper-plane"></i>
-                    </button>
-                  </ng-container>
-
-                  <ng-template #wait>
-                    <button
-                      pButton
-                      pRipple
-                      type="button"
-                      icon="pi pi-spin pi-spinner"
-                      class="p-button-rounded"
-                      disabled="true"
-                    ></button>
-                  </ng-template>
-                </div>
-              </div>
-            </div>
-
-            <div class="row p-0">
-              <ng-template #startchat>
-                <div class="col-12">
+                <div class="control">
                   <button
-                    class="btn btn-success w-100"
-                    [disabled]="!selected_student"
-                    (click)="assign_chat_to_admin()"
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="end_chat()"
                   >
-                    Start Chat
+                    End Chat
                   </button>
                 </div>
-              </ng-template>
+              </div>
             </div>
-          </div>
+
+            <div class="chat-body px-2" id="chat-body">
+              <div class="d-flex">
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Load more"
+                  type="button"
+                  icon="pi pi-cloud-download"
+                  class="p-button-rounded p-button-outlined m-auto"
+                  [disabled]="!selected_student_chat_message"
+                  (click)="load_more()"
+                ></button>
+              </div>
+
+              <div class="post-comments d-flex flex-column">
+                <ng-container *ngIf="selected_student_chat_message">
+                  <div
+                    class="post-comm"
+                    *ngFor="let message of selected_student_chat_message"
+                    [ngClass]="
+                      message.sender_type === 'admin'
+                        ? 'align-self-end'
+                        : 'align-self-start'
+                    "
+                  >
+                    <img
+                      src="../../assets/images/avatars/profile-image-2.png"
+                      class="comment-img"
+                      alt=""
+                    />
+                    <div class="comment-container pb-2">
+                      <span class="comment-author">
+                        {{ message.sender_name }}
+                        <small class="comment-date" *ngIf="message.created_at">
+                          {{
+                            message.created_at.seconds
+                              | amFromUnix
+                              | amDateFormat: "hh:mmA"
+                          }}</small
+                        >
+                      </span>
+                    </div>
+
+                    <ng-container *ngIf="message.message">
+                      <p-divider></p-divider>
+                      <span class="comment-text">
+                        {{ message.message }}
+                      </span>
+                    </ng-container>
+
+                    <div
+                      class="attachment"
+                      *ngIf="message.attachment?.length > 0"
+                    >
+                      <p-divider></p-divider>
+                      <small>Attachments</small>
+                      <ul
+                        class="d-flex flex-wrap"
+                        style="list-style: none; margin: 0; padding: 0"
+                      >
+                        <li
+                          class="mr-2"
+                          *ngFor="let file of message.attachment; index as i"
+                        >
+                          <a
+                            [href]="file"
+                            target="_blank"
+                            [ngClass]="{
+                              'text-white': message.sender_type === 'student'
+                            }"
+                            >file{{ i }}</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="chat-footer">
+              <div
+                class="row p-0 align-items-center"
+                *ngIf="has_sme; else startchat"
+              >
+                <div class="col-10">
+                  <textarea
+                    name="text"
+                    placeholder="Write Something"
+                    id=""
+                    cols="30"
+                    rows="1"
+                    class="form-control"
+                    (input)="textarea_auto_increment($event)"
+                    #textarea
+                  ></textarea>
+                </div>
+                <div class="chat-control col-2 d-flex align-items-center pl-0">
+                  <div class="attachment position-relative">
+                    <input type="file" multiple (change)="attchment($event)" />
+                    <ng-container>
+                      <i class="fas fa-paperclip"></i>
+                    </ng-container>
+                    <ng-container *ngIf="files.length > 0">
+                      <i class="files-count"> {{ files.length }}</i>
+                    </ng-container>
+                  </div>
+                  <div class="send z-1000">
+                    <ng-container *ngIf="!message_sending; else wait">
+                      <button
+                        type="button"
+                        [disabled]="textarea.value == '' && files.length == 0"
+                        (click)="send_message(textarea)"
+                      >
+                        <i class="far fa-paper-plane"></i>
+                      </button>
+                    </ng-container>
+
+                    <ng-template #wait>
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-spin pi-spinner"
+                        class="p-button-rounded"
+                        disabled="true"
+                      ></button>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row p-0">
+                <ng-template #startchat>
+                  <div class="col-12">
+                    <button
+                      class="btn btn-success w-100"
+                      [disabled]="!selected_student"
+                      (click)="assign_chat_to_admin()"
+                    >
+                      Start Chat
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #warning>
+            <h4 class="h4 warnning">Please Select A student to start Chat</h4>
+          </ng-template>
         </div>
       </div>
     </div>

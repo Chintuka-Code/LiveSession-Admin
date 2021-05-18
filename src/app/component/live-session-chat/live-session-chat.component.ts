@@ -19,7 +19,7 @@ export class LiveSessionChatComponent implements OnInit {
   user: any;
   batch: any;
   selected_batch: any;
-  active_student_list: any;
+  active_student_list: any[] = [];
   selected_student: any;
   selected_student_chat_message: any;
   has_sme: boolean = false;
@@ -28,6 +28,7 @@ export class LiveSessionChatComponent implements OnInit {
   transfer_admin: any[];
   files: any[] = [];
   message_sending: boolean = false;
+  end_all_chat_button: boolean;
 
   constructor(
     private chat_service: ChatService,
@@ -69,6 +70,7 @@ export class LiveSessionChatComponent implements OnInit {
       });
   }
 
+  // after batch select get all the student list
   get_all_student_chat() {
     this.spinner = true;
     this.selected_student = '';
@@ -82,7 +84,6 @@ export class LiveSessionChatComponent implements OnInit {
       .subscribe(
         (res) => {
           const data = FormativeData.formative_snapshot_data(res);
-
           // after update sme id , update selected student
           if (this.selected_student) {
             const sel = data.filter(
@@ -93,13 +94,18 @@ export class LiveSessionChatComponent implements OnInit {
             );
             this.selected_student = sel[0];
           }
-
+          // snapshot trigger in this block that why again check the selected student sme id
           this.has_sme = this.selected_student.sme_id ? true : false;
 
           // filter data
           this.active_student_list = data.filter(
             (student) =>
               !student.sme_id || student.sme_id === localStorage.getItem('uid')
+          );
+          // console.log(this.active_student_list);
+          // enable/disable end all chat button
+          this.end_all_chat_button = this.active_student_list.some(
+            (student) => student.sme_id === localStorage.getItem('uid')
           );
           this.scroll_chat_container();
           this.spinner = false;
@@ -115,6 +121,7 @@ export class LiveSessionChatComponent implements OnInit {
       );
   }
 
+  // after student selected get their chat
   get_selected_student_chat(student) {
     this.spinner = true;
     this.selected_student = student;
@@ -140,6 +147,7 @@ export class LiveSessionChatComponent implements OnInit {
 
   // attachment
   attchment(event) {
+    this.files = [];
     for (let i = 0; i < event.target.files.length; i++) {
       this.files.push(event.target.files[i]);
     }
@@ -174,6 +182,7 @@ export class LiveSessionChatComponent implements OnInit {
         this.selected_student.doc_id,
         this.selected_student.student_unread_count + 1
       );
+      this.files = [];
       this.message_sending = false;
       setTimeout(() => {
         this.scroll_chat_container();
@@ -242,6 +251,38 @@ export class LiveSessionChatComponent implements OnInit {
         this.selected_student_chat_message = res.reverse();
         this.spinner = false;
       });
+  }
+
+  end_all_chat() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to end all chat',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.spinner = true;
+        this.selected_student_chat_message = undefined;
+        console.log(this.active_student_list);
+
+        await Promise.all(
+          this.active_student_list.map(async (student) => {
+            if (
+              student.sme_id === localStorage.getItem('uid') &&
+              student.batch_id === this.selected_batch.batch_id
+            ) {
+              await this.chat_service.end_all_chat(student);
+            }
+          })
+        );
+
+        this.selected_student = '';
+        this.spinner = false;
+      }
+    });
   }
 
   ngOnInit(): void {

@@ -36,7 +36,7 @@
       height: 30px;
 
       background-color: #d6d4d4;
-      overflow: hidden;
+
       margin-right: 0.8rem;
       cursor: pointer;
       border-radius: 50%;
@@ -149,4 +149,24 @@
 
 .mr-2 {
   margin-right: 0.5rem;
+}
+
+.files-count {
+  position: absolute !important;
+  left: 100% !important;
+  top: 5px !important;
+  z-index: 1000;
+  color: #fff;
+  background: red;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+}
+
+.z-1000 {
+  z-index: 1000;
 }

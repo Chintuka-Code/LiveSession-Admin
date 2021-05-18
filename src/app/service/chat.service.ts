@@ -68,4 +68,11 @@ export class ChatService {
       .doc(chat_id)
       .update({ sme_id: null, admin_unread_count: 0, student_unread_count: 0 });
   }
+
+  end_all_chat(data) {
+    return this.firebase_store
+      .collection('chat')
+      .doc(data.doc_id)
+      .update({ sme_id: null, admin_unread_count: 0, student_unread_count: 0 });
+  }
 }
