@@ -142,6 +142,13 @@ const routes: Routes = [
             (m) => m.LiveSessionChatModule
           ),
       },
+      {
+        path: 'trainer-mode',
+        loadChildren: () =>
+          import('../trainer-mode/trainer-mode.module').then(
+            (m) => m.TrainerModeModule
+          ),
+      },
     ],
   },
 ];

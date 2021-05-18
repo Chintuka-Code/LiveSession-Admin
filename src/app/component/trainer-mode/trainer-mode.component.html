@@ -1,0 +1,199 @@
+<section *ngIf="!spinner; else showspinner">
+  <!-- chat module -->
+  <div class="row">
+    <div class="col-sm-12 col-md-4 m-b-md">
+      <!-- student list -->
+      <div class="card">
+        <div class="card-body">
+          <div class="email-list">
+            <ul class="list-unstyled">
+              <li style="cursor: pointer">
+                <a class="javascript:void(0)">
+                  <div class="email-list-item">
+                    <div class="email-author">
+                      <img
+                        src="../../assets/images/avatars/profile-image-1.png"
+                        alt=""
+                      />
+                      <span class="author-name"> Batch Name </span>
+                      <span class="email-date"> 2 </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- chat container -->
+    <div class="col-sm-12 col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <ng-container>
+            <!-- batch name -->
+            <div
+              class="
+                chat-header
+                d-flex
+                justify-content-between
+                align-items-center
+              "
+            >
+              <h3 class="h3">Batch Name</h3>
+            </div>
+
+            <div class="chat-body px-2" id="chat-body">
+              <!-- load more button -->
+              <div class="d-flex">
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Load more"
+                  type="button"
+                  icon="pi pi-cloud-download"
+                  class="p-button-rounded p-button-outlined m-auto"
+                ></button>
+              </div>
+
+              <!-- message list -->
+              <div class="post-comments d-flex flex-column">
+                <div class="post-comm">
+                  <img
+                    src="../../assets/images/avatars/profile-image-2.png"
+                    class="comment-img"
+                    alt=""
+                  />
+                  <div class="comment-container pb-2">
+                    <span class="comment-author">
+                      asd
+                      <small class="comment-date"> dasd</small>
+                    </span>
+                  </div>
+
+                  <ng-container>
+                    <p-divider></p-divider>
+                    <span class="comment-text"> asdas </span>
+                  </ng-container>
+
+                  <div class="attachment">
+                    <p-divider></p-divider>
+                    <small>Attachments</small>
+                    <ul
+                      class="d-flex flex-wrap"
+                      style="list-style: none; margin: 0; padding: 0"
+                    >
+                      <li class="mr-2">
+                        <a href="" target="_blank">dasd</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="post-comm">
+                  <img
+                    src="../../assets/images/avatars/profile-image-2.png"
+                    class="comment-img"
+                    alt=""
+                  />
+                  <div class="comment-container pb-2">
+                    <span class="comment-author">
+                      asd
+                      <small class="comment-date"> dasd</small>
+                    </span>
+                  </div>
+
+                  <ng-container>
+                    <p-divider></p-divider>
+                    <span class="comment-text"> asdas </span>
+                  </ng-container>
+
+                  <div class="attachment">
+                    <p-divider></p-divider>
+                    <small>Attachments</small>
+                    <ul
+                      class="d-flex flex-wrap"
+                      style="list-style: none; margin: 0; padding: 0"
+                    >
+                      <li class="mr-2">
+                        <a href="" target="_blank">dasd</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="post-comm">
+                  <img
+                    src="../../assets/images/avatars/profile-image-2.png"
+                    class="comment-img"
+                    alt=""
+                  />
+                  <div class="comment-container pb-2">
+                    <span class="comment-author">
+                      asd
+                      <small class="comment-date"> dasd</small>
+                    </span>
+                  </div>
+
+                  <ng-container>
+                    <p-divider></p-divider>
+                    <span class="comment-text"> asdas </span>
+                  </ng-container>
+
+                  <div class="attachment">
+                    <p-divider></p-divider>
+                    <small>Attachments</small>
+                    <ul
+                      class="d-flex flex-wrap"
+                      style="list-style: none; margin: 0; padding: 0"
+                    >
+                      <li class="mr-2">
+                        <a href="" target="_blank">dasd</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="post-comm">
+                  <img
+                    src="../../assets/images/avatars/profile-image-2.png"
+                    class="comment-img"
+                    alt=""
+                  />
+                  <div class="comment-container pb-2">
+                    <span class="comment-author">
+                      asd
+                      <small class="comment-date"> dasd</small>
+                    </span>
+                  </div>
+
+                  <ng-container>
+                    <p-divider></p-divider>
+                    <span class="comment-text"> asdas </span>
+                  </ng-container>
+
+                  <div class="attachment">
+                    <p-divider></p-divider>
+                    <small>Attachments</small>
+                    <ul
+                      class="d-flex flex-wrap"
+                      style="list-style: none; margin: 0; padding: 0"
+                    >
+                      <li class="mr-2">
+                        <a href="" target="_blank">dasd</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
