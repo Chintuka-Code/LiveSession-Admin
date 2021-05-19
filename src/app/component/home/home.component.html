@@ -1,9 +1,92 @@
-<div class="p-field col-12 col-md-4">
-  <span class="p-float-label">
-    <input type="text" id="inputtext" class="ng-invalid ng-dirty" pInputText />
-    <label for="inputtext">InputText</label>
-  </span>
-</div>
-<button pButton pRipple type="button" label="Primary" class="p-button-raised">
-  Home
-</button>
+<ng-container *ngIf="!spinner; else showspinner">
+  <div class="row">
+    <div class="col-md-6 col-xl-3">
+      <div class="card stat-widget">
+        <div class="card-body">
+          <h5 class="card-title">Live Session</h5>
+          <h2>{{ batch.length }}</h2>
+          <p>Schedule</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card stat-widget">
+        <div class="card-body">
+          <h5 class="card-title">Total Students</h5>
+          <h2>287</h2>
+          <p>Enroll</p>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-6 col-xl-3">
+      <div class="card stat-widget">
+        <div class="card-body">
+          <h5 class="card-title">Monthly Profit</h5>
+          <h2>7.4K</h2>
+          <p>For last 30 days</p>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="col-md-6 col-xl-3">
+      <div class="card stat-widget">
+        <div class="card-body">
+          <h5 class="card-title">Orders</h5>
+          <h2>87</h2>
+          <p>Orders in waitlist</p>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6 col-xl-4">
+      <div class="card stat-widget">
+        <div class="card-body">
+          <h5 class="card-title">Today's live Sessions</h5>
+
+          <ng-container *ngFor="let bat of batch">
+            <div class="transactions-list" *ngIf="bat.active">
+              <div class="tr-item">
+                <div class="tr-company-name">
+                  <div class="tr-icon tr-card-icon tr-card-bg-info text-info">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-twitch"
+                    >
+                      <path
+                        d="M21 2H3v16h5v4l4-4h5l4-4V2zm-10 9V7m5 4V7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="tr-text">
+                    <h4>
+                      {{ bat.batch_name }}
+                    </h4>
+                    <p>
+                      {{ bat.batch_start_time.toDate() | date: "mediumTime" }}
+                      to {{ bat.batch_end_time.toDate() | date: "mediumTime" }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

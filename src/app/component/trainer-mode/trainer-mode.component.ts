@@ -5,6 +5,7 @@ import { forkJoin, of, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BatchService } from 'src/app/service/batch.service';
 import { ChatService } from 'src/app/service/chat.service';
+import { UserService } from 'src/app/service/user.service';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import { environment } from 'src/environments/environment';
 
@@ -18,20 +19,32 @@ export class TrainerModeComponent implements OnInit {
   batch: any[] = [];
   selected_batch: any;
   all_chats: any[] = [];
+  user: any;
 
   constructor(
     private http: HttpClient,
     private batch_service: BatchService,
-    private chat_service: ChatService
+    private chat_service: ChatService,
+    private user_service: UserService
   ) {}
 
   // get all batch
-  get_all_batch() {
+  get_user_all_batch() {
     this.spinner = true;
-    this.batch_service.get_all_enable_batch().subscribe((res) => {
-      const batch = FormativeData.format_firebase_get_request_data(res);
-      this.check_batch_timing(batch);
-    });
+    this.user_service
+      .get_user_by_id(localStorage.getItem('uid'))
+      .subscribe((res) => {
+        this.user = res.data();
+
+        const batch_request = this.user.batch_ids.map((batch) =>
+          this.batch_service.get_batch_details_by(batch)
+        );
+
+        forkJoin(batch_request).subscribe((res) => {
+          this.batch = res.map((batch: any) => batch.data());
+          this.check_batch_timing(this.batch);
+        });
+      });
   }
 
   // check batch timing
@@ -138,6 +151,6 @@ export class TrainerModeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get_all_batch();
+    this.get_user_all_batch();
   }
 }

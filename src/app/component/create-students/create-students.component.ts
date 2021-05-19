@@ -83,6 +83,7 @@ export class CreateStudentsComponent implements OnInit {
           disabled: false,
           permission: ['S00'],
           batch_ids: [],
+          document_count: 0,
         };
 
         // to check row is empty or not
@@ -133,12 +134,14 @@ export class CreateStudentsComponent implements OnInit {
     data['date_of_joining'] = null;
     data['first_time'] = true;
     data['name'] = null;
+
     try {
       const response = await this.student_service.user_authentication(data);
       const create_user = await this.student_service.create_student(
         data,
         response.user.uid
       );
+
       Swal.fire({
         icon: 'success',
         title: 'Yeah...',
