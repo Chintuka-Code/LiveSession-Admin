@@ -80,6 +80,7 @@ export class TrainerModeComponent implements OnInit {
       });
 
       this.batch = batch;
+      console.log(this.batch);
       this.spinner = false;
     } catch (error) {
       this.spinner = false;
@@ -89,6 +90,7 @@ export class TrainerModeComponent implements OnInit {
 
   // get selected batch chat
   async get_selected_batch_all_chat(selected_batch) {
+    this.all_chats = [];
     this.spinner = true;
     this.selected_batch = selected_batch;
     let batch_chat: any = await this.chat_service
@@ -108,14 +110,31 @@ export class TrainerModeComponent implements OnInit {
                   return chat;
                 });
                 this.all_chats = [...this.all_chats, ...chat];
+                this.all_chats.sort(
+                  (a, b) => a.created_at.toDate() - b.created_at.toDate()
+                );
+                setTimeout(() => {
+                  this.scroll_chat_container();
+                }, 100);
                 resolve('');
               });
           })
       )
     );
 
-    console.log(this.all_chats);
     this.spinner = false;
+    this.scroll_chat_container();
+  }
+
+  scroll_chat_container() {
+    const div = document.getElementById('chat-body');
+    if (div != null) {
+      div.scrollTop = div.scrollHeight - div.clientHeight;
+    } else {
+      setTimeout(() => {
+        this.scroll_chat_container();
+      }, 200);
+    }
   }
 
   ngOnInit(): void {

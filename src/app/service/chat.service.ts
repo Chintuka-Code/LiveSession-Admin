@@ -90,7 +90,10 @@ export class ChatService {
       .collection('chat')
       .doc(chat_id)
       .collection('chat_message', (ref) =>
-        ref.orderBy('created_at', 'desc').limit(5)
+        ref
+          .where('sender_type', '==', 'student')
+          .orderBy('created_at', 'desc')
+          .limit(5)
       )
       .valueChanges();
   }

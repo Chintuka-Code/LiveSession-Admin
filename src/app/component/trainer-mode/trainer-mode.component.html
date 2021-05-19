@@ -16,8 +16,9 @@
                   <div class="email-list-item">
                     <div class="email-author">
                       <img
-                        src="../../assets/images/avatars/profile-image-1.png"
+                        src="../../assets/images/avatars/batch.svg"
                         alt=""
+                        style="border-radius: 50%"
                       />
                       <span class="author-name"> {{ item.batch_name }} </span>
                       <span class="email-date">
@@ -65,126 +66,42 @@
 
               <!-- message list -->
               <div class="post-comments d-flex flex-column">
-                <div class="post-comm">
+                <div class="post-comm" *ngFor="let chat of all_chats">
                   <img
-                    src="../../assets/images/avatars/profile-image-2.png"
+                    src="../../assets/images/avatars/user.svg"
                     class="comment-img"
                     alt=""
                   />
                   <div class="comment-container pb-2">
                     <span class="comment-author">
-                      asd
-                      <small class="comment-date"> dasd</small>
+                      {{ chat.sender_name }}
+                      <small class="comment-date" *ngIf="chat.created_at">
+                        {{
+                          chat.created_at.seconds
+                            | amFromUnix
+                            | amDateFormat: "hh:mmA"
+                        }}</small
+                      >
                     </span>
                   </div>
 
-                  <ng-container>
+                  <ng-container *ngIf="chat.message">
                     <p-divider></p-divider>
-                    <span class="comment-text"> asdas </span>
+                    <span class="comment-text"> {{ chat.message }} </span>
                   </ng-container>
 
-                  <div class="attachment">
+                  <div class="attachment" *ngIf="chat.attachment.length > 0">
                     <p-divider></p-divider>
                     <small>Attachments</small>
                     <ul
                       class="d-flex flex-wrap"
                       style="list-style: none; margin: 0; padding: 0"
                     >
-                      <li class="mr-2">
-                        <a href="" target="_blank">dasd</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="post-comm">
-                  <img
-                    src="../../assets/images/avatars/profile-image-2.png"
-                    class="comment-img"
-                    alt=""
-                  />
-                  <div class="comment-container pb-2">
-                    <span class="comment-author">
-                      asd
-                      <small class="comment-date"> dasd</small>
-                    </span>
-                  </div>
-
-                  <ng-container>
-                    <p-divider></p-divider>
-                    <span class="comment-text"> asdas </span>
-                  </ng-container>
-
-                  <div class="attachment">
-                    <p-divider></p-divider>
-                    <small>Attachments</small>
-                    <ul
-                      class="d-flex flex-wrap"
-                      style="list-style: none; margin: 0; padding: 0"
-                    >
-                      <li class="mr-2">
-                        <a href="" target="_blank">dasd</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="post-comm">
-                  <img
-                    src="../../assets/images/avatars/profile-image-2.png"
-                    class="comment-img"
-                    alt=""
-                  />
-                  <div class="comment-container pb-2">
-                    <span class="comment-author">
-                      asd
-                      <small class="comment-date"> dasd</small>
-                    </span>
-                  </div>
-
-                  <ng-container>
-                    <p-divider></p-divider>
-                    <span class="comment-text"> asdas </span>
-                  </ng-container>
-
-                  <div class="attachment">
-                    <p-divider></p-divider>
-                    <small>Attachments</small>
-                    <ul
-                      class="d-flex flex-wrap"
-                      style="list-style: none; margin: 0; padding: 0"
-                    >
-                      <li class="mr-2">
-                        <a href="" target="_blank">dasd</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="post-comm">
-                  <img
-                    src="../../assets/images/avatars/profile-image-2.png"
-                    class="comment-img"
-                    alt=""
-                  />
-                  <div class="comment-container pb-2">
-                    <span class="comment-author">
-                      asd
-                      <small class="comment-date"> dasd</small>
-                    </span>
-                  </div>
-
-                  <ng-container>
-                    <p-divider></p-divider>
-                    <span class="comment-text"> asdas </span>
-                  </ng-container>
-
-                  <div class="attachment">
-                    <p-divider></p-divider>
-                    <small>Attachments</small>
-                    <ul
-                      class="d-flex flex-wrap"
-                      style="list-style: none; margin: 0; padding: 0"
-                    >
-                      <li class="mr-2">
-                        <a href="" target="_blank">dasd</a>
+                      <li
+                        class="mr-2"
+                        *ngFor="let attachment of chat.attachment; index as i"
+                      >
+                        <a [href]="attachment" target="_blank">Files{{ i }} </a>
                       </li>
                     </ul>
                   </div>
