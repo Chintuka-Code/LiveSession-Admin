@@ -12,8 +12,6 @@
       >
     </li>
 
-    <li class="sidebar-title">Apps</li>
-
     <li routerLinkActive="active-page">
       <a href="javascript:void(0)" (click)="accordion_list($event)"
         ><i class="fas fa-user-tag px-3"></i>Institute<i
@@ -65,7 +63,7 @@
           *ngIf="user.permissions.includes('LS00')"
         >
           <a [routerLink]="['live-session-chat']"
-            ><i class="fas fa-comment-dots px-3"></i>Live Session Chat</a
+            ><i class="fas fa-comment-dots px-3"></i> Chat</a
           >
         </li>
 
@@ -81,8 +79,6 @@
         </li>
       </ul>
     </li>
-
-    <li class="sidebar-title">Tabs</li>
 
     <!-- Admin -->
     <li routerLinkActive="active-page">
@@ -108,10 +104,6 @@
       <a [routerLink]="['students-details', 'students']"
         ><i class="fas fa-user-tag px-3"></i>Student</a
       >
-    </li>
-
-    <li>
-      <a href="#"><i data-feather="check-circle"></i>Documentation</a>
     </li>
   </ul>
 </div>
