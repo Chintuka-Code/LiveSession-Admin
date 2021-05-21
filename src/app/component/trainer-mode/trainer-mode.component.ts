@@ -80,8 +80,8 @@ export class TrainerModeComponent implements OnInit {
         };
 
         if (
-          current_day_time.current_time >= batch_info.batch_start_time &&
-          current_day_time.current_time <= batch_info.batch_end_time &&
+          // current_day_time.current_time >= batch_info.batch_start_time &&
+          // current_day_time.current_time <= batch_info.batch_end_time &&
           current_day_time.current_date >= batch_info.batch_start_date &&
           current_day_time.current_date <= batch_info.batch_end_date &&
           bat.active_days.includes(current_day_time.current_day)
