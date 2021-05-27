@@ -1,0 +1,187 @@
+<section *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Active Courses List</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../create-course']">
+            Create Subject <i class="fas fa-plus"></i>
+          </a>
+        </button>
+      </div>
+
+      <div>
+        <p-table
+          #subjecttable
+          [value]="course"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['course_name']"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    subjecttable.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>CreatedAt</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-course>
+            <tr>
+              <td>
+                {{ course.course_name }}
+              </td>
+              <td>{{ course.created_at.toDate() | date: "medium" }}</td>
+              <td class="position-relative">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-ellipsis-h"
+                  class="p-button-rounded p-button-text"
+                  (click)="menu.toggle($event)"
+                ></button>
+
+                <p-menu
+                  #menu
+                  [popup]="true"
+                  [model]="items"
+                  (click)="course_action(course)"
+                ></p-menu>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No User found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disabled Course List -->
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Disabled Courses List</h3>
+      </div>
+
+      <div>
+        <p-table
+          #subjecttable
+          [value]="disabled_course_list"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['course_name']"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    subjecttable.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>CreatedAt</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-course>
+            <tr>
+              <td>
+                {{ course.course_name }}
+              </td>
+              <td>{{ course.created_at.toDate() | date: "medium" }}</td>
+              <td class="position-relative">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-text"
+                  (click)="enable_course(course)"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No User found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Course Details dialog -->
+<ng-container *ngIf="dialog_visible">
+  <p-dialog
+    [header]="course_details.course_name"
+    [(visible)]="dialog_visible"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
+    <div class="dialog-container">
+      <h5 class="h5">Subject List</h5>
+      <ul>
+        <li *ngFor="let subject of course_details.subject">
+          {{ subject.subject_name }}
+        </li>
+      </ul>
+    </div>
+    <ng-template pTemplate="footer">
+      <p-button
+        icon="pi pi-check"
+        (click)="dialog_visible = false"
+        label="Ok"
+        styleClass="p-button-text"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+</ng-container>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

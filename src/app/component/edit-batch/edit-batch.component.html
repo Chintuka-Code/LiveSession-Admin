@@ -1,0 +1,134 @@
+<div class="card" *ngIf="!spinner; else showspinner">
+  <div class="card-body">
+    <div class="header">
+      <h3 class="">Update Batch</h3>
+      <button class="btn btn-primary">
+        <a [routerLink]="['../../view-batch']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
+    </div>
+    <div class="container-fluid">
+      <form
+        action=""
+        [formGroup]="update_batch_form"
+        (ngSubmit)="update_batch()"
+        class="w-100"
+      >
+        <div class="row">
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <input
+                type="text"
+                id="inputtext"
+                class="form-control"
+                pInputText
+                formControlName="batch_name"
+              />
+              <label for="inputtext">Name</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-dropdown
+                inputId="dropdown"
+                [autoDisplayFirst]="false"
+                [options]="duration"
+                [style]="{ minWidth: '100%' }"
+                formControlName="batch_duration"
+              ></p-dropdown>
+              <label for="dropdown">Duration</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-calendar
+                inputId="calendar"
+                [style]="{ minWidth: '100%' }"
+                formControlName="batch_start_date"
+                dateFormat="dd.mm.yy"
+              ></p-calendar>
+              <label for="calendar">Batch Start Date</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-calendar
+                inputId="calendar"
+                [style]="{ minWidth: '100%' }"
+                formControlName="batch_end_date"
+                dateFormat="dd.mm.yy"
+              ></p-calendar>
+              <label for="calendar">Batch End Date</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-multiSelect
+                inputId="multiselect"
+                [options]="days"
+                [style]="{ minWidth: '100%' }"
+                formControlName="active_days"
+                display="chip"
+                [filter]="false"
+              ></p-multiSelect>
+              <label for="multiselect">Active Days</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-dropdown
+                inputId="dropdown"
+                [autoDisplayFirst]="false"
+                [options]="courses"
+                optionLabel="course_name"
+                optionValue="doc_id"
+                [style]="{ minWidth: '100%' }"
+                formControlName="course_id"
+              ></p-dropdown>
+              <label for="dropdown">Course</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-calendar
+                [timeOnly]="true"
+                inputId="timeonly"
+                [style]="{ minWidth: '100%' }"
+                hourFormat="12"
+                formControlName="batch_start_time"
+              ></p-calendar>
+              <label for="calenar">Start Time</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-calendar
+                [timeOnly]="true"
+                [style]="{ minWidth: '100%' }"
+                inputId="timeonly"
+                hourFormat="12"
+                formControlName="batch_end_time"
+              ></p-calendar>
+              <label for="calenar">End Time</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-4 mt-5">
+            <button
+              class="btn btn-primary"
+              [disabled]="update_batch_form.invalid"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

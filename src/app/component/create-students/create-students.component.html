@@ -1,0 +1,124 @@
+<div class="card" *ngIf="!spinner; else showspinner">
+  <div class="card-body">
+    <div class="header">
+      <h3 *ngIf="!bulk" class="">Create Student</h3>
+      <h3 *ngIf="bulk" class="">Bulk Student Registration</h3>
+
+      <div class="d-flex align-items-center">
+        <!-- <div
+          class="form-check form-switch d-flex align-items-center"
+          style="padding-right: 1rem; cursor: pointer"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="flexSwitchCheckDefault"
+            (change)="bulk = !bulk"
+            style="padding: 1rem; width: 4em; cursor: pointer"
+          />
+          <label
+            class="form-check-label"
+            style="padding-left: 0.3rem"
+            for="flexSwitchCheckDefault"
+            >Bulk Registration</label
+          >
+        </div> -->
+        <button class="btn btn-primary">
+          <a [routerLink]="['../students-details/student']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+    </div>
+
+    <div class="option" *ngIf="bulk">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <label for="formFile" class="form-label">Import CSV</label>
+            <input
+              class="form-control"
+              (change)="fileChangeListener($event)"
+              type="file"
+              id="formFile"
+            />
+          </div>
+          <div class="col-12 mt-3">
+            <button
+              class="btn btn-primary"
+              (click)="create_student()"
+              [disabled]="!student_record"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!bulk">
+      <div class="container-fluid mt-3 p-0">
+        <form
+          [formGroup]="student_create_form"
+          (ngSubmit)="create_student_single()"
+        >
+          <div class="row">
+            <!-- <div class="col-12 col-md-4">
+              <span class="p-float-label w-100">
+                <input
+                  type="text"
+                  id="inputtext"
+                  class="form-control"
+                  formControlName="name"
+                  pInputText
+                />
+                <label for="inputtext">Student Name</label>
+              </span>
+            </div> -->
+            <div class="col-12 col-md-12">
+              <span class="p-float-label w-100">
+                <input
+                  type="text"
+                  id="inputtext"
+                  class="form-control"
+                  pInputText
+                  formControlName="email"
+                />
+                <label for="inputtext">Student Email</label>
+              </span>
+            </div>
+
+            <!-- <div class="col-12 col-md-4">
+              <span class="p-float-label w-100">
+                <input
+                  type="text"
+                  id="inputtext"
+                  class="form-control"
+                  pInputText
+                  formControlName="data_of_joining"
+                />
+                <label for="inputtext">Student Email</label>
+              </span>
+            </div> -->
+
+            <div class="col-12 col-md-6 mt-3">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="student_create_form.invalid"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

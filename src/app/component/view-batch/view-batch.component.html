@@ -1,0 +1,253 @@
+<section *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Active Batches List</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../create-batch']">
+            Create Batch <i class="fas fa-plus"></i>
+          </a>
+        </button>
+      </div>
+
+      <div>
+        <p-table
+          #subjecttable
+          [value]="enable_batch"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['batch_name']"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    subjecttable.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Duration</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Created At</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-batch>
+            <tr>
+              <td>
+                {{ batch.batch_name }}
+              </td>
+              <td>{{ batch.batch_duration }}</td>
+              <td>
+                {{ batch.batch_start_date.toDate() | date: "mediumDate" }}
+              </td>
+              <td>{{ batch.batch_end_date.toDate() | date: "mediumDate" }}</td>
+              <td>{{ batch.created_at.toDate() | date: "medium" }}</td>
+              <td class="position-relative">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-ellipsis-h"
+                  class="p-button-rounded p-button-text"
+                  (click)="menu.toggle($event)"
+                ></button>
+
+                <p-menu
+                  #menu
+                  [popup]="true"
+                  [model]="items"
+                  (click)="batch_action(batch)"
+                ></p-menu>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No User found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disabled Course List -->
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Disabled Batches List</h3>
+      </div>
+
+      <div>
+        <p-table
+          #subjecttable
+          [value]="disabled_batch_list"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['batch_name']"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    subjecttable.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Duration</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Created At</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-batch>
+            <tr>
+              <td>
+                {{ batch.batch_name }}
+              </td>
+              <td>{{ batch.batch_duration }}</td>
+              <td>
+                {{ batch.batch_start_date.toDate() | date: "mediumDate" }}
+              </td>
+              <td>{{ batch.batch_end_date.toDate() | date: "mediumDate" }}</td>
+              <td>{{ batch.created_at.toDate() | date: "medium" }}</td>
+              <td class="position-relative">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-text"
+                  (click)="enable(batch)"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No User found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Course Details dialog -->
+<ng-container *ngIf="dialog_visible">
+  <p-dialog
+    [header]="batch_details.batch_name"
+    [(visible)]="dialog_visible"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
+    <div class="dialog-container">
+      <ul class="dialog-list">
+        <li>
+          <strong>Batch Name</strong>
+          <span> {{ batch_details.batch_name }} </span>
+        </li>
+        <li>
+          <strong>Batch Duration</strong>
+          <span> {{ batch_details.batch_duration }} </span>
+        </li>
+        <li>
+          <strong>Batch Start Date</strong>
+          <span>
+            {{ batch_details.batch_start_date.toDate() | date: "mediumDate" }}
+          </span>
+        </li>
+        <li>
+          <strong>Batch End Date</strong>
+          <span>
+            {{ batch_details.batch_end_date.toDate() | date: "mediumDate" }}
+          </span>
+        </li>
+        <li>
+          <strong>Batch Start Time</strong>
+          <span>
+            {{ batch_details.batch_start_time.toDate() | date: "mediumTime" }}
+          </span>
+        </li>
+        <li>
+          <strong>Batch End Time</strong>
+          <span
+            >{{ batch_details.batch_end_time.toDate() | date: "mediumTime" }}
+          </span>
+        </li>
+        <li>
+          <strong>Batch Active Days</strong>
+          <ul>
+            <li *ngFor="let item of batch_details.active_days">
+              <span> {{ item }} </span>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Courses</strong>
+          <div class="tree">
+            <p-tree [value]="batch_details.course.subject">
+              <ng-template let-sub pTemplate="sub">
+                {{ sub.subject_name }}
+              </ng-template>
+              <ng-template let-node pTemplate="default">
+                <b>{{ node.label }}</b>
+              </ng-template>
+            </p-tree>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <ng-template pTemplate="footer">
+      <p-button
+        icon="pi pi-check"
+        (click)="dialog_visible = false"
+        label="Ok"
+        styleClass="p-button-text"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+</ng-container>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
