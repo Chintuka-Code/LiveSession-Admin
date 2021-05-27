@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormativeData } from '../utilities/formative_data';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class PermissionService {
-  constructor(private firebase_store: AngularFirestore) {}
+  constructor(
+    private firebase_store: AngularFirestore,
+    private http: HttpClient
+  ) {}
 
   get_all_permission() {
     return this.firebase_store.collection('permission').get();
+
+    // return  this.http.get(`${environment.BASE_SERVER_URL}/permission/all-permission`);
   }
 
   check_role(role) {

@@ -64,4 +64,19 @@ export class UserService {
       )
       .get();
   }
+
+  async update_password(data) {
+    try {
+      const cpUser = firebase.auth().currentUser;
+      const credentials = firebase.auth.EmailAuthProvider.credential(
+        localStorage.getItem('email'),
+        data.old_password
+      );
+      await cpUser.reauthenticateWithCredential(credentials);
+      await cpUser.updatePassword(data.new_password);
+      return 'password update';
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

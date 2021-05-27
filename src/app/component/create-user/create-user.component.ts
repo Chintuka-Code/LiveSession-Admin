@@ -70,6 +70,7 @@ export class CreateUserComponent implements OnInit {
   get_permissions() {
     this.permission_service.get_all_permission().subscribe(
       (res: any) => {
+        console.log(res);
         const data = FormativeData.format_firebase_get_request_data(res);
         this.permissions = FormativeData.format(data);
       },

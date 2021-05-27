@@ -149,6 +149,13 @@ const routes: Routes = [
             (m) => m.TrainerModeModule
           ),
       },
+      {
+        path: 'update-password',
+        loadChildren: () =>
+          import('../update-password/update-password.module').then(
+            (m) => m.UpdateProfileModule
+          ),
+      },
     ],
   },
 ];
