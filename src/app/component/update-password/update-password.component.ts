@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { confirmPassword } from 'src/app/CustomValidation/ConfirmPassword';
 import { UserService } from 'src/app/service/user.service';
+import { eye_button } from 'src/app/utilities/password_eye';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -35,12 +36,8 @@ export class UpdatePasswordComponent implements OnInit {
     );
   }
 
-  show_password(tag: any) {
-    let type =
-      this.password.nativeElement.getAttribute('type') === 'password'
-        ? 'text'
-        : 'password';
-    this.password.nativeElement.setAttribute('type', type);
+  show_password() {
+    eye_button(this.password);
   }
 
   async update_password() {

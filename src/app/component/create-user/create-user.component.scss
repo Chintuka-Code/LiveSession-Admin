@@ -19,3 +19,11 @@
 .heading-user {
   padding-left: 1rem;
 }
+
+.eye {
+  position: absolute;
+  top: 25%;
+  right: 20px;
+  cursor: pointer;
+  z-index: 10;
+}

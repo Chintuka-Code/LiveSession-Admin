@@ -20,8 +20,8 @@ export class ViewUserProfileComponent implements OnInit {
   // get current user profile
   get_user_info() {
     this.spinner = true;
-    this.user_service.get_user_by_id(this.user_id).subscribe((res) => {
-      this.user_info = res.data();
+    this.user_service.get_user_by_id(this.user_id).subscribe((res: any) => {
+      this.user_info = res.data;
       this.spinner = false;
     });
   }

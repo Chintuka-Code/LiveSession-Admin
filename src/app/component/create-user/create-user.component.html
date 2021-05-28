@@ -23,6 +23,7 @@
                   formControlName="name"
                   pInputText
                   class="form-control"
+                  autocomplete="off"
                 />
                 <label for="inputtext">Enter your Name</label>
               </span>
@@ -35,6 +36,7 @@
                   id="inputtext-left"
                   pInputText
                   formControlName="email"
+                  autocomplete="off"
                 />
                 <label for="inputtext-left">Enter your Email</label>
               </span>
@@ -49,21 +51,39 @@
                   [autoWidth]="false"
                   [style]="{ minWidth: '100%' }"
                   formControlName="user_type"
+                  autocomplete="off"
                 ></p-dropdown>
                 <label for="dropdown">Enter User Type</label>
               </span>
             </div>
 
-            <div class="col-12 col-md-4 mt-5">
-              <span class="p-float-label w-100">
+            <div class="col-12 col-md-4 mt-5 position-relative">
+              <span class="p-float-label w-100 position-relative">
                 <input
                   type="password"
                   class="form-control"
                   id="inputtext-left"
                   pInputText
                   formControlName="password"
+                  #password
+                  autocomplete="off"
                 />
                 <label for="inputtext-left">Enter your Password</label>
+              </span>
+
+              <span class="eye" (click)="show_password(password)"
+                ><i
+                  class="pi pi-eye-slash"
+                  *ngIf="
+                    password.getAttribute('type') === 'password';
+                    else close
+                  "
+                >
+                </i>
+
+                <ng-template #close>
+                  <i class="pi pi-eye"> </i>
+                </ng-template>
               </span>
             </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, TreeNode } from 'primeng/api';
@@ -6,6 +6,7 @@ import { PermissionService } from 'src/app/service/permission.service';
 import { UserService } from 'src/app/service/user.service';
 import { FormativeData } from '../../utilities/formative_data';
 import Swal from 'sweetalert2';
+import { eye_button } from 'src/app/utilities/password_eye';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -20,6 +21,8 @@ export class CreateUserComponent implements OnInit {
   spinner: boolean = false;
   cols: { field: string; header: string }[];
   personal_info: FormGroup;
+
+  @ViewChild('password') password: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -63,21 +66,24 @@ export class CreateUserComponent implements OnInit {
   }
 
   initial_data() {
+    // for permission table
     this.cols = [{ field: 'name', header: 'Please Select Permission' }];
-    this.user_type = ['Students', 'Admin', 'Trainer'];
+    this.user_type = ['Admin', 'Trainer'];
   }
 
   get_permissions() {
     this.permission_service.get_all_permission().subscribe(
       (res: any) => {
-        console.log(res);
-        const data = FormativeData.format_firebase_get_request_data(res);
-        this.permissions = FormativeData.format(data);
+        this.permissions = FormativeData.format(res.permission);
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  show_password() {
+    eye_button(this.password);
   }
 
   async get_personal_info() {
@@ -88,29 +94,29 @@ export class CreateUserComponent implements OnInit {
     );
     user_info['disabled'] = false;
     user_info['batch_ids'] = [];
-    try {
-      const response = await this.user_service.user_authentication(user_info);
-      const user_created = await this.user_service.create_user(
-        user_info,
-        response.user.uid
-      );
-      this.messageService.add({
-        severity: 'success',
-        summary: 'User Created',
-      });
-      this.personal_info.reset();
-      this.permission = !this.permission;
-      this.selected_permission = [];
-      this.spinner = !this.spinner;
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: error.message,
-      }).then(() => {
+
+    this.user_service.create_user(user_info).subscribe(
+      (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'User Created',
+        });
+        this.personal_info.reset();
+        this.permission = !this.permission;
+        this.selected_permission = [];
         this.spinner = !this.spinner;
-      });
-    }
+      },
+      (error) => {
+        console.log(error.error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.message,
+        }).then(() => {
+          this.spinner = !this.spinner;
+        });
+      }
+    );
   }
 
   ngOnInit(): void {

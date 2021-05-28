@@ -5,6 +5,7 @@ export class FormativeData {
   // formalized data which is accepted by tree
   static format(data) {
     const output = [];
+
     data.forEach((obj) => {
       const dest = output.find((target) => target.data.name === obj.groupBy);
       if (!dest) {
@@ -18,6 +19,7 @@ export class FormativeData {
         });
       }
     });
+
     return output;
   }
 

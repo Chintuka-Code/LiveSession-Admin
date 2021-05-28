@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
 
 @Component({
@@ -11,24 +12,14 @@ export class AsideComponent implements OnInit {
   user: any;
   spinner: boolean = false;
 
-  constructor(private user_service: UserService) {}
+  constructor() {}
 
   accordion_list(event) {
     const list = event.target.nextElementSibling;
     list.classList.toggle('d-none');
   }
 
-  get_user() {
-    this.spinner = true;
-    this.user_service
-      .get_user_by_id(localStorage.getItem('uid'))
-      .subscribe((res) => {
-        this.user = res.data();
-        this.spinner = false;
-      });
-  }
-
   ngOnInit(): void {
-    this.get_user();
+    this.user = ACTIVE_USER();
   }
 }

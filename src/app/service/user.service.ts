@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   constructor(
     private firebase_store: AngularFirestore,
-    private firebase_auth: AngularFireAuth
+    private firebase_auth: AngularFireAuth,
+    private http: HttpClient
   ) {}
   timestamp = firebase.firestore.FieldValue.serverTimestamp();
   user_authentication(data) {
@@ -18,22 +22,20 @@ export class UserService {
     );
   }
 
-  create_user(data, id) {
-    data.createdAt = this.timestamp;
-    return this.firebase_store.collection('user').doc(id).set(data);
-  }
-
-  login(data) {
-    return this.firebase_auth.signInWithEmailAndPassword(
-      data.email,
-      data.password
+  create_user(data) {
+    // return this.firebase_store.collection('user').doc(id).set(data);
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/user/create-user`,
+      data
     );
   }
 
+  login(data) {
+    return this.http.post(`${environment.BASE_SERVER_URL}/user/login`, data);
+  }
+
   get_user_details() {
-    return this.firebase_store
-      .collection('user', (ref) => ref.where('user_type', '!=', 'Students'))
-      .get();
+    return this.http.get(`${environment.BASE_SERVER_URL}/user/admin-accounts`);
   }
 
   get_students_details() {
@@ -43,11 +45,16 @@ export class UserService {
   }
 
   get_user_by_id(id) {
-    return this.firebase_store.collection('user').doc(id).get();
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/user/get-user-id/${id}`
+    );
   }
 
   update_user_by_id(data, id) {
-    return this.firebase_store.collection('user').doc(id).update(data);
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/user/update-user-id/${id}`,
+      data
+    );
   }
 
   add_admin_into_batch(batch, id) {

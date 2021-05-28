@@ -6,6 +6,7 @@ import { PermissionService } from 'src/app/service/permission.service';
 import { FormativeData } from '../../utilities/formative_data';
 import Swal from 'sweetalert2';
 import { UserService } from 'src/app/service/user.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 
 @Component({
   selector: 'app-edit-user',
@@ -32,16 +33,38 @@ export class EditUserComponent implements OnInit {
 
   initial_data() {
     this.cols = [{ field: 'name', header: 'Please Select Permission' }];
-    this.user_type = ['Students', 'Admin', 'Trainer'];
+    this.user_type = ['Admin', 'Trainer'];
+  }
+
+  // get current user profile
+  get_user_info() {
+    this.spinner = true;
+    this.user_info = ACTIVE_USER();
+    this.user_service.get_user_by_id(this.user_id).subscribe(
+      (res: any) => {
+        this.user_info = res.data;
+        this.fill_previous_details();
+        this.get_permissions();
+      },
+      (error) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = !this.spinner;
+        });
+      }
+    );
   }
 
   // Get all permission
   get_permissions() {
     this.permission_service.get_all_permission().subscribe(
       (res: any) => {
-        const data = FormativeData.format_firebase_get_request_data(res);
-        this.permissions = FormativeData.format(data);
-        this.map_current_user_permission(data);
+        this.permissions = FormativeData.format(res.permission);
+        this.map_current_user_permission(res.permission);
       },
       (error) => {
         console.log(error);
@@ -57,18 +80,6 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  // get current user profile
-  get_user_info() {
-    this.spinner = true;
-    this.user_service.get_user_by_id(this.user_id).subscribe((res) => {
-      this.user_info = res.data();
-      this.fill_previous_details();
-      this.get_permissions();
-
-      this.spinner = false;
-    });
-  }
-
   // Fill the form with current information of user
   fill_previous_details() {
     this.personal_info.controls.name.patchValue(this.user_info.name);
@@ -78,6 +89,7 @@ export class EditUserComponent implements OnInit {
 
   // map permission array
   map_current_user_permission(data) {
+    console.log(data);
     data.forEach((element) => {
       if (this.user_info.permissions.includes(element.code)) {
         this.selected_permission.push({
@@ -85,36 +97,36 @@ export class EditUserComponent implements OnInit {
         });
       }
     });
+    this.spinner = false;
   }
 
-  async get_personal_info() {
+  get_personal_info() {
     this.spinner = true;
     const data = this.personal_info.getRawValue();
     data['permissions'] = FormativeData.removeParent(this.selected_permission);
-    try {
-      const response = await this.user_service.update_user_by_id(
-        data,
-        this.user_id
-      );
-      Swal.fire({
-        icon: 'success',
-        title: 'Yeah...',
-        text: 'User Information Updated',
-      }).then(() => {
-        this.spinner = false;
-        this.router.navigate(['../main']);
-      });
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'ohh...',
-        text: 'Something Went Wrong',
-      }).then(() => {
-        this.spinner = false;
-        this.router.navigate(['../main']);
-      });
-    }
+
+    this.user_service.update_user_by_id(data, this.user_id).subscribe(
+      (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'User Information Updated',
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['../main']);
+        });
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'ohh...',
+          text: 'Something Went Wrong',
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['../main']);
+        });
+      }
+    );
   }
 
   ngOnInit(): void {

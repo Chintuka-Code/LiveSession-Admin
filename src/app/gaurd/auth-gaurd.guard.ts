@@ -23,8 +23,8 @@ export class AuthGaurdGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const uid = localStorage.getItem('uid');
-    if (uid) {
+    const token = localStorage.getItem('token');
+    if (token) {
       return true;
     } else {
       Swal.fire({

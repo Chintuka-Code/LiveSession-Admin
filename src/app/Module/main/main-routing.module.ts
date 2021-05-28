@@ -128,27 +128,27 @@ const routes: Routes = [
             '../add-student-into-batch/add-student-into-batch.module'
           ).then((m) => m.AddStudentIntoBatchModule),
       },
-      {
-        path: 'assign-batch-to-admin/:user_id',
-        loadChildren: () =>
-          import('../assign-batch-to-admin/assign-batch-to-admin.module').then(
-            (m) => m.AssignBatchToAdminModule
-          ),
-      },
-      {
-        path: 'live-session-chat',
-        loadChildren: () =>
-          import('../live-session-chat/live-session-chat.module').then(
-            (m) => m.LiveSessionChatModule
-          ),
-      },
-      {
-        path: 'trainer-mode',
-        loadChildren: () =>
-          import('../trainer-mode/trainer-mode.module').then(
-            (m) => m.TrainerModeModule
-          ),
-      },
+      // {
+      //   path: 'assign-batch-to-admin/:user_id',
+      //   loadChildren: () =>
+      //     import('../assign-batch-to-admin/assign-batch-to-admin.module').then(
+      //       (m) => m.AssignBatchToAdminModule
+      //     ),
+      // },
+      // {
+      //   path: 'live-session-chat',
+      //   loadChildren: () =>
+      //     import('../live-session-chat/live-session-chat.module').then(
+      //       (m) => m.LiveSessionChatModule
+      //     ),
+      // },
+      // {
+      //   path: 'trainer-mode',
+      //   loadChildren: () =>
+      //     import('../trainer-mode/trainer-mode.module').then(
+      //       (m) => m.TrainerModeModule
+      //     ),
+      // },
       {
         path: 'update-password',
         loadChildren: () =>

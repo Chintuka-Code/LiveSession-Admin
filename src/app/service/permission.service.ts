@@ -13,9 +13,9 @@ export class PermissionService {
   ) {}
 
   get_all_permission() {
-    return this.firebase_store.collection('permission').get();
-
-    // return  this.http.get(`${environment.BASE_SERVER_URL}/permission/all-permission`);
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/permission/all-permission`
+    );
   }
 
   check_role(role) {

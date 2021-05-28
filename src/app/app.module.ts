@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { SharedUtilitiesModule } from './SharedModule/shared-utilities/shared-utilities.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { GlobalInterceptor } from './Interceptor/global.interceptor';
 
 @NgModule({
   declarations: [AppComponent, PagenotfoundComponent],
@@ -22,7 +24,13 @@ import { SharedUtilitiesModule } from './SharedModule/shared-utilities/shared-ut
     AngularFireModule.initializeApp(environment.firebaseConfig),
     SharedUtilitiesModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GlobalInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

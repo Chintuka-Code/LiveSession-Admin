@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
 @Component({
@@ -24,20 +25,27 @@ export class UserDetailsComponent implements OnInit {
 
   get_users_data() {
     this.spinner = true;
-    this.user_service.get_user_details().subscribe((res: any) => {
-      this.user_data = FormativeData.format_firebase_get_request_data(res);
-      this.spinner = false;
-    });
+    this.user_service.get_user_details().subscribe(
+      (res: any) => {
+        this.user_data = res.data;
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = !this.spinner;
+        });
+      }
+    );
   }
 
   async role() {
     this.spinner = true;
-    this.user_service
-      .get_user_by_id(localStorage.getItem('uid'))
-      .subscribe((res: any) => {
-        this.user_profile = res.data();
-        this.setMenu();
-      });
+    this.user_profile = ACTIVE_USER();
+    this.setMenu();
   }
 
   setMenu() {

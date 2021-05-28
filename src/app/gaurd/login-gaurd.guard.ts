@@ -15,7 +15,7 @@ export class LoginGaurdGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (localStorage.getItem('uid') && localStorage.getItem('email')) {
+    if (localStorage.getItem('uid') && localStorage.getItem('token')) {
       this.router.navigate(['/main']);
     } else {
       return true;
