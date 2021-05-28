@@ -40,32 +40,46 @@ export class UpdatePasswordComponent implements OnInit {
     eye_button(this.password);
   }
 
-  async update_password() {
-    this.spinner = true;
-
-    try {
-      const data = this.update_password_form.getRawValue();
-      await this.user_service.update_password(data);
-      Swal.fire({
-        icon: 'success',
-        title: 'Yeah...',
-        text: 'Password Update',
-      }).then(() => {
-        this.router.navigate(['']);
-        this.spinner = false;
-        this.update_password_form.reset();
-      });
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Ohh...',
-        text: error.message,
-      }).then(() => {
-        this.spinner = false;
-      });
-      this.spinner = false;
-    }
+  update_password() {
+    // this.spinner = true;
+    const data = this.update_password_form.getRawValue();
+    this.user_service.update_password(data).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
+    // try {
+    //   const data = this.update_password_form.getRawValue();
+    //   await this.user_service.update_password(data);
+    //   Swal.fire({
+    //     icon: 'success',
+    //     title: 'Yeah...',
+    //     text: 'Password Update',
+    //   }).then(() => {
+    //     this.router.navigate(['']);
+    //     this.spinner = false;
+    //     this.update_password_form.reset();
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Ohh...',
+    //     text: error.message,
+    //   }).then(() => {
+    //     this.spinner = false;
+    //   });
+    //   this.spinner = false;
+    // }
   }
 
   ngOnInit(): void {

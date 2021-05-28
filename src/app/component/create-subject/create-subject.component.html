@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="!spinner; else showspinner">
   <div class="card-body">
     <div class="header">
       <h3 class="">Create Subject</h3>
@@ -8,7 +8,7 @@
         </a>
       </button>
     </div>
-    <div class="container-fluid mt-3" *ngIf="!spinner; else showspinner">
+    <div class="container-fluid mt-3">
       <form [formGroup]="create_subject_form" (ngSubmit)="create_subject()">
         <ng-container formArrayName="subject">
           <div class="row my-4" *ngFor="let _ of subject.controls; index as i">

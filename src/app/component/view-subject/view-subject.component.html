@@ -4,11 +4,23 @@
     <div class="card-body">
       <div class="header">
         <h3 class="">Active Subjects List</h3>
-        <button class="btn btn-primary">
-          <a [routerLink]="['../create-subject']">
-            Create Subject <i class="fas fa-plus"></i>
-          </a>
-        </button>
+
+        <div class="d-flex align-items-center">
+          <button class="btn btn-outline-dark mr-3">
+            <a href="javascript:void(0)" (click)="get_updated_subject()">
+              <ng-container *ngIf="!subject_type_disabled; else enable">
+                Disabled Subject
+              </ng-container>
+              <ng-template #enable> Enable Subject </ng-template>
+            </a>
+          </button>
+
+          <button class="btn btn-primary">
+            <a [routerLink]="['../create-subject']">
+              Create Subject <i class="fas fa-plus"></i>
+            </a>
+          </button>
+        </div>
       </div>
 
       <div>
@@ -52,23 +64,36 @@
               <td>
                 {{ subject.subject_name }}
               </td>
-              <td>{{ subject.created_at.toDate() | date: "medium" }}</td>
+              <td>{{ subject.createdAt | date: "medium" }}</td>
               <td class="position-relative">
-                <button
-                  pButton
-                  pRipple
-                  type="button"
-                  icon="pi pi-ellipsis-h"
-                  class="p-button-rounded p-button-text"
-                  (click)="menu.toggle($event)"
-                ></button>
+                <ng-container *ngIf="!subject_type_disabled; else enable">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-ellipsis-h"
+                    class="p-button-rounded p-button-text"
+                    (click)="menu.toggle($event)"
+                  ></button>
 
-                <p-menu
-                  #menu
-                  [popup]="true"
-                  [model]="items"
-                  (click)="update_subject(subject)"
-                ></p-menu>
+                  <p-menu
+                    #menu
+                    [popup]="true"
+                    [model]="items"
+                    (click)="update_subject(subject)"
+                  ></p-menu>
+                </ng-container>
+
+                <ng-template #enable>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-pencil"
+                    class="p-button-rounded p-button-text"
+                    (click)="enable_subject(subject)"
+                  ></button>
+                </ng-template>
               </td>
             </tr>
           </ng-template>
@@ -83,7 +108,7 @@
   </div>
 
   <!-- Disabled Course -->
-  <div class="card">
+  <!-- <div class="card">
     <div class="card-body">
       <div class="header">
         <h3 class="">Disabled Subject List</h3>
@@ -151,7 +176,7 @@
         </p-table>
       </div>
     </div>
-  </div>
+  </div> -->
 </section>
 
 <ng-template #showspinner>

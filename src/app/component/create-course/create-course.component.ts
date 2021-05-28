@@ -51,21 +51,21 @@ export class CreateCourseComponent implements OnInit {
 
   get_all_subject() {
     this.spinner = true;
-    this.subject_service.get_all_subject().subscribe(
-      (res) => {
-        this.subject = FormativeData.format_firebase_get_request_data(res);
-        this.spinner = false;
-      },
-      (err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'SomeThing Went Wrong',
-        }).then(() => {
-          this.spinner = false;
-        });
-      }
-    );
+    // this.subject_service.get_all_subject().subscribe(
+    //   (res) => {
+    //     this.subject = FormativeData.format_firebase_get_request_data(res);
+    //     this.spinner = false;
+    //   },
+    //   (err) => {
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Oops...',
+    //       text: 'SomeThing Went Wrong',
+    //     }).then(() => {
+    //       this.spinner = false;
+    //     });
+    //   }
+    // );
   }
 
   validation() {

@@ -42,23 +42,23 @@ export class EditCourseComponent implements OnInit {
 
   get_all_subject() {
     this.spinner = true;
-    this.subject_service.get_all_subject().subscribe(
-      (res) => {
-        this.subject = FormativeData.format_firebase_get_request_data(res);
+    // this.subject_service.get_all_subject().subscribe(
+    //   (res) => {
+    //     this.subject = FormativeData.format_firebase_get_request_data(res);
 
-        this.fill_pervious_details();
-        this.spinner = false;
-      },
-      (err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'SomeThing Went Wrong',
-        }).then(() => {
-          this.spinner = false;
-        });
-      }
-    );
+    //     this.fill_pervious_details();
+    //     this.spinner = false;
+    //   },
+    //   (err) => {
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Oops...',
+    //       text: 'SomeThing Went Wrong',
+    //     }).then(() => {
+    //       this.spinner = false;
+    //     });
+    //   }
+    // );
   }
 
   fill_pervious_details() {

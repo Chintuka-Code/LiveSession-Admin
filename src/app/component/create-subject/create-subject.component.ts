@@ -9,6 +9,8 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionService } from 'src/app/service/permission.service';
 import { SubjectService } from 'src/app/service/subject.service';
+import { Notification } from 'src/app/utilities/ACCESS_DENIED';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-create-subject',
@@ -50,50 +52,65 @@ export class CreateSubjectComponent implements OnInit {
   async create_subject() {
     this.spinner = true;
     const subject = this.subject.getRawValue();
+    this.subject_service.create_subject(subject).subscribe(
+      (res) => {
+        console.log(res);
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'Subject Created',
+        }).then(() => {
+          this.create_subject_form.reset();
+          this.subject.clear();
+          this.addsubject();
+          this.spinner = false;
+        });
+      },
+      (error) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Ohh...',
+          text: 'Something Went Wrong',
+        }).then(() => {
+          this.router.navigate(['/main']);
+        });
+      }
+    );
 
-    try {
-      await Promise.all(
-        subject.map(async (sub) => {
-          await this.subject_service.create_subject({ subject_name: sub });
-        })
-      );
-      Swal.fire({
-        icon: 'success',
-        title: 'Yeah...',
-        text: 'Subject Created',
-      }).then(() => {
-        this.create_subject_form.reset();
-        this.subject.clear();
-        this.addsubject();
-        this.spinner = false;
-      });
-    } catch (error) {
-      console.log(error);
-      this.spinner = false;
-    }
+    // try {
+    //   await Promise.all(
+    //     subject.map(async (sub) => {
+    //       await this.subject_service.create_subject({ subject_name: sub });
+    //     })
+    //   );
+    //   Swal.fire({
+    //     icon: 'success',
+    //     title: 'Yeah...',
+    //     text: 'Subject Created',
+    //   }).then(() => {
+    //     this.create_subject_form.reset();
+    //     this.subject.clear();
+    //     this.addsubject();
+    //     this.spinner = false;
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    //   this.spinner = false;
+    // }
   }
 
   check_permission() {
     this.spinner = !this.spinner;
     this.activated_route.data.subscribe(async (res) => {
-      try {
-        const response = await this.permission_service.check_role(res.role);
-        console.log(res.role);
-        if (response) {
-          this.spinner = !this.spinner;
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Access Denied',
-          }).then(() => {
-            this.router.navigate(['/main']);
-            this.spinner = !this.spinner;
-          });
-        }
-      } catch (error) {
-        console.log(error);
+      const user: any = ACTIVE_USER();
+      console.log(res.role);
+      if (!user.permissions.includes(res.role)) {
+        this.router.navigate(['/main']);
+        Notification.ACCESS_DENIED();
+        return '';
       }
+      this.spinner = false;
     });
   }
 

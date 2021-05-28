@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
+import { Notification } from 'src/app/utilities/ACCESS_DENIED';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
@@ -36,7 +37,9 @@ export class UserDetailsComponent implements OnInit {
           title: 'Oops...',
           text: error.errorMessage,
         }).then(() => {
-          this.spinner = !this.spinner;
+          this.router.navigate(['/main']);
+          this.spinner = false;
+          return '';
         });
       }
     );
@@ -50,14 +53,11 @@ export class UserDetailsComponent implements OnInit {
 
   setMenu() {
     if (!this.user_profile.permissions.includes('U00')) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Access Denied',
-      });
       this.router.navigate(['/main']);
+      Notification.ACCESS_DENIED();
+      return '';
     }
-
+    this.get_users_data();
     this.items = [
       {
         label: 'Actions',
@@ -117,6 +117,5 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.role();
-    this.get_users_data();
   }
 }

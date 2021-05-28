@@ -7,6 +7,7 @@ import { FormativeData } from '../../utilities/formative_data';
 import Swal from 'sweetalert2';
 import { UserService } from 'src/app/service/user.service';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
+import { Notification } from 'src/app/utilities/ACCESS_DENIED';
 
 @Component({
   selector: 'app-edit-user',
@@ -40,6 +41,12 @@ export class EditUserComponent implements OnInit {
   get_user_info() {
     this.spinner = true;
     this.user_info = ACTIVE_USER();
+
+    if (!this.user_info.permissions.includes('U10')) {
+      this.router.navigate(['/main']);
+      Notification.ACCESS_DENIED();
+      return '';
+    }
     this.user_service.get_user_by_id(this.user_id).subscribe(
       (res: any) => {
         this.user_info = res.data;

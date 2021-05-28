@@ -8,13 +8,14 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { ERROR_MESSAGE } from '../utilities/http_error_message';
 
 @Injectable()
 export class GlobalInterceptor implements HttpInterceptor {
   constructor() {}
 
   handleError(err: HttpErrorResponse) {
-    err['errorMessage'] = err.error.message;
+    err['errorMessage'] = ERROR_MESSAGE(err.error.message);
     return throwError(err);
   }
 
