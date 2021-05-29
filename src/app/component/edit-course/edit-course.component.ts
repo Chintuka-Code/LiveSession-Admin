@@ -28,51 +28,56 @@ export class EditCourseComponent implements OnInit {
 
   get_course_details() {
     this.spinner = true;
-    this.course_service.get_course_details_by_id(this.course_id).subscribe(
-      (res) => {
-        this.course = res.data();
-
+    this.course_service.edit_course_by_id(this.course_id).subscribe(
+      (res: any) => {
+        this.course = res.data;
+        console.log(this.course);
         this.get_all_subject();
       },
       (error) => {
-        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.router.navigate(['/main']);
+          this.spinner = false;
+          return '';
+        });
       }
     );
   }
 
   get_all_subject() {
     this.spinner = true;
-    // this.subject_service.get_all_subject().subscribe(
-    //   (res) => {
-    //     this.subject = FormativeData.format_firebase_get_request_data(res);
-
-    //     this.fill_pervious_details();
-    //     this.spinner = false;
-    //   },
-    //   (err) => {
-    //     Swal.fire({
-    //       icon: 'error',
-    //       title: 'Oops...',
-    //       text: 'SomeThing Went Wrong',
-    //     }).then(() => {
-    //       this.spinner = false;
-    //     });
-    //   }
-    // );
+    this.subject_service.get_subject(false).subscribe(
+      (res: any) => {
+        this.subject = res.data;
+        console.log(this.subject);
+        this.fill_pervious_details();
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.router.navigate(['/main']);
+          this.spinner = false;
+          return '';
+        });
+      }
+    );
   }
 
   fill_pervious_details() {
     this.spinner = true;
-
     this.update_course_form.controls.course_name.patchValue(
       this.course.course_name
     );
     this.update_course_form.controls.subject_ids.patchValue(
-      this.subject.map((element) => {
-        if (this.course.subject_ids.includes(element.doc_id)) {
-          return element.doc_id;
-        }
-      })
+      this.course.subject_ids
     );
     this.spinner = false;
   }
@@ -85,27 +90,30 @@ export class EditCourseComponent implements OnInit {
   }
 
   async update_course_data() {
-    try {
-      this.spinner = true;
-      const data = this.update_course_form.getRawValue();
-      await this.course_service.update_course(data, this.course_id);
-      Swal.fire({
-        icon: 'success',
-        title: 'Yeah...',
-        text: 'Course Updated',
-      }).then(() => {
-        this.router.navigate(['/main/view-course']);
-      });
-      this.spinner = false;
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Ooh...',
-        text: 'Something Went wrong',
-      });
-      this.spinner = false;
-    }
+    this.spinner = true;
+    const data = this.update_course_form.getRawValue();
+
+    this.course_service.update_course(data, this.course_id).subscribe(
+      (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'Course Updated',
+        }).then(() => {
+          this.router.navigate(['/main/view-course']);
+        });
+        this.spinner = false;
+      },
+      (error) => {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Ooh...',
+          text: error.errorMessage,
+        });
+        this.spinner = false;
+      }
+    );
   }
 
   ngOnInit(): void {

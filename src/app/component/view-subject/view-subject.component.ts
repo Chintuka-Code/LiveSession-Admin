@@ -38,8 +38,7 @@ export class ViewSubjectComponent implements OnInit {
     this.subject_service.get_subject(type).subscribe(
       (res: any) => {
         this.subject = res.data;
-
-        this.role();
+        this.spinner = false;
       },
       (error) => {
         Swal.fire({
@@ -55,20 +54,16 @@ export class ViewSubjectComponent implements OnInit {
     );
   }
 
-  async role() {
+  setMenu() {
     this.spinner = true;
     this.user_profile = ACTIVE_USER();
-    this.setMenu();
-  }
 
-  setMenu() {
-    this.items = [{ label: 'Actions', items: [] }];
     if (!this.user_profile.permissions.includes('SUB00')) {
       Notification.ACCESS_DENIED();
       this.router.navigate(['/main']);
       return;
     }
-
+    this.get_all_subject(this.subject_type_disabled);
     if (this.user_profile.permissions.includes('SUB10')) {
       this.items[0].items.push({
         label: 'Edit',
@@ -168,9 +163,9 @@ export class ViewSubjectComponent implements OnInit {
           (error) => {
             console.log(error);
             Swal.fire({
-              title: 'Error',
-              text: `Something Went Wrong`,
               icon: 'error',
+              title: 'Oops...',
+              text: error.errorMessage,
             }).then(() => {
               this.spinner = false;
             });
@@ -183,6 +178,6 @@ export class ViewSubjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get_all_subject(this.subject_type_disabled);
+    this.setMenu();
   }
 }

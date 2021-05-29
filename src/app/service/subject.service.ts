@@ -27,15 +27,7 @@ export class SubjectService {
     );
   }
 
-  get_all_disabled_subject() {
-    return this.firebase_store
-      .collection('subject', (ref) => ref.where('disabled', '==', true))
-      .get();
-  }
-
   update_subject(data) {
-    console.log(data);
-
     return this.http.post(
       `${environment.BASE_SERVER_URL}/subject/update-subject`,
       { data }

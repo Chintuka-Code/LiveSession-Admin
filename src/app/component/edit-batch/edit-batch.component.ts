@@ -53,10 +53,10 @@ export class EditBatchComponent implements OnInit {
 
   get_all_course() {
     this.spinner = true;
-    this.course_service.get_all_course().subscribe((res) => {
-      this.courses = FormativeData.format_firebase_get_request_data(res);
-      this.spinner = false;
-    });
+    // this.course_service.get_all_course().subscribe((res) => {
+    //   this.courses = FormativeData.format_firebase_get_request_data(res);
+    //   this.spinner = false;
+    // });
   }
 
   validation() {

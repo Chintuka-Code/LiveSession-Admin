@@ -31,11 +31,11 @@ export class AddStudentIntoBatchComponent implements OnInit {
       .get_batch_details_by(this.batch_id)
       .toPromise();
     this.batch_details = batch_details.data();
-    const course_details: any = await this.course_service
-      .get_course_details_by_id(batch_details.data().course_id)
-      .toPromise();
-    this.course_details = course_details.data();
-    this.get_all_students(course_details.data());
+    // const course_details: any = await this.course_service
+    //   .get_course_details_by_id(batch_details.data().course_id)
+    //   .toPromise();
+    // this.course_details = course_details.data();
+    // this.get_all_students(course_details.data());
   }
 
   get_all_students(course) {

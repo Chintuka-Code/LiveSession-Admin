@@ -102,41 +102,40 @@ export class ViewBatchComponent implements OnInit {
   get_disabled_batch() {
     this.spinner = true;
     this.batch_service.get_all_disabled_batch().subscribe((res) => {
-      this.disabled_batch_list = FormativeData.format_firebase_get_request_data(
-        res
-      );
+      this.disabled_batch_list =
+        FormativeData.format_firebase_get_request_data(res);
       this.spinner = false;
     });
   }
 
   async view_batch_details(batch) {
     this.spinner = true;
-    let course_response = await this.course_service
-      .get_course_details_by_id(batch.course_id)
-      .toPromise();
-    const course_details: any = course_response.data();
+    // let course_response = await this.course_service
+    //   .get_course_details_by_id(batch.course_id)
+    //   .toPromise();
+    // const course_details: any = course_response.data();
 
-    const request = course_details.subject_ids.map((res) =>
-      this.subject_service.get_subject_by_id(res)
-    );
+    // const request = course_details.subject_ids.map((res) =>
+    //   this.subject_service.get_subject_by_id(res)
+    // );
 
-    forkJoin(request).subscribe((response: any) => {
-      course_details['subject'] = [
-        {
-          label: course_details.course_name,
-          children: response.map((subject) => {
-            const sub = subject.data();
-            sub['type'] = 'sub';
-            return sub;
-          }),
-        },
-      ];
-      batch['course'] = course_details;
-      this.batch_details = batch;
+    // forkJoin(request).subscribe((response: any) => {
+    //   course_details['subject'] = [
+    //     {
+    //       label: course_details.course_name,
+    //       children: response.map((subject) => {
+    //         const sub = subject.data();
+    //         sub['type'] = 'sub';
+    //         return sub;
+    //       }),
+    //     },
+    //   ];
+    //   batch['course'] = course_details;
+    //   this.batch_details = batch;
 
-      this.spinner = false;
-      this.dialog_visible = true;
-    });
+    //   this.spinner = false;
+    //   this.dialog_visible = true;
+    // });
   }
 
   disabled_batch(batch) {

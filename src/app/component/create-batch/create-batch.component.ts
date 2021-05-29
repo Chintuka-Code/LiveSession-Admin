@@ -91,10 +91,10 @@ export class CreateBatchComponent implements OnInit {
 
   get_all_course() {
     this.spinner = true;
-    this.course_service.get_all_course().subscribe((res) => {
-      this.courses = FormativeData.format_firebase_get_request_data(res);
-      this.spinner = false;
-    });
+    // this.course_service.get_all_course().subscribe((res) => {
+    //   this.courses = FormativeData.format_firebase_get_request_data(res);
+    //   this.spinner = false;
+    // });
   }
 
   async create_batch() {
@@ -123,7 +123,7 @@ export class CreateBatchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.check_permission();
+    // this.check_permission();
     this.validation();
   }
 }

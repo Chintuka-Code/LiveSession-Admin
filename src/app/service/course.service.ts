@@ -1,43 +1,55 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  constructor(private firebase_store: AngularFirestore) {}
+  constructor(
+    private firebase_store: AngularFirestore,
+    private http: HttpClient
+  ) {}
 
   timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
   create_course(data) {
-    data['created_at'] = this.timestamp;
-    return this.firebase_store.collection('course').add(data);
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/course/create-course`,
+      { data }
+    );
   }
 
-  get_all_course() {
-    return this.firebase_store
-      .collection('course', (ref) => ref.where('disabled', '==', false))
-      .get();
+  get_all_course(type) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/course/get-course/enable/${type}`
+    );
   }
 
-  get_all_disabled_course() {
-    return this.firebase_store
-      .collection('course', (ref) => ref.where('disabled', '==', true))
-      .get();
+  change_status(data) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/course/update-status`,
+      { data }
+    );
   }
 
-  disabled_course(data) {
-    return this.firebase_store
-      .collection('course')
-      .doc(data.doc_id)
-      .update({ disabled: data.disabled });
+  view_details_by_id(id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/course/get-course/view-course/${id}`
+    );
   }
 
-  get_course_details_by_id(id) {
-    return this.firebase_store.collection('course').doc(id).get();
+  edit_course_by_id(id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/course/get-course/edit-course/${id}`
+    );
   }
 
   update_course(data, id) {
-    return this.firebase_store.collection('course').doc(id).update(data);
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/course/upadte-course-details/${id}`,
+      { data }
+    );
   }
 }

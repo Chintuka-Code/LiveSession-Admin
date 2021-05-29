@@ -47,12 +47,12 @@ export class StudentProfileComponent implements OnInit {
         const batch_details: any = batch_response.data();
 
         // get course details
-        const course_response = await this.course_service
-          .get_course_details_by_id(batch_details.course_id)
-          .toPromise();
-        batch_details['course_details'] = course_response.data();
-        // add batch details into batch object
-        batch['batch_details'] = batch_details;
+        // const course_response = await this.course_service
+        //   .get_course_details_by_id(batch_details.course_id)
+        //   .toPromise();
+        // batch_details['course_details'] = course_response.data();
+        // // add batch details into batch object
+        // batch['batch_details'] = batch_details;
 
         // Get All subject List
         await Promise.all(
