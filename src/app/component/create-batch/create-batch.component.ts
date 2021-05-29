@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BatchService } from 'src/app/service/batch.service';
 import { CourseService } from 'src/app/service/course.service';
 import { PermissionService } from 'src/app/service/permission.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
 
@@ -15,7 +16,7 @@ import Swal from 'sweetalert2';
 export class CreateBatchComponent implements OnInit {
   spinner: boolean = false;
   create_batch_form: FormGroup;
-  courses: any[];
+  courses: any[] = [];
   days: string[];
   duration: string[];
 
@@ -53,26 +54,23 @@ export class CreateBatchComponent implements OnInit {
   }
 
   check_permission() {
-    this.spinner = !this.spinner;
+    this.spinner = true;
     this.activated_route.data.subscribe(async (res) => {
-      try {
-        const response = await this.permission_service.check_role(res.role);
-        if (response) {
+      const user: any = ACTIVE_USER();
+
+      if (!user.permissions.includes(res.role)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Access Denied',
+        }).then(() => {
+          this.router.navigate(['/main']);
           this.spinner = !this.spinner;
-          this.get_all_course();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Access Denied',
-          }).then(() => {
-            this.router.navigate(['/main']);
-            this.spinner = !this.spinner;
-          });
-        }
-      } catch (error) {
-        console.log(error);
+        });
+        return;
       }
+      this.get_all_course();
+      this.spinner = false;
     });
   }
 
@@ -91,10 +89,24 @@ export class CreateBatchComponent implements OnInit {
 
   get_all_course() {
     this.spinner = true;
-    // this.course_service.get_all_course().subscribe((res) => {
-    //   this.courses = FormativeData.format_firebase_get_request_data(res);
-    //   this.spinner = false;
-    // });
+    this.course_service.get_all_course(false).subscribe(
+      (res: any) => {
+        this.courses = res.data;
+        this.courses.map((course) => delete course.disabled);
+        console.log(this.courses);
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
+        });
+      }
+    );
   }
 
   async create_batch() {
@@ -102,28 +114,30 @@ export class CreateBatchComponent implements OnInit {
     data['disabled'] = false;
     this.spinner = true;
 
-    try {
-      const response = await this.batch_service.create_batch(data);
-      Swal.fire({
-        icon: 'success',
-        title: 'Yeah...',
-        text: 'Batch Created',
-      });
-      this.create_batch_form.reset();
-      this.spinner = false;
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'ooh...',
-        text: 'Something went wrong',
-      });
-      this.spinner = false;
-    }
+    this.batch_service.create_batch(data).subscribe(
+      (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'Batch Created',
+        });
+        this.create_batch_form.reset();
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
   }
 
   ngOnInit(): void {
-    // this.check_permission();
+    this.check_permission();
     this.validation();
   }
 }

@@ -53,10 +53,22 @@ export class EditBatchComponent implements OnInit {
 
   get_all_course() {
     this.spinner = true;
-    // this.course_service.get_all_course().subscribe((res) => {
-    //   this.courses = FormativeData.format_firebase_get_request_data(res);
-    //   this.spinner = false;
-    // });
+    this.course_service.get_all_course(false).subscribe(
+      (res: any) => {
+        this.courses = res.data;
+        this.courses.map((course) => delete course.disabled);
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
   }
 
   validation() {
@@ -74,67 +86,74 @@ export class EditBatchComponent implements OnInit {
 
   get_batch_information() {
     this.spinner = true;
-    this.batch_service.get_batch_details_by(this.batch_id).subscribe((res) => {
-      const batch_details = res.data();
-      this.fill_pervious_details(batch_details);
-    });
+    this.batch_service.get_edit_batch_details_by_id(this.batch_id).subscribe(
+      (res: any) => {
+        const batch_details = res.data;
+        this.fill_pervious_details(batch_details);
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
   }
 
   fill_pervious_details(batch) {
     this.spinner = true;
-
+    console.log();
     this.update_batch_form.controls.batch_name.patchValue(batch.batch_name);
     this.update_batch_form.controls.batch_duration.patchValue(
       batch.batch_duration
     );
     this.update_batch_form.controls.batch_start_date.patchValue(
-      batch.batch_start_date.toDate()
+      new Date(batch.batch_start_date)
     );
     this.update_batch_form.controls.batch_end_date.patchValue(
-      batch.batch_end_date.toDate()
+      new Date(batch.batch_end_date)
     );
     this.update_batch_form.controls.active_days.patchValue(batch.active_days);
     this.update_batch_form.controls.batch_start_time.patchValue(
-      batch.batch_start_time.toDate()
+      new Date(batch.batch_start_time)
     );
     this.update_batch_form.controls.batch_end_time.patchValue(
-      batch.batch_end_time.toDate()
+      new Date(batch.batch_end_time)
     );
-    this.update_batch_form.controls.course_id.patchValue(batch.course_id);
+    this.update_batch_form.controls.course_id.patchValue(batch.course_id._id);
 
-    // this.update_course_form.controls.subject_ids.patchValue(
-    //   this.subject.map((element) => {
-    //     if (this.course.subject_ids.includes(element.doc_id)) {
-    //       return element.doc_id;
-    //     }
-    //   })
-    // );
     this.spinner = false;
   }
 
   async update_batch() {
     this.spinner = true;
-    try {
-      const data = this.update_batch_form.getRawValue();
-      data['batch_id'] = this.batch_id;
-      const response = await this.batch_service.update_batch_details(data);
-      Swal.fire({
-        icon: 'success',
-        title: 'Yeah...',
-        text: 'Course Updated',
-      }).then(() => {
-        this.router.navigate(['/main/view-batch']);
-      });
-      this.spinner = false;
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Ooh...',
-        text: 'Something Went wrong',
-      });
-      this.spinner = false;
-    }
+
+    const data = this.update_batch_form.getRawValue();
+    data['_id'] = this.batch_id;
+    this.batch_service.change_batch_status(data).subscribe(
+      (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'Course Updated',
+        }).then(() => {
+          this.router.navigate(['/main/view-batch']);
+        });
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
   }
 
   ngOnInit(): void {

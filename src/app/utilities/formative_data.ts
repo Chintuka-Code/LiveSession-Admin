@@ -55,7 +55,7 @@ export class FormativeData {
     return data.map((path) => environment.FILES_URL + '/' + path);
   }
 
-  static formative_date(date, format) {
-    return new DatePipe('en-US').transform(date, format);
+  static formative_date(date) {
+    return new DatePipe('en-US').transform(date);
   }
 }

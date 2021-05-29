@@ -41,10 +41,10 @@ export class StudentProfileComponent implements OnInit {
     await Promise.all(
       this.student_info.batch_ids.map(async (batch) => {
         // get batch details
-        const batch_response = await this.batch_service
-          .get_batch_details_by(batch.batch_ids)
-          .toPromise();
-        const batch_details: any = batch_response.data();
+        // const batch_response = await this.batch_service
+        //   .get_batch_details_by(batch.batch_ids)
+        //   .toPromise();
+        // const batch_details: any = batch_response.data();
 
         // get course details
         // const course_response = await this.course_service

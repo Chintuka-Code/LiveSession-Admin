@@ -1,40 +1,49 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
+
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class BatchService {
-  constructor(private firebase_store: AngularFirestore) {}
+  constructor(
+    private firebase_store: AngularFirestore,
+    private http: HttpClient
+  ) {}
 
   timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
   create_batch(data) {
-    data['created_at'] = this.timestamp;
-    return this.firebase_store.collection('batch').add(data);
+    return this.http.post(`${environment.BASE_SERVER_URL}/batch/create-batch`, {
+      data,
+    });
   }
 
-  get_all_enable_batch() {
-    return this.firebase_store
-      .collection('batch', (ref) => ref.where('disabled', '==', false))
-      .get();
+  get_all_batch(type) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/get-batch/enable/${type}`
+    );
   }
 
-  get_all_disabled_batch() {
-    return this.firebase_store
-      .collection('batch', (ref) => ref.where('disabled', '==', true))
-      .get();
-  }
-
-  disabled_batch(id, status) {
-    return this.firebase_store
-      .collection('batch')
-      .doc(id)
-      .update({ disabled: status });
+  change_batch_status(data) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/batch/update-status`,
+      { data }
+    );
   }
 
   get_batch_details_by(id) {
-    return this.firebase_store.collection('batch').doc(id).get();
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/view-batch-details/${id}`
+    );
+  }
+
+  get_edit_batch_details_by_id(id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/get-edit-batch-details/${id}`
+    );
   }
 
   update_batch_details(data) {
