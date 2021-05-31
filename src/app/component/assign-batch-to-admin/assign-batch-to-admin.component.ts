@@ -25,35 +25,70 @@ export class AssignBatchToAdminComponent implements OnInit {
 
   get_all_batch() {
     this.spinner = true;
-    this.batch_service.get_all_enable_batch().subscribe((res) => {
-      this.batch = FormativeData.format_firebase_get_request_data(res);
-      this.get_user_info();
-    });
+    this.batch_service.get_all_batch(false).subscribe(
+      (res: any) => {
+        this.batch = res.data;
+        console.log(this.batch);
+        this.get_user_info();
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
   }
 
   get_user_info() {
-    this.user_service.get_user_by_id(this.user_id).subscribe((res) => {
-      this.user = res.data();
-      this.selected_batch = this.user.batch_ids;
-      this.spinner = false;
-    });
+    this.user_service.get_user_by_id(this.user_id).subscribe(
+      (res: any) => {
+        this.user = res.data;
+        console.log(this.user);
+        this.selected_batch = this.user.batch_ids;
+        console.log(this.selected_batch);
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
   }
 
   async add_admin_into_batch() {
     this.spinner = true;
-    const response = await this.user_service.add_admin_into_batch(
-      this.selected_batch,
-      this.user_id
+    const data = { user_id: this.user_id, batch: this.selected_batch };
+    console.log(data);
+    this.user_service.add_admin_into_batch(data).subscribe(
+      (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'Admin Added',
+        }).then(() => {
+          this.router.navigate(['/main/user-details/admin']);
+          this.spinner = false;
+        });
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
     );
-    Swal.fire({
-      icon: 'success',
-      title: 'Yeah...',
-      text: 'Admin Added',
-    }).then(() => {
-      this.router.navigate(['/main/user-details/admin']);
-    });
-    this.selected_batch = [];
-    this.spinner = false;
   }
 
   ngOnInit(): void {

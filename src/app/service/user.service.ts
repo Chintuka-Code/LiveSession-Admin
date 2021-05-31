@@ -57,11 +57,11 @@ export class UserService {
     );
   }
 
-  add_admin_into_batch(batch, id) {
-    return this.firebase_store
-      .collection('user')
-      .doc(id)
-      .update({ batch_ids: batch });
+  add_admin_into_batch(data) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/user/add-admin-into-batch`,
+      { data }
+    );
   }
 
   get_all_admin_account() {
@@ -77,18 +77,5 @@ export class UserService {
       `${environment.BASE_SERVER_URL}/user/update-password`,
       data
     );
-
-    // try {
-    //   const cpUser = firebase.auth().currentUser;
-    //   const credentials = firebase.auth.EmailAuthProvider.credential(
-    //     localStorage.getItem('email'),
-    //     data.old_password
-    //   );
-    //   await cpUser.reauthenticateWithCredential(credentials);
-    //   await cpUser.updatePassword(data.new_password);
-    //   return 'password update';
-    // } catch (error) {
-    //   throw new Error(error);
-    // }
   }
 }
