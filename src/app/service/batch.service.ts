@@ -58,4 +58,10 @@ export class BatchService {
       .doc(data.batch_id)
       .update(data);
   }
+
+  get_batch_details_home() {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/get-batch-details-home`
+    );
+  }
 }

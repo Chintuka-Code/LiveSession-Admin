@@ -1,4 +1,4 @@
-<!-- <ng-container *ngIf="!spinner; else showspinner">
+<ng-container *ngIf="!spinner; else showspinner">
   <div class="row">
     <div class="col-md-6 col-xl-3">
       <div class="card stat-widget">
@@ -44,8 +44,8 @@
                       {{ bat.batch_name }}
                     </h4>
                     <p>
-                      {{ bat.batch_start_time.toDate() | date: "mediumTime" }}
-                      to {{ bat.batch_end_time.toDate() | date: "mediumTime" }}
+                      {{ bat.batch_start_time | date: "mediumTime" }}
+                      to {{ bat.batch_end_time | date: "mediumTime" }}
                     </p>
                   </div>
                 </div>
@@ -62,4 +62,4 @@
   <div class="spinner">
     <app-spinner></app-spinner>
   </div>
-</ng-template> -->
+</ng-template>
