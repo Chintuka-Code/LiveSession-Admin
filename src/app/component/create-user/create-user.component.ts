@@ -7,6 +7,8 @@ import { UserService } from 'src/app/service/user.service';
 import { FormativeData } from '../../utilities/formative_data';
 import Swal from 'sweetalert2';
 import { eye_button } from 'src/app/utilities/password_eye';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
+import { Notification } from 'src/app/utilities/ACCESS_DENIED';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -36,23 +38,14 @@ export class CreateUserComponent implements OnInit {
   check_permission() {
     this.spinner = !this.spinner;
     this.activated_route.data.subscribe(async (res) => {
-      try {
-        const response = await this.permission_service.check_role(res.role);
-        if (response) {
-          this.spinner = !this.spinner;
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Access Denied',
-          }).then(() => {
-            this.router.navigate(['/main']);
-            this.spinner = !this.spinner;
-          });
-        }
-      } catch (error) {
-        console.log(error);
+      const user: any = ACTIVE_USER();
+      console.log(res.role);
+      if (!user.permissions.includes(res.role)) {
+        this.router.navigate(['/main']);
+        Notification.ACCESS_DENIED();
+        return '';
       }
+      this.spinner = false;
     });
   }
 

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 import { BatchService } from 'src/app/service/batch.service';
+import { StudentsService } from 'src/app/service/students.service';
 import { UserService } from 'src/app/service/user.service';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
@@ -16,8 +17,9 @@ export class HomeComponent implements OnInit {
   batch: any;
   spinner: boolean = false;
   user: any;
+  total_student: number = 0;
   constructor(
-    private user_service: UserService,
+    private student_service: StudentsService,
     private batch_service: BatchService,
     private http: HttpClient
   ) {}
@@ -42,14 +44,14 @@ export class HomeComponent implements OnInit {
           });
         }
       );
+      return;
     }
-    this.spinner = true;
+    this.total_student_count();
   }
 
   // check batch timing
   async check_batch_timing(batch) {
     try {
-      console.log(batch);
       const date_obj: any = await this.http
         .get(environment.time_api_url)
         .toPromise();
@@ -91,14 +93,19 @@ export class HomeComponent implements OnInit {
           bat.active = false;
         }
       });
-
+      this.total_student_count();
       this.batch = batch;
-      // console.log(this.batch);
-      this.spinner = false;
     } catch (error) {
       this.spinner = false;
       console.log(error);
     }
+  }
+
+  total_student_count() {
+    this.student_service.total_student().subscribe((res: any) => {
+      this.total_student = res.count;
+      this.spinner = false;
+    });
   }
 
   ngOnInit(): void {

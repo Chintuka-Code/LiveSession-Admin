@@ -1,6 +1,6 @@
 <ng-container *ngIf="!spinner; else showspinner">
   <div class="row">
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl-3" *ngIf="batch">
       <div class="card stat-widget">
         <div class="card-body">
           <h5 class="card-title">Total Live Sessions</h5>
@@ -9,10 +9,19 @@
         </div>
       </div>
     </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card stat-widget">
+        <div class="card-body">
+          <h5 class="card-title">Total Students</h5>
+          <h2>{{ total_student }}</h2>
+          <p>Active</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="row">
-    <div class="col-sm-6 col-xl-4">
+    <div class="col-sm-6 col-xl-4" *ngIf="batch">
       <div class="card stat-widget">
         <div class="card-body">
           <h5 class="card-title">Today's live Sessions</h5>

@@ -67,4 +67,10 @@ export class StudentsService {
       { data }
     );
   }
+
+  total_student() {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/student/total-active-students`
+    );
+  }
 }
