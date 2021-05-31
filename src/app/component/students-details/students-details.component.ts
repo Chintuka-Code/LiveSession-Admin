@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PermissionService } from 'src/app/service/permission.service';
 import { StudentsService } from 'src/app/service/students.service';
 import { UserService } from 'src/app/service/user.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
 @Component({
@@ -16,6 +17,7 @@ export class StudentsDetailsComponent implements OnInit {
   items: any[];
   user_profile: any;
   menu_type: string;
+  student_type_disabled: boolean = false;
   constructor(
     private user_service: UserService,
     private permission_service: PermissionService,
@@ -25,24 +27,25 @@ export class StudentsDetailsComponent implements OnInit {
 
   get_users_data() {
     this.spinner = true;
-    this.student_service.get_student_details().subscribe((res: any) => {
-      this.students_data = FormativeData.format_firebase_get_request_data(res);
-      this.spinner = false;
-    });
-  }
-
-  async role() {
-    this.user_service
-      .get_user_by_id(localStorage.getItem('uid'))
-      .subscribe((res: any) => {
-        this.user_profile = res.data();
-
-        this.setMenu();
-      });
+    this.student_service.get_student_details(false).subscribe(
+      (res: any) => {
+        this.students_data = res.data;
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.router.navigate(['/main']);
+        });
+      }
+    );
   }
 
   setMenu() {
-    console.log(this.user_profile.permissions);
+    this.user_profile = ACTIVE_USER();
     if (!this.user_profile.permissions.includes('RS00')) {
       Swal.fire({
         icon: 'error',
@@ -50,8 +53,9 @@ export class StudentsDetailsComponent implements OnInit {
         text: 'Access Denied',
       });
       this.router.navigate(['/main']);
+      return;
     }
-
+    this.get_users_data();
     this.items = [
       {
         label: 'Actions',
@@ -87,7 +91,6 @@ export class StudentsDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.role();
-    this.get_users_data();
+    this.setMenu();
   }
 }

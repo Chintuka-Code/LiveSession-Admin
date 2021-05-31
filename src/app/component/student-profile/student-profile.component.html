@@ -21,7 +21,7 @@
           <li>
             <strong>Created At</strong>
             <span>
-              {{ student_info.createdAt.toDate() | date: "medium" }}
+              {{ student_info.createdAt | date: "medium" }}
             </span>
           </li>
           <li class="batch-details" *ngIf="student_info.batch_ids.length != 0">
@@ -30,24 +30,24 @@
               <p-accordion>
                 <p-accordionTab
                   *ngFor="let batch of student_info.batch_ids"
-                  [header]="batch.batch_details.batch_name"
+                  [header]="batch.batch_ids.batch_name"
                 >
                   <div class="batch-details">
                     <!-- Batch Information -->
                     <ul class="dialog-list">
                       <li>
                         <strong>Batch Name</strong>
-                        <span> {{ batch.batch_details.batch_name }} </span>
+                        <span> {{ batch.batch_ids.batch_name }} </span>
                       </li>
                       <li>
                         <strong>Batch Duration</strong>
-                        <span> {{ batch.batch_details.batch_duration }} </span>
+                        <span> {{ batch.batch_ids.batch_duration }} </span>
                       </li>
                       <li>
                         <strong>Batch Start Date</strong>
                         <span>
                           {{
-                            batch.batch_details.batch_start_date.toDate()
+                            batch.batch_ids.batch_start_date
                               | date: "mediumDate"
                           }}
                         </span>
@@ -56,8 +56,7 @@
                         <strong>Batch End Date</strong>
                         <span>
                           {{
-                            batch.batch_details.batch_end_date.toDate()
-                              | date: "mediumDate"
+                            batch.batch_ids.batch_end_date | date: "mediumDate"
                           }}
                         </span>
                       </li>
@@ -65,7 +64,7 @@
                         <strong>Batch Start Time</strong>
                         <span>
                           {{
-                            batch.batch_details.batch_start_time.toDate()
+                            batch.batch_ids.batch_start_time
                               | date: "mediumTime"
                           }}
                         </span>
@@ -74,17 +73,14 @@
                         <strong>Batch End Time</strong>
                         <span
                           >{{
-                            batch.batch_details.batch_end_time.toDate()
-                              | date: "mediumTime"
+                            batch.batch_ids.batch_end_time | date: "mediumTime"
                           }}
                         </span>
                       </li>
                       <li>
                         <strong>Batch Active Days</strong>
                         <ul>
-                          <li
-                            *ngFor="let item of batch.batch_details.active_days"
-                          >
+                          <li *ngFor="let item of batch.batch_ids.active_days">
                             <span> {{ item }} </span>
                           </li>
                         </ul>
@@ -96,24 +92,20 @@
 
                       <p-accordion>
                         <p-accordionTab
-                          [header]="
-                            batch.batch_details.course_details.course_name
-                          "
+                          [header]="batch.batch_ids.course_id.course_name"
                         >
                           <ul>
                             <li>
                               <strong>Course Name</strong>
                               <span>
-                                {{
-                                  batch.batch_details.course_details.course_name
-                                }}
+                                {{ batch.batch_ids.course_id.course_name }}
                               </span>
                             </li>
                             <li>
                               <strong>Created At</strong>
                               <span>
                                 {{
-                                  batch.batch_details.course_details.created_at.toDate()
+                                  batch.batch_ids.course_id.createdAt
                                     | date: "medium"
                                 }}
                               </span>
@@ -129,7 +121,7 @@
                       <p-accordion>
                         <p-accordionTab header="Subject">
                           <ul>
-                            <li *ngFor="let subject of batch.subject_details">
+                            <li *ngFor="let subject of batch.subject_ids">
                               <strong> {{ subject.subject_name }} </strong>
                             </li>
                           </ul>

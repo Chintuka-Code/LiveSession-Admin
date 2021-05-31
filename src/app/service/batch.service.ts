@@ -40,6 +40,12 @@ export class BatchService {
     );
   }
 
+  get_batch_details_for_addStudent(id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/batch-details-for-add-student/${id}`
+    );
+  }
+
   get_edit_batch_details_by_id(id) {
     return this.http.get(
       `${environment.BASE_SERVER_URL}/batch/get-edit-batch-details/${id}`

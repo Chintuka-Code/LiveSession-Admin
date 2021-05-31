@@ -122,7 +122,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'add-student-into-batch/:batch_id',
+        path: 'add-student-into-batch/:batch_id/:batch_name',
         loadChildren: () =>
           import(
             '../add-student-into-batch/add-student-into-batch.module'

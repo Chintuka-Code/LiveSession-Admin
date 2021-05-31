@@ -5,7 +5,7 @@
       <h3 *ngIf="bulk" class="">Bulk Student Registration</h3>
 
       <div class="d-flex align-items-center">
-        <!-- <div
+        <div
           class="form-check form-switch d-flex align-items-center"
           style="padding-right: 1rem; cursor: pointer"
         >
@@ -22,7 +22,7 @@
             for="flexSwitchCheckDefault"
             >Bulk Registration</label
           >
-        </div> -->
+        </div>
         <button class="btn btn-primary">
           <a [routerLink]="['../students-details/student']">
             <i class="fas fa-arrow-left"></i> Back
@@ -75,7 +75,7 @@
                 <label for="inputtext">Student Name</label>
               </span>
             </div> -->
-            <div class="col-12 col-md-12">
+            <div class="col-12 col-md-6">
               <span class="p-float-label w-100">
                 <input
                   type="text"
@@ -88,18 +88,18 @@
               </span>
             </div>
 
-            <!-- <div class="col-12 col-md-4">
+            <div class="col-12 col-md-6">
               <span class="p-float-label w-100">
-                <input
-                  type="text"
-                  id="inputtext"
-                  class="form-control"
-                  pInputText
-                  formControlName="data_of_joining"
-                />
-                <label for="inputtext">Student Email</label>
+                <p-calendar
+                  inputId="calendar"
+                  [style]="{ minWidth: '100%' }"
+                  formControlName="date_of_joining"
+                  dateFormat="dd.mm.yy"
+                ></p-calendar>
+
+                <label for="inputtext">Date of Joining</label>
               </span>
-            </div> -->
+            </div>
 
             <div class="col-12 col-md-6 mt-3">
               <button

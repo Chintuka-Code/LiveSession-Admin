@@ -134,6 +134,7 @@ export class ViewBatchComponent implements OnInit {
         this.dialog_visible = true;
       },
       (error) => {
+        console.log(error);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -167,7 +168,11 @@ export class ViewBatchComponent implements OnInit {
         this.disabled_batch(batch);
         break;
       case 'add-student':
-        this.router.navigate(['/main/add-student-into-batch', batch._id]);
+        this.router.navigate([
+          '/main/add-student-into-batch',
+          batch._id,
+          batch.batch_name,
+        ]);
         break;
       default:
         console.log('');

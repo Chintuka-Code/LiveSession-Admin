@@ -3,11 +3,22 @@
     <div class="card-body">
       <div class="header">
         <h3 class="">Students List</h3>
-        <button class="btn btn-primary">
-          <a [routerLink]="['../../create-student']">
-            Create Student <i class="fas fa-plus"></i>
-          </a>
-        </button>
+
+        <div class="d-flex align-items-center">
+          <!-- <button class="btn btn-outline-dark mr-3">
+            <a href="javascript:void(0)" (click)="get_updated_course()">
+              <ng-container *ngIf="!student_type_disabled; else enable">
+                Disabled Student
+              </ng-container>
+              <ng-template #enable> Active Student </ng-template>
+            </a>
+          </button> -->
+          <button class="btn btn-primary">
+            <a [routerLink]="['../../create-student']">
+              Create Student <i class="fas fa-plus"></i>
+            </a>
+          </button>
+        </div>
       </div>
       <p-table
         #usertable
@@ -65,7 +76,7 @@
               <p-menu
                 #menu
                 [popup]="true"
-                (click)="set_dynamic_url(student.doc_id)"
+                (click)="set_dynamic_url(student._id)"
                 [model]="items"
               ></p-menu>
             </td>
