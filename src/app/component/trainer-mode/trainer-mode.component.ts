@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { async } from '@angular/core/testing';
-import { forkJoin, of, zip } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { BatchService } from 'src/app/service/batch.service';
+import Swal from 'sweetalert2';
+
 import { ChatService } from 'src/app/service/chat.service';
 import { UserService } from 'src/app/service/user.service';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trainer-mode',
@@ -23,7 +22,7 @@ export class TrainerModeComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private batch_service: BatchService,
+    private router: Router,
     private chat_service: ChatService,
     private user_service: UserService
   ) {}
@@ -31,20 +30,35 @@ export class TrainerModeComponent implements OnInit {
   // get all batch
   get_user_all_batch() {
     this.spinner = true;
-    this.user_service
-      .get_user_by_id(localStorage.getItem('uid'))
-      .subscribe((res) => {
-        this.user = res.data();
-
-        const batch_request = this.user.batch_ids.map((batch) =>
-          this.batch_service.get_batch_details_by(batch)
-        );
-
-        forkJoin(batch_request).subscribe((res) => {
-          this.batch = res.map((batch: any) => batch.data());
+    this.user_service.get_admin_batch_details().subscribe(
+      (res: any) => {
+        const data = res.data;
+        this.user = data;
+        this.batch = data.batch_ids;
+        if (this.batch.length > 0) {
           this.check_batch_timing(this.batch);
+          return;
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Batch Not found',
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
         });
-      });
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
+        });
+      }
+    );
   }
 
   // check batch timing
@@ -60,21 +74,21 @@ export class TrainerModeComponent implements OnInit {
           'shortTime'
         ),
         current_day: date_obj.dayOfTheWeek,
-        current_date: new Date(date_obj.currentDateTime).getTime() / 1000,
+        current_date: new Date(date_obj.currentDateTime),
       };
 
       batch.forEach((bat, index) => {
         const batch_info = {
-          batch_start_date: bat.batch_start_date.seconds,
+          batch_start_date: new Date(bat.batch_start_date),
 
-          batch_end_date: bat.batch_end_date.seconds,
+          batch_end_date: new Date(bat.batch_end_date),
 
           batch_start_time: FormativeData.formative_date(
-            bat.batch_start_time.toDate(),
+            bat.batch_start_time,
             'shortTime'
           ),
           batch_end_time: FormativeData.formative_date(
-            bat.batch_end_time.toDate(),
+            bat.batch_end_time,
             'shortTime'
           ),
         };
@@ -93,7 +107,7 @@ export class TrainerModeComponent implements OnInit {
       });
 
       this.batch = batch;
-      console.log(this.batch);
+
       this.spinner = false;
     } catch (error) {
       this.spinner = false;
@@ -137,6 +151,7 @@ export class TrainerModeComponent implements OnInit {
 
     this.spinner = false;
     this.scroll_chat_container();
+    console.log(this.all_chats);
   }
 
   scroll_chat_container() {

@@ -3,10 +3,9 @@ import { BatchService } from 'src/app/service/batch.service';
 import { ChatService } from 'src/app/service/chat.service';
 import { UserService } from 'src/app/service/user.service';
 import { FormativeData } from 'src/app/utilities/formative_data';
-import { filter, map } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AttachmentService } from 'src/app/service/attachment.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -32,7 +31,7 @@ export class LiveSessionChatComponent implements OnInit {
 
   constructor(
     private chat_service: ChatService,
-    private batch_service: BatchService,
+    private router: Router,
     private user_service: UserService,
     private attachment_service: AttachmentService
   ) {}
@@ -62,7 +61,14 @@ export class LiveSessionChatComponent implements OnInit {
         this.batch = data.batch_ids;
       },
       (error) => {
-        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
+        });
       }
     );
   }

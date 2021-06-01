@@ -51,7 +51,7 @@
               <h3 class="h3">{{ selected_batch.batch_name }}</h3>
             </div>
 
-            <div class="chat-body px-2" id="chat-body">
+            <div class="chat-body px-2 position-relative" id="chat-body">
               <!-- load more button -->
               <div class="d-flex">
                 <button
@@ -65,7 +65,10 @@
               </div>
 
               <!-- message list -->
-              <div class="post-comments d-flex flex-column">
+              <div
+                class="post-comments d-flex flex-column"
+                *ngIf="all_chats.length != 0; else nochat"
+              >
                 <div class="post-comm" *ngFor="let chat of all_chats">
                   <img
                     src="../../assets/images/avatars/user.svg"
@@ -107,6 +110,11 @@
                   </div>
                 </div>
               </div>
+              <ng-template #nochat>
+                <h3 class="text-center text-danger center">
+                  No Chat Available
+                </h3>
+              </ng-template>
             </div>
           </ng-container>
         </div>

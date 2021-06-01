@@ -80,7 +80,7 @@ export class ChatService {
   // for trainer mode
   get_selected_batch_chat(batch) {
     return this.firebase_store
-      .collection('chat', (ref) => ref.where('batch_id', '==', batch.batch_id))
+      .collection('chat', (ref) => ref.where('batch_id', '==', batch._id))
       .get();
   }
 
