@@ -55,19 +55,16 @@ export class LiveSessionChatComponent implements OnInit {
   }
 
   get_admin_batch() {
-    this.user_service
-      .get_user_by_id(localStorage.getItem('uid'))
-      .subscribe((res) => {
-        this.user = res.data();
-
-        const batch_request = this.user.batch_ids.map((batch) =>
-          this.batch_service.get_batch_details_by(batch)
-        );
-
-        forkJoin(batch_request).subscribe((res) => {
-          this.batch = res.map((batch: any) => batch.data());
-        });
-      });
+    this.user_service.get_admin_batch_details().subscribe(
+      (res: any) => {
+        const data = res.data;
+        this.user = data;
+        this.batch = data.batch_ids;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   // after batch select get all the student list
@@ -75,12 +72,9 @@ export class LiveSessionChatComponent implements OnInit {
     this.spinner = true;
     this.selected_student = '';
     this.selected_student_chat_message = '';
-
+    console.log(this.selected_batch);
     this.chat_service
-      .get_active_chat(
-        localStorage.getItem('uid'),
-        this.selected_batch.batch_id
-      )
+      .get_active_chat(localStorage.getItem('uid'), this.selected_batch._id)
       .subscribe(
         (res) => {
           const data = FormativeData.formative_snapshot_data(res);
@@ -137,6 +131,7 @@ export class LiveSessionChatComponent implements OnInit {
 
   async assign_chat_to_admin() {
     this.spinner = true;
+    console.log(this.selected_student);
     await this.chat_service.assign_chat_admin(
       this.selected_student.doc_id,
       localStorage.getItem('uid')
