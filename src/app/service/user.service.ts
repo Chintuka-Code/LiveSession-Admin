@@ -84,4 +84,8 @@ export class UserService {
       `${environment.BASE_SERVER_URL}/user/get-admin-batch-details`
     );
   }
+
+  get_all_admin() {
+    return this.http.get(`${environment.BASE_SERVER_URL}/user/get-admin-list`);
+  }
 }

@@ -78,7 +78,6 @@ export class LiveSessionChatComponent implements OnInit {
     this.spinner = true;
     this.selected_student = '';
     this.selected_student_chat_message = '';
-    console.log(this.selected_batch);
     this.chat_service
       .get_active_chat(localStorage.getItem('uid'), this.selected_batch._id)
       .subscribe(
@@ -102,7 +101,7 @@ export class LiveSessionChatComponent implements OnInit {
             (student) =>
               !student.sme_id || student.sme_id === localStorage.getItem('uid')
           );
-          // console.log(this.active_student_list);
+
           // enable/disable end all chat button
           this.end_all_chat_button = this.active_student_list.some(
             (student) => student.sme_id === localStorage.getItem('uid')
@@ -111,7 +110,6 @@ export class LiveSessionChatComponent implements OnInit {
           this.spinner = false;
         },
         (error) => {
-          console.log(error);
           Swal.fire({
             icon: 'error',
             title: 'ooh...',
@@ -137,7 +135,6 @@ export class LiveSessionChatComponent implements OnInit {
 
   async assign_chat_to_admin() {
     this.spinner = true;
-    console.log(this.selected_student);
     await this.chat_service.assign_chat_admin(
       this.selected_student.doc_id,
       localStorage.getItem('uid')
@@ -239,10 +236,23 @@ export class LiveSessionChatComponent implements OnInit {
   // for transfer
   get_all_admin() {
     this.spinner = true;
-    this.user_service.get_all_admin_account().subscribe((res) => {
-      this.transfer_admin = FormativeData.format_firebase_get_request_data(res);
-      this.spinner = false;
-    });
+
+    this.user_service.get_all_admin().subscribe(
+      (res: any) => {
+        this.transfer_admin = res.data;
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
+        });
+      }
+    );
   }
 
   load_more() {
@@ -267,7 +277,6 @@ export class LiveSessionChatComponent implements OnInit {
       if (result.isConfirmed) {
         this.spinner = true;
         this.selected_student_chat_message = undefined;
-        console.log(this.active_student_list);
 
         await Promise.all(
           this.active_student_list.map(async (student) => {
