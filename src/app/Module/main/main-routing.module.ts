@@ -163,6 +163,27 @@ const routes: Routes = [
             '../update-student-profile/update-student-profile.module'
           ).then((m) => m.UpdateStudentProfileModule),
       },
+      {
+        path: 'view-category',
+        loadChildren: () =>
+          import('../view-category/view-category.module').then(
+            (m) => m.ViewCategoryModule
+          ),
+      },
+      {
+        path: 'create-category',
+        loadChildren: () =>
+          import('../create-category/create-category.module').then(
+            (m) => m.CategoryModule
+          ),
+      },
+      {
+        path: 'edit-category',
+        loadChildren: () =>
+          import('../edit-category/edit-category.module').then(
+            (m) => m.EditCategoryModule
+          ),
+      },
     ],
   },
 ];

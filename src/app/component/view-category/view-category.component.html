@@ -1,0 +1,122 @@
+<section *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Active Category</h3>
+
+        <div class="d-flex align-items-center">
+          <button class="btn btn-outline-dark mr-3">
+            <a href="javascript:void(0)">
+              <ng-container *ngIf="!category_type_disabled; else enable">
+                Disabled Category
+              </ng-container>
+              <ng-template #enable> Enable Category </ng-template>
+            </a>
+          </button>
+
+          <button class="btn btn-primary">
+            <a [routerLink]="['../create-category']">
+              Create Batch <i class="fas fa-plus"></i>
+            </a>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <!-- <p-table
+            #subjecttable
+            [value]="batch"
+            dataKey="id"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="p-datatable-customers"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['batch_name']"
+          >
+            <ng-template pTemplate="caption" class="w-100">
+              <div class="p-d-flex w-100">
+                <span class="p-input-icon-left p-ml-auto w-100">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      subjecttable.filterGlobal($event.target.value, 'contains')
+                    "
+                    placeholder="Search keyword"
+                    class="w-100"
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Name</th>
+                <th>Duration</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Created At</th>
+                <th>Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-batch>
+              <tr>
+                <td>
+                  {{ batch.batch_name }}
+                </td>
+                <td>{{ batch.batch_duration }}</td>
+                <td>
+                  {{ batch.batch_start_date | date: "mediumDate" }}
+                </td>
+                <td>{{ batch.batch_end_date | date: "mediumDate" }}</td>
+                <td>{{ batch.createdAt | date: "medium" }}</td>
+                <td class="position-relative">
+                  <ng-container *ngIf="!batch_type_disabled; else enable">
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-ellipsis-h"
+                      class="p-button-rounded p-button-text"
+                      (click)="menu.toggle($event)"
+                    ></button>
+  
+                    <p-menu
+                      #menu
+                      [popup]="true"
+                      [model]="items"
+                      (click)="batch_action(batch)"
+                    ></p-menu>
+                  </ng-container>
+  
+                  <ng-template #enable>
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-pencil"
+                      class="p-button-rounded p-button-text"
+                      (click)="enable_batch(batch)"
+                    ></button>
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5">No User found.</td>
+              </tr>
+            </ng-template>
+          </p-table> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
