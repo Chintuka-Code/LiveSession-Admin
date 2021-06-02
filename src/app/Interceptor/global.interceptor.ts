@@ -15,7 +15,7 @@ export class GlobalInterceptor implements HttpInterceptor {
   constructor() {}
 
   handleError(err: HttpErrorResponse) {
-    err['errorMessage'] = ERROR_MESSAGE(err.error.message);
+    err['errorMessage'] = ERROR_MESSAGE(err.error.message, err);
     return throwError(err);
   }
 
