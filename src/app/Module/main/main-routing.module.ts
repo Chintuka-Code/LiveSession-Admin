@@ -156,6 +156,13 @@ const routes: Routes = [
             (m) => m.UpdateProfileModule
           ),
       },
+      {
+        path: 'update-student/:student_id',
+        loadChildren: () =>
+          import(
+            '../update-student-profile/update-student-profile.module'
+          ).then((m) => m.UpdateStudentProfileModule),
+      },
     ],
   },
 ];

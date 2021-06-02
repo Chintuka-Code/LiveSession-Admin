@@ -1,0 +1,123 @@
+<div *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">{{ student.name }}</h3>
+
+        <div class="d-flex align-items-center">
+          <button class="btn btn-primary">
+            <a [routerLink]="['../../students-details', 'student']">
+              <i class="fas fa-arrow-left"></i> Back
+            </a>
+          </button>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <form
+          action=""
+          [formGroup]="update_student_profile"
+          (ngSubmit)="update_student()"
+          class="w-100"
+        >
+          <div class="row">
+            <div class="col-12 col-md-4 mt-5">
+              <span class="p-float-label w-100">
+                <input
+                  type="text"
+                  id="inputtext"
+                  class="form-control"
+                  pInputText
+                  formControlName="name"
+                />
+                <label for="inputtext">Name</label>
+              </span>
+            </div>
+
+            <div
+              class="col-12 col-md-4 mt-5"
+              *ngIf="admin.permissions.includes('USE01')"
+            >
+              <span class="p-float-label w-100">
+                <input
+                  type="text"
+                  id="inputtext"
+                  class="form-control"
+                  pInputText
+                  formControlName="email"
+                />
+                <label for="inputtext">Email</label>
+              </span>
+            </div>
+
+            <div class="col-12 col-md-4 mt-5">
+              <span class="p-float-label w-100">
+                <p-calendar
+                  inputId="calendar"
+                  [style]="{ minWidth: '100%' }"
+                  dateFormat="dd.mm.yy"
+                  formControlName="date_of_joining"
+                ></p-calendar>
+                <label for="calenar">Date of joining</label>
+              </span>
+            </div>
+
+            <div
+              class="col-12 col-md-10 mt-5"
+              *ngIf="admin.permissions.includes('USB01')"
+            >
+              <p-treeTable
+                [value]="data"
+                [columns]="cols"
+                selectionMode="checkbox"
+                [(selection)]="selectedSubject"
+              >
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns">
+                      {{ col.header }}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template
+                  pTemplate="body"
+                  let-rowNode
+                  let-rowData="rowData"
+                  let-columns="columns"
+                >
+                  <tr>
+                    <td *ngFor="let col of columns; let i = index">
+                      <p-treeTableToggler
+                        [rowNode]="rowNode"
+                        *ngIf="i == 0"
+                      ></p-treeTableToggler>
+                      <p-treeTableCheckbox
+                        [value]="rowNode"
+                        *ngIf="i == 0"
+                      ></p-treeTableCheckbox>
+                      {{ rowData[col.field] }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-treeTable>
+            </div>
+
+            <div class="col-12 col-md-2 mt-5">
+              <button
+                class="btn btn-primary"
+                [disabled]="update_student_profile.invalid"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

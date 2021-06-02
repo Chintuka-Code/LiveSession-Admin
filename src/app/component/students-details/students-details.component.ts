@@ -71,22 +71,22 @@ export class StudentsDetailsComponent implements OnInit {
       },
     ];
 
-    // if (this.user_profile.permissions.includes('S10')) {
-    //   this.items[0].items.push({
-    //     label: 'Edit',
-    //     icon: 'pi pi-user-edit',
-    //     command: () => {
-    //       this.menu_type = 'edit';
-    //     },
-    //   });
-    // }
+    if (this.user_profile.permissions.includes('US01')) {
+      this.items[0].items.push({
+        label: 'Update Student',
+        icon: 'pi pi-user-edit',
+        command: () => {
+          this.menu_type = 'edit';
+        },
+      });
+    }
   }
 
   set_dynamic_url(id) {
     if (this.menu_type === 'view') {
       this.router.navigate(['main/student-profile', id]);
     } else {
-      this.router.navigate(['main/edit-user', id]);
+      this.router.navigate(['main/update-student', id]);
     }
   }
 

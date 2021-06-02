@@ -58,4 +58,54 @@ export class FormativeData {
   static formative_date(date, type) {
     return new DatePipe('en-US').transform(date, type);
   }
+
+  static format_batch_data(data, subject) {
+    const output = [];
+
+    data.map((batch) => {
+      output.push({
+        data: {
+          name: batch.batch_ids.batch_name,
+          id: batch.batch_ids._id,
+          type: 'Batch',
+        },
+        children: subject.map((subject) => {
+          return {
+            data: {
+              name: subject.subject_name,
+              id: subject._id,
+              type: 'Subject',
+              batch: batch.batch_ids.batch_name,
+              batch_id: batch.batch_ids._id,
+            },
+          };
+        }),
+      });
+    });
+
+    return output;
+  }
+
+  static groupBy_batchID(data) {
+    const batch_ids = [];
+
+    data.forEach((subj) => {
+      if (subj.data.batch_id) {
+        const dest = batch_ids.find(
+          (target) => target.batch_ids === subj.data.batch_id
+        );
+        if (!dest) {
+          batch_ids.push({
+            active: true,
+            batch_ids: subj.data.batch_id,
+            subject_ids: [subj.data.id],
+          });
+        } else {
+          dest.subject_ids.push(subj.data.id);
+        }
+      }
+    });
+
+    return batch_ids;
+  }
 }

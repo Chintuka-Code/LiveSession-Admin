@@ -15,20 +15,6 @@ export class StudentsService {
   ) {}
   timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-  user_authentication(data) {
-    // return this.firebase_auth.createUserWithEmailAndPassword(
-    //   data.email,
-    //   data.password
-    // );
-    return firebase
-      .auth()
-      .createUserWithEmailAndPassword(data.email, data.password);
-  }
-
-  log(data) {
-    return firebase.auth().signOut();
-  }
-
   create_single_student(data) {
     return this.http.post(
       `${environment.BASE_SERVER_URL}/student/create-student`,
@@ -71,6 +57,19 @@ export class StudentsService {
   total_student() {
     return this.http.get(
       `${environment.BASE_SERVER_URL}/student/total-active-students`
+    );
+  }
+
+  get_student_details_upadte(id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/student/get-student-details-update/${id}`
+    );
+  }
+
+  update_student_profile(data) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/student/update-student-profile`,
+      { data }
     );
   }
 }
