@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/service/category.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,9 +17,32 @@ export class CreateCategoryComponent implements OnInit {
 
   constructor(
     private category_service: CategoryService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private activated_route: ActivatedRoute,
+    private router: Router
   ) {
     this.feature_type = ['Ticket', 'Chat', 'Knowledge'];
+  }
+
+  check_permission() {
+    this.spinner = true;
+    this.activated_route.data.subscribe(async (res) => {
+      const user: any = ACTIVE_USER();
+
+      if (!user.permissions.includes(res.role)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Access Denied',
+        }).then(() => {
+          this.router.navigate(['/main']);
+          this.spinner = !this.spinner;
+        });
+        return;
+      }
+
+      this.spinner = false;
+    });
   }
 
   create_category() {
@@ -54,6 +79,7 @@ export class CreateCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.check_permission();
     this.validation();
   }
 }

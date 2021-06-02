@@ -172,6 +172,7 @@ const routes: Routes = [
       },
       {
         path: 'create-category',
+        data: { role: 'CAT10' },
         loadChildren: () =>
           import('../create-category/create-category.module').then(
             (m) => m.CategoryModule
