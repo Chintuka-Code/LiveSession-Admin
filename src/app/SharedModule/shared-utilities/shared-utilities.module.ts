@@ -6,9 +6,11 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MomentModule } from 'ngx-moment';
+import { QuillModule } from 'ngx-quill';
+import { SanitizeHtmlPipe } from '../../pipe/sanitize-html.pipe';
 
 @NgModule({
-  declarations: [SpinnerComponent],
+  declarations: [SpinnerComponent, SanitizeHtmlPipe],
   imports: [
     CommonModule,
     PrimengModule,
@@ -16,7 +18,8 @@ import { MomentModule } from 'ngx-moment';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MomentModule
+    MomentModule,
+    QuillModule,
   ],
   exports: [
     SpinnerComponent,
@@ -24,7 +27,9 @@ import { MomentModule } from 'ngx-moment';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MomentModule
+    MomentModule,
+    QuillModule,
+    SanitizeHtmlPipe,
   ],
 })
 export class SharedUtilitiesModule {}

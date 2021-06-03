@@ -2,21 +2,21 @@
   <div class="card">
     <div class="card-body">
       <div class="header">
-        <h3 class="">Active Blog</h3>
+        <h3 class="">Active Article</h3>
 
         <div class="d-flex align-items-center">
           <button class="btn btn-outline-dark mr-3">
             <a href="javascript:void(0)" (click)="get_updated_blog()">
               <ng-container *ngIf="!blog_type_disabled; else enable">
-                Disabled Blog
+                Disabled Article
               </ng-container>
-              <ng-template #enable> Enable Blog </ng-template>
+              <ng-template #enable> Enable Article </ng-template>
             </a>
           </button>
 
           <button class="btn btn-primary">
             <a [routerLink]="['../create-blog']">
-              Create Blog <i class="fas fa-plus"></i>
+              Create Article <i class="fas fa-plus"></i>
             </a>
           </button>
         </div>

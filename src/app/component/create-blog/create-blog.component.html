@@ -1,1 +1,67 @@
-<p>create-blog works!</p>
+<div class="card" *ngIf="!spinner; else showspinner">
+  <div class="card-body">
+    <div class="header">
+      <h3 class="">Create</h3>
+      <button class="btn btn-primary">
+        <a [routerLink]="['../view-blog']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
+    </div>
+    <div class="container-fluid">
+      <!-- [formGroup]="create_batch_form"
+        (ngSubmit)="create_batch()" -->
+      <form action="" class="w-100">
+        <div class="row align-items-center">
+          <div class="col-12 col-md-8 mt-5">
+            <span class="p-float-label w-100">
+              <p-dropdown
+                inputId="dropdown"
+                [autoDisplayFirst]="false"
+                [options]="category"
+                [style]="{ minWidth: '100%' }"
+              ></p-dropdown>
+              <label for="dropdown">Category</label>
+            </span>
+          </div>
+
+          <div class="col-12 col-md-2 mt-5">
+            <div class="p-field-checkbox">
+              <p-checkbox binary="true" inputId="published"></p-checkbox>
+              <label for="published" class="px-2">Published</label>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-2 mt-5">
+            <button class="btn btn-primary">Live Preview</button>
+          </div>
+
+          <div class="col-12 mt-5">
+            <quill-editor
+              trackChanges="all"
+              [styles]="{ 'min-height': '200px' }"
+              [modules]="modules"
+              (onEditorChanged)="changedEditor($event)"
+            >
+            </quill-editor>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <button class="btn btn-primary">
+              <!-- [disabled]="create_batch_form.invalid" -->
+              Create
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div [innerHTML]="content | sanitizeHtml"></div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

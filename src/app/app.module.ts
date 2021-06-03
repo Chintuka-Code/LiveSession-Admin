@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
 import { SharedUtilitiesModule } from './SharedModule/shared-utilities/shared-utilities.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalInterceptor } from './Interceptor/global.interceptor';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [AppComponent, PagenotfoundComponent],
@@ -23,6 +24,7 @@ import { GlobalInterceptor } from './Interceptor/global.interceptor';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     SharedUtilitiesModule,
+    QuillModule.forRoot(),
   ],
   providers: [
     {

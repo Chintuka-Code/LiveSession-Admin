@@ -1,4 +1,14 @@
 import { Component } from '@angular/core';
+// import * as QuillNamespace from 'quill';
+// let Quill: any = QuillNamespace;
+// import ImageResize from 'quill-image-resize-module';
+
+// Quill.register('modules/imageResize', ImageResize);
+
+import Quill from 'quill';
+import ImageResize from 'quill-image-resize-module';
+
+Quill.register('modules/imageResize', ImageResize);
 
 @Component({
   selector: 'app-root',

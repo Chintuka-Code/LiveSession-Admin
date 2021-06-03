@@ -28,6 +28,7 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "./node_modules/quill/dist/quill.core.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -35,7 +36,8 @@
               "src/assets/plugins/bootstrap/js/bootstrap.min.js",
               "src/assets/plugins/perfectscroll/perfect-scrollbar.min.js",
               "src/assets/js/pages/dashboard.js",
-              "src/assets/js/main.min.js"
+              "src/assets/js/main.min.js",
+              "./node_modules/quill/dist/quill.min.js"
             ]
           },
           "configurations": {

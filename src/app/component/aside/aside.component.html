@@ -107,6 +107,14 @@
     </li>
 
     <li routerLinkActive="active-page">
+      <a [routerLink]="['view-blog']">
+        <span class="pointer-none"
+          ><i class="fas fa-blog px-3"></i>Knowledge Base</span
+        >
+      </a>
+    </li>
+
+    <li routerLinkActive="active-page">
       <a href="javascript:void(0)" (click)="accordion_list($event)"
         ><i class="fas fa-cogs px-3"></i>Setting<i
           class="fas fa-chevron-right dropdown-icon"
@@ -117,13 +125,6 @@
           <a [routerLink]="['view-category']">
             <span class="pointer-none"
               ><i class="fas fa-book px-3"></i>Category</span
-            >
-          </a>
-        </li>
-        <li routerLinkActive="active-page">
-          <a [routerLink]="['view-blog']">
-            <span class="pointer-none"
-              ><i class="fas fa-book px-3"></i>Blog</span
             >
           </a>
         </li>
