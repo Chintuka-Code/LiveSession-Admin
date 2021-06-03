@@ -179,7 +179,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'edit-category',
+        path: 'edit-category/:category_id',
         loadChildren: () =>
           import('../edit-category/edit-category.module').then(
             (m) => m.EditCategoryModule

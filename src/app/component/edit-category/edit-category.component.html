@@ -1,1 +1,63 @@
-<p>edit-category works!</p>
+<div class="card" *ngIf="!spinner; else showspinner">
+  <div class="card-body">
+    <div class="header">
+      <h3 class="">Update Category</h3>
+      <button class="btn btn-primary">
+        <a [routerLink]="['../../view-category']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
+    </div>
+    <div class="container-fluid">
+      <form
+        action=""
+        [formGroup]="update_category_form"
+        (ngSubmit)="update_category()"
+        class="w-100"
+      >
+        <div class="row">
+          <div class="col-12 col-md-5 mt-5">
+            <span class="p-float-label w-100">
+              <input
+                type="text"
+                id="inputtext"
+                class="form-control"
+                pInputText
+                formControlName="category_name"
+              />
+              <label for="inputtext">Name</label>
+            </span>
+          </div>
+          <div class="col-12 col-md-7 mt-5">
+            <span class="p-float-label w-100">
+              <p-multiSelect
+                [options]="feature_type"
+                [style]="{ minWidth: '100%' }"
+                formControlName="feature_in"
+                display="chip"
+                [filter]="false"
+              ></p-multiSelect>
+
+              <label for="dropdown">Featured In</label>
+            </span>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <button
+              class="btn btn-primary"
+              [disabled]="update_category_form.invalid"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

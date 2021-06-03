@@ -128,7 +128,7 @@ export class EditBatchComponent implements OnInit {
     this.spinner = false;
   }
 
-  async update_batch() {
+  update_batch() {
     this.spinner = true;
 
     const data = this.update_batch_form.getRawValue();
