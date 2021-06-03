@@ -185,6 +185,23 @@ const routes: Routes = [
             (m) => m.EditCategoryModule
           ),
       },
+      {
+        path: 'view-blog',
+        loadChildren: () =>
+          import('../view-blog/view-blog.module').then((m) => m.ViewBlogModule),
+      },
+      {
+        path: 'edit-blog/blog_id',
+        loadChildren: () =>
+          import('../edit-blog/edit-blog.module').then((m) => m.EditBlogModule),
+      },
+      {
+        path: 'create-blog',
+        loadChildren: () =>
+          import('../create-blog/create-blog.module').then(
+            (m) => m.CreateBlogModule
+          ),
+      },
     ],
   },
 ];
