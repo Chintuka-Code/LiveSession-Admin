@@ -41,4 +41,10 @@ export class CategoryService {
       { data }
     );
   }
+
+  get_category_type(type) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/category/get-category-type/${type}`
+    );
+  }
 }

@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import 'quill-emoji/dist/quill-emoji.js';
+import { BlogService } from 'src/app/service/blog.service';
+import { CategoryService } from 'src/app/service/category.service';
+import { QUILL_TOOLBAR_SETTING } from 'src/app/utilities/quill_setting';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-blog',
@@ -11,41 +17,106 @@ export class CreateBlogComponent implements OnInit {
   category: string[];
   modules = {};
   content: any;
+  html: string;
+  preview: boolean = false;
+  create_blog_form: FormGroup;
 
-  constructor() {
-    this.category = ['Data Science', 'Academics Team', 'Placements Team'];
-    this.modules = {
-      'emoji-shortname': true,
-      'emoji-toolbar': true,
+  constructor(
+    private fb: FormBuilder,
+    private category_service: CategoryService,
+    private router: Router,
+    private blog_service: BlogService
+  ) {
+    this.modules = QUILL_TOOLBAR_SETTING;
+  }
 
-      toolbar: [
-        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-        ['blockquote', 'code-block'],
+  get_category() {
+    this.spinner = true;
+    this.category_service.get_category_type('Knowledge').subscribe(
+      (res: any) => {
+        this.category = res.data;
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
+        });
+      }
+    );
+  }
 
-        [{ header: 1 }, { header: 2 }], // custom button values
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-        [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-        [{ direction: 'rtl' }], // text direction
-
-        [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-        [{ font: [] }],
-        [{ align: [] }],
-
-        ['clean'], // remove formatting button
-
-        ['link', 'image', 'video'], // link and image, video
-        ['emoji'],
-      ],
-      imageResize: true,
-    };
+  validation() {
+    this.create_blog_form = this.fb.group({
+      heading: ['', Validators.required],
+      category: ['', Validators.required],
+      html: ['', Validators.required],
+      published: [false, Validators.required],
+    });
   }
 
   changedEditor(event) {
-    this.content = event.html;
+    if (event.event === 'text-change') {
+      this.convert(event.html);
+    }
   }
-  ngOnInit(): void {}
+
+  convert(data) {
+    const dom = document.createElement('div');
+    dom.innerHTML = data;
+    const iframe = dom.querySelectorAll('iframe');
+    iframe.forEach((element) => {
+      element.src = `${element.src}&rel=0`;
+    });
+
+    this.html = `${dom.innerHTML}`;
+  }
+
+  live_demo() {
+    this.preview = true;
+    const form_data = this.create_blog_form.getRawValue();
+    form_data.html = this.html;
+    this.content = form_data;
+  }
+
+  create_blog() {
+    this.spinner = true;
+    const data = this.create_blog_form.getRawValue();
+    data.user_id = localStorage.getItem('uid');
+    data.like = 1;
+    data.view = 1;
+    data.last_read = new Date();
+    this.blog_service.create_blog(data).subscribe(
+      (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'Blog Created',
+        }).then(() => {
+          this.spinner = false;
+          this.create_blog_form.reset();
+          this.router.navigate(['/main/view-blog']);
+        });
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
+        });
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.validation();
+    this.get_category();
+  }
 }
