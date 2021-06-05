@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'quill-emoji/dist/quill-emoji.js';
 import { BlogService } from 'src/app/service/blog.service';
 import { CategoryService } from 'src/app/service/category.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { QUILL_TOOLBAR_SETTING } from 'src/app/utilities/quill_setting';
 import Swal from 'sweetalert2';
 
@@ -25,9 +26,30 @@ export class CreateBlogComponent implements OnInit {
     private fb: FormBuilder,
     private category_service: CategoryService,
     private router: Router,
-    private blog_service: BlogService
+    private blog_service: BlogService,
+    private activated_route: ActivatedRoute
   ) {
     this.modules = QUILL_TOOLBAR_SETTING;
+  }
+
+  check_permission() {
+    this.spinner = true;
+    this.activated_route.data.subscribe(async (res) => {
+      const user: any = ACTIVE_USER();
+
+      if (!user.permissions.includes(res.role)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Access Denied',
+        }).then(() => {
+          this.router.navigate(['/main']);
+          this.spinner = !this.spinner;
+        });
+        return;
+      }
+      this.get_category();
+    });
   }
 
   get_category() {
@@ -117,6 +139,6 @@ export class CreateBlogComponent implements OnInit {
 
   ngOnInit(): void {
     this.validation();
-    this.get_category();
+    this.check_permission();
   }
 }

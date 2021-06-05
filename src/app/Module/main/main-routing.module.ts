@@ -191,12 +191,13 @@ const routes: Routes = [
           import('../view-blog/view-blog.module').then((m) => m.ViewBlogModule),
       },
       {
-        path: 'edit-blog/blog_id',
+        path: 'edit-blog/:blog_id',
         loadChildren: () =>
           import('../edit-blog/edit-blog.module').then((m) => m.EditBlogModule),
       },
       {
         path: 'create-blog',
+        data: { role: 'BLOG01' },
         loadChildren: () =>
           import('../create-blog/create-blog.module').then(
             (m) => m.CreateBlogModule

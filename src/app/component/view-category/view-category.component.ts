@@ -26,7 +26,7 @@ export class ViewCategoryComponent implements OnInit {
     this.spinner = true;
     this.user_profile = ACTIVE_USER();
 
-    if (!this.user_profile.permissions.includes('B00')) {
+    if (!this.user_profile.permissions.includes('CAT00')) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -38,7 +38,7 @@ export class ViewCategoryComponent implements OnInit {
 
     this.get_category(this.category_type_disabled);
 
-    if (this.user_profile.permissions.includes('CAT00')) {
+    if (this.user_profile.permissions.includes('CAT10')) {
       this.items[0].items.push({
         label: 'Edit',
         icon: 'pi pi-user-edit',

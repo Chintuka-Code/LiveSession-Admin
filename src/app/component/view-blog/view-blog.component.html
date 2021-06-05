@@ -7,10 +7,10 @@
         <div class="d-flex align-items-center">
           <button class="btn btn-outline-dark mr-3">
             <a href="javascript:void(0)" (click)="get_updated_blog()">
-              <ng-container *ngIf="!blog_type_disabled; else enable">
-                Disabled Article
+              <ng-container *ngIf="blog_type_disabled; else enable">
+                Unpublished Article
               </ng-container>
-              <ng-template #enable> Enable Article </ng-template>
+              <ng-template #enable> Published Article </ng-template>
             </a>
           </button>
 
@@ -23,99 +23,143 @@
       </div>
 
       <div>
-        <!-- <p-table
-            #categorytable
-            [value]="category"
-            dataKey="id"
-            [rows]="10"
-            [showCurrentPageReport]="true"
-            [rowsPerPageOptions]="[10, 25, 50]"
-            styleClass="p-datatable-customers"
-            [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [globalFilterFields]="['category_name']"
-          >
-            <ng-template pTemplate="caption" class="w-100">
-              <div class="p-d-flex w-100">
-                <span class="p-input-icon-left p-ml-auto w-100">
-                  <i class="pi pi-search"></i>
-                  <input
-                    pInputText
-                    type="text"
-                    (input)="
-                      categorytable.filterGlobal($event.target.value, 'contains')
-                    "
-                    placeholder="Search keyword"
-                    class="w-100"
-                  />
-                </span>
-              </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Name</th>
-                <th>Feature In</th>
-                <th>Created At</th>
-                <th>Action</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-cat>
-              <tr>
-                <td>
-                  {{ cat.category_name }}
-                </td>
-  
-                <td>
-                  <ul>
-                    <li *ngFor="let fet of cat.feature_in">
-                      {{ fet }}
-                    </li>
-                  </ul>
-                </td>
-  
-                <td>{{ cat.createdAt | date: "medium" }}</td>
-                <td class="position-relative">
-                  <ng-container *ngIf="!category_type_disabled; else enable">
-                    <button
-                      pButton
-                      pRipple
-                      type="button"
-                      icon="pi pi-ellipsis-h"
-                      class="p-button-rounded p-button-text"
-                      (click)="menu.toggle($event)"
-                    ></button>
-  
-                    <p-menu
-                      #menu
-                      [popup]="true"
-                      [model]="items"
-                      (click)="category_action(cat)"
-                    ></p-menu>
-                  </ng-container>
-  
-                  <ng-template #enable>
-                    <button
-                      pButton
-                      pRipple
-                      type="button"
-                      icon="pi pi-pencil"
-                      class="p-button-rounded p-button-text"
-                      (click)="change_category_status(cat, false)"
-                    ></button>
-                  </ng-template>
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="5">No Category found.</td>
-              </tr>
-            </ng-template>
-          </p-table> -->
+        <p-table
+          #blogtable
+          [value]="blog"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['heading']"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    blogtable.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Heading</th>
+
+              <th>Published</th>
+              <th>Created At</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-article>
+            <tr>
+              <td>
+                {{ article.heading }}
+              </td>
+
+              <td>
+                <span
+                  *ngIf="blog_type_disabled; else unpublished"
+                  class="badge bg-success"
+                  >Published</span
+                >
+                <ng-template #unpublished>
+                  <span class="badge bg-danger">UnPublished</span>
+                </ng-template>
+              </td>
+
+              <td>{{ article.createdAt | date: "medium" }}</td>
+              <td class="position-relative">
+                <ng-container *ngIf="blog_type_disabled; else enable">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-ellipsis-h"
+                    class="p-button-rounded p-button-text"
+                    (click)="menu.toggle($event)"
+                  ></button>
+
+                  <p-menu
+                    #menu
+                    [popup]="true"
+                    [model]="items"
+                    (click)="blog_action(article)"
+                  ></p-menu>
+                </ng-container>
+
+                <ng-template #enable>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-ellipsis-h"
+                    class="p-button-rounded p-button-text"
+                    (click)="menu.toggle($event)"
+                  ></button>
+
+                  <p-menu
+                    #menu
+                    [popup]="true"
+                    [model]="items2"
+                    (click)="blog_action(article)"
+                  ></p-menu>
+                </ng-template>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No Article found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Course Details dialog -->
+<ng-container *ngIf="dialog_visible">
+  <p-dialog
+    header="Article"
+    [(visible)]="dialog_visible"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
+    <div class="dialog-container">
+      <h3 class="h3">{{ blog_details.heading }}</h3>
+
+      <div [innerHTML]="blog_details.html | sanitizeHtml"></div>
+
+      <div class="like pt-3">
+        <strong class="px-2"
+          >View :- <span class="text-success">{{ blog_details.view }}</span>
+        </strong>
+        <strong class="px-2"
+          >Like :- <span class="text-success">{{ blog_details.like }}</span>
+        </strong>
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <p-button
+        icon="pi pi-check"
+        (click)="dialog_visible = false"
+        label="Ok"
+        styleClass="p-button-text"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+</ng-container>
 
 <ng-template #showspinner>
   <div class="spinner">
