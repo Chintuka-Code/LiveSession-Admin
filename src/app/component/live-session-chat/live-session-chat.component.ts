@@ -6,6 +6,7 @@ import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Router } from '@angular/router';
+import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -20,7 +21,7 @@ export class LiveSessionChatComponent implements OnInit {
   selected_batch: any;
   active_student_list: any[] = [];
   selected_student: any;
-  selected_student_chat_message: any;
+  selected_student_chat_message: any[] = [];
   has_sme: boolean = false;
   admin_id: string = localStorage.getItem('uid');
   @ViewChild('textarea') textarea: ElementRef;
@@ -33,8 +34,98 @@ export class LiveSessionChatComponent implements OnInit {
     private chat_service: ChatService,
     private router: Router,
     private user_service: UserService,
-    private attachment_service: AttachmentService
-  ) {}
+    private attachment_service: AttachmentService,
+    private live_session_chat_service: LiveSessionChatService
+  ) {
+    // assign chat to admin
+    this.live_session_chat_service.assign_chat().subscribe((res) => {
+      this.active_student_list.forEach((stu) => {
+        if (res.chat_id === stu._id) {
+          stu.sme_id = res.sme_id;
+        }
+      });
+
+      this.filter_data();
+    });
+
+    // new message
+    this.live_session_chat_service.new_message_received().subscribe((res) => {
+      if (this.selected_student_chat_message) {
+        this.selected_student_chat_message.push(res);
+      }
+
+      // update admin read counter
+      this.active_student_list.forEach((stu) => {
+        if (stu._id === this.selected_student._id) {
+          stu.admin_unread_count = 0;
+        }
+      });
+
+      this.sorting(this.active_student_list);
+
+      setTimeout(() => {
+        this.scroll_chat_container();
+      }, 50);
+    });
+
+    // increment counter
+    this.live_session_chat_service
+      .increment_admin_counter()
+      .subscribe((res) => {
+        this.active_student_list = this.active_student_list.map((stu) => {
+          if (stu._id === res.chat_id) {
+            stu.admin_unread_count = res.admin_unread_count + 1;
+          } else {
+            stu.admin_unread_count = stu.admin_unread_count;
+          }
+          return stu;
+        });
+        this.sorting(this.active_student_list);
+      });
+
+    // end chat
+    this.live_session_chat_service.end_chat().subscribe((res) => {
+      res.forEach((element) => {
+        const dest = this.active_student_list.find(
+          (chats) => chats._id === element._id
+        );
+        if (dest) {
+          dest.sme_id = null;
+        } else {
+          element.sme_id = null;
+          this.active_student_list.push(element);
+        }
+      });
+      this.spinner = false;
+      this.sorting(this.active_student_list);
+    });
+
+    // transfer chat
+    this.live_session_chat_service.transfer_chat().subscribe((res) => {
+      if (res.sme_id === localStorage.getItem('uid')) {
+        this.active_student_list.push(res);
+        this.sorting(this.active_student_list);
+      }
+      console.log(this.active_student_list);
+      this.spinner = false;
+    });
+  }
+
+  filter_data() {
+    this.active_student_list = this.active_student_list.filter(
+      (stu) => stu.sme_id === localStorage.getItem('uid') || stu.sme_id == null
+    );
+    if (this.selected_student.sme_id !== localStorage.getItem('uid')) {
+      this.selected_student = '';
+    }
+    this.spinner = false;
+  }
+
+  sorting(data) {
+    this.active_student_list.sort(
+      (a, b) => b.admin_unread_count - a.admin_unread_count
+    );
+  }
 
   textarea_auto_increment(event) {
     const tx = event.target;
@@ -61,86 +152,76 @@ export class LiveSessionChatComponent implements OnInit {
         this.batch = data.batch_ids;
       },
       (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error.errorMessage,
-        }).then(() => {
-          this.spinner = false;
-          this.router.navigate(['/main']);
-        });
+        this.error_handler(error);
       }
     );
+  }
+
+  error_handler(error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.errorMessage,
+    }).then(() => {
+      this.spinner = false;
+      this.router.navigate(['/main']);
+    });
   }
 
   // after batch select get all the student list
   get_all_student_chat() {
     this.spinner = true;
     this.selected_student = '';
-    this.selected_student_chat_message = '';
-    this.chat_service
-      .get_active_chat(localStorage.getItem('uid'), this.selected_batch._id)
-      .subscribe(
-        (res) => {
-          const data = FormativeData.formative_snapshot_data(res);
-          // after update sme id , update selected student
-          if (this.selected_student) {
-            const sel = data.filter(
-              (student_list) =>
-                this.selected_student.student_id == student_list.student_id &&
-                this.selected_student.batch_id == student_list.batch_id &&
-                this.selected_student.doc_id == student_list.doc_id
-            );
-            this.selected_student = sel[0];
-          }
-          // snapshot trigger in this block that why again check the selected student sme id
-          this.has_sme = this.selected_student.sme_id ? true : false;
-
-          // filter data
-          this.active_student_list = data.filter(
-            (student) =>
-              !student.sme_id || student.sme_id === localStorage.getItem('uid')
-          );
-
-          // enable/disable end all chat button
-          this.end_all_chat_button = this.active_student_list.some(
-            (student) => student.sme_id === localStorage.getItem('uid')
-          );
-          this.scroll_chat_container();
-          this.spinner = false;
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'ooh...',
-            text: 'Something Went Wrong',
-          });
-        }
-      );
+    this.selected_student_chat_message = [];
+    this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
+      (res: any) => {
+        this.active_student_list = res.data;
+        this.sorting(this.active_student_list);
+        this.spinner = false;
+      },
+      (error) => this.error_handler(error)
+    );
   }
 
   // after student selected get their chat
   get_selected_student_chat(student) {
     this.spinner = true;
     this.selected_student = student;
-    this.has_sme = this.selected_student.sme_id ? true : false;
-    this.chat_service
-      .get_chat_message(this.selected_student.doc_id)
-      .subscribe((res) => {
-        this.selected_student_chat_message = res.reverse();
-        this.scroll_chat_container();
-        this.spinner = false;
+
+    console.log(this.selected_student);
+
+    if (this.selected_student.sme_id === localStorage.getItem('uid')) {
+      this.live_session_chat_service.join_room({
+        room_id:
+          this.selected_student.student_id + this.selected_student.batch_id,
       });
+    }
+
+    this.chat_service
+      .get_selected_studentChat(this.selected_student._id)
+      .subscribe(
+        (res: any) => {
+          const response = res.data;
+          this.selected_student_chat_message = response.message;
+          this.scroll_chat_container();
+          this.spinner = false;
+        },
+        (error) => this.error_handler(error)
+      );
   }
 
-  async assign_chat_to_admin() {
+  assign_chat_to_admin() {
     this.spinner = true;
-    await this.chat_service.assign_chat_admin(
-      this.selected_student.doc_id,
-      localStorage.getItem('uid')
-    );
+    const data = {
+      chat_id: this.selected_student._id,
+      sme_id: localStorage.getItem('uid'),
+    };
 
-    this.spinner = false;
+    this.live_session_chat_service.join_room({
+      room_id:
+        this.selected_student.student_id + this.selected_student.batch_id,
+    });
+    this.live_session_chat_service.assign_chat_to_admin(data);
   }
 
   // attachment
@@ -155,14 +236,19 @@ export class LiveSessionChatComponent implements OnInit {
   async send_message(message) {
     this.message_sending = true;
     const message_obj = {
-      message: message.value,
-      sme_id: null,
+      text_message: message.value,
+      sme_id: localStorage.getItem('uid'),
       sender_name: this.user.name,
       sender_type: 'admin',
       attachment: [],
+      created_at: new Date(),
+    };
+    const data = {
+      room_id:
+        this.selected_student.student_id + this.selected_student.batch_id,
+      chat_id: this.selected_student._id,
     };
     this.textarea.nativeElement.value = '';
-
     try {
       if (this.files.length > 0) {
         const files: any = await this.attachment_service.upload_files(
@@ -172,19 +258,11 @@ export class LiveSessionChatComponent implements OnInit {
           files.files_paths
         );
       }
-      await this.chat_service.create_chat_message(
-        message_obj,
-        this.selected_student.doc_id
-      );
-      await this.chat_service.update_chat_counter(
-        this.selected_student.doc_id,
-        this.selected_student.student_unread_count + 1
-      );
+
+      this.live_session_chat_service.send_message(message_obj, data);
+
       this.files = [];
       this.message_sending = false;
-      setTimeout(() => {
-        this.scroll_chat_container();
-      }, 100);
     } catch (error) {
       console.log(error);
     }
@@ -202,10 +280,9 @@ export class LiveSessionChatComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
-        this.selected_student_chat_message = undefined;
-        await this.chat_service.end_chat(this.selected_student.doc_id);
+        this.selected_student_chat_message = [];
+        this.live_session_chat_service.end_all_chat([this.selected_student]);
         this.selected_student = '';
-        this.spinner = false;
       }
     });
   }
@@ -222,13 +299,19 @@ export class LiveSessionChatComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
-        this.selected_student_chat_message = undefined;
-        await this.chat_service.assign_chat_admin(
-          this.selected_student.doc_id,
-          doc.value
+        this.selected_student_chat_message = [];
+        this.selected_student.sme_id = doc.value;
+
+        this.active_student_list = this.active_student_list.filter(
+          (stu) =>
+            !(
+              stu.student_id === this.selected_student.student_id &&
+              stu.batch_id === this.selected_student.batch_id
+            )
         );
+
+        this.live_session_chat_service.transfer(this.selected_student);
         this.selected_student = '';
-        this.spinner = false;
       }
     });
   }

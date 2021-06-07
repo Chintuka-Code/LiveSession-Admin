@@ -1,24 +1,38 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private firebase_store: AngularFirestore) {}
+  constructor(
+    private firebase_store: AngularFirestore,
+    private http: HttpClient
+  ) {}
 
   timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-  get_active_chat(user_id, batch_id) {
-    return this.firebase_store
-      .collection('chat', (ref) =>
-        ref
-          .where('batch_id', '==', batch_id)
-          .orderBy('admin_unread_count', 'desc')
-      )
-      .snapshotChanges();
+  get_batch_chat(batch_id) {
+    // return this.firebase_store
+    //   .collection('chat', (ref) =>
+    //     ref
+    //       .where('batch_id', '==', batch_id)
+    //       .orderBy('admin_unread_count', 'desc')
+    //   )
+    //   .snapshotChanges();
+
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/chat/get-chat-by-batchID/${batch_id}`
+    );
+  }
+
+  get_selected_studentChat(chat_id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/chat/get-chat-by-id/${chat_id}`
+    );
   }
 
   get_chat_message(chat_id) {

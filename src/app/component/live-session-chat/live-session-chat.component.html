@@ -160,7 +160,7 @@
                         {{ message.sender_name }}
                         <small class="comment-date" *ngIf="message.created_at">
                           {{
-                            message.created_at.seconds
+                            message.created_at
                               | amFromUnix
                               | amDateFormat: "hh:mmA"
                           }}</small
@@ -168,10 +168,10 @@
                       </span>
                     </div>
 
-                    <ng-container *ngIf="message.message">
+                    <ng-container *ngIf="message.text_message">
                       <p-divider></p-divider>
                       <span class="comment-text">
-                        {{ message.message }}
+                        {{ message.text_message }}
                       </span>
                     </ng-container>
 
@@ -208,7 +208,7 @@
             <div class="chat-footer">
               <div
                 class="row p-0 align-items-center"
-                *ngIf="has_sme; else startchat"
+                *ngIf="selected_student.sme_id; else startchat"
               >
                 <div class="col-10">
                   <textarea
