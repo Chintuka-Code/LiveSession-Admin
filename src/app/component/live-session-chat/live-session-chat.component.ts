@@ -119,6 +119,10 @@ export class LiveSessionChatComponent implements OnInit {
       this.selected_student = '';
     }
     this.spinner = false;
+
+    setTimeout(() => {
+      this.scroll_chat_container();
+    }, 100);
   }
 
   sorting(data) {
@@ -311,6 +315,11 @@ export class LiveSessionChatComponent implements OnInit {
         );
 
         this.live_session_chat_service.transfer(this.selected_student);
+        this.live_session_chat_service.leave({
+          room_id:
+            this.selected_student.student_id + this.selected_student.batch_id,
+        });
+
         this.selected_student = '';
       }
     });
@@ -338,48 +347,45 @@ export class LiveSessionChatComponent implements OnInit {
     );
   }
 
-  load_more() {
-    this.chat_service
-      .get_chat_all_message(this.selected_student.doc_id)
-      .subscribe((res) => {
-        this.selected_student_chat_message = res.reverse();
-        this.spinner = false;
-      });
-  }
+  load_more() {}
 
   end_all_chat() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to end all chat',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        this.spinner = true;
-        this.selected_student_chat_message = undefined;
-
-        await Promise.all(
-          this.active_student_list.map(async (student) => {
-            if (
-              student.sme_id === localStorage.getItem('uid') &&
-              student.batch_id === this.selected_batch.batch_id
-            ) {
-              await this.chat_service.end_all_chat(student);
-            }
-          })
-        );
-
-        this.selected_student = '';
-        this.spinner = false;
-      }
-    });
+    // Swal.fire({
+    //   title: 'Are you sure?',
+    //   text: 'Do you want to end all chat',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes',
+    // }).then(async (result) => {
+    //   if (result.isConfirmed) {
+    //     this.spinner = true;
+    //     this.selected_student_chat_message = undefined;
+    //     await Promise.all(
+    //       this.active_student_list.map(async (student) => {
+    //         if (
+    //           student.sme_id === localStorage.getItem('uid') &&
+    //           student.batch_id === this.selected_batch.batch_id
+    //         ) {
+    //           await this.chat_service.end_all_chat(student);
+    //         }
+    //       })
+    //     );
+    //     this.selected_student = '';
+    //     this.spinner = false;
+    //   }
+    // });
   }
 
   ngOnInit(): void {
     this.get_admin_batch();
     this.get_all_admin();
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.live_session_chat_service.disconnect();
   }
 }

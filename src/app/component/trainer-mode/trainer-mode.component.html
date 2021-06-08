@@ -80,17 +80,15 @@
                       {{ chat.sender_name }}
                       <small class="comment-date" *ngIf="chat.created_at">
                         {{
-                          chat.created_at.seconds
-                            | amFromUnix
-                            | amDateFormat: "hh:mmA"
+                          chat.created_at | amFromUnix | amDateFormat: "hh:mmA"
                         }}</small
                       >
                     </span>
                   </div>
 
-                  <ng-container *ngIf="chat.message">
+                  <ng-container *ngIf="chat.text_message">
                     <p-divider></p-divider>
-                    <span class="comment-text"> {{ chat.message }} </span>
+                    <span class="comment-text"> {{ chat.text_message }} </span>
                   </ng-container>
 
                   <div class="attachment" *ngIf="chat.attachment.length > 0">

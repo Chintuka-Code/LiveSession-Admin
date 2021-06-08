@@ -7,6 +7,7 @@ import { UserService } from 'src/app/service/user.service';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 
 @Component({
   selector: 'app-trainer-mode',
@@ -19,13 +20,26 @@ export class TrainerModeComponent implements OnInit {
   selected_batch: any;
   all_chats: any[] = [];
   user: any;
+  student_id: any[] = [];
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private chat_service: ChatService,
-    private user_service: UserService
-  ) {}
+    private user_service: UserService,
+    private live_session_chat_service: LiveSessionChatService
+  ) {
+    // new message
+    this.live_session_chat_service.new_message_received().subscribe((res) => {
+      if (res.sender_type === 'student') {
+        this.all_chats.push(res);
+      }
+
+      setTimeout(() => {
+        this.scroll_chat_container();
+      }, 50);
+    });
+  }
 
   // get all batch
   get_user_all_batch() {
@@ -119,39 +133,24 @@ export class TrainerModeComponent implements OnInit {
   async get_selected_batch_all_chat(selected_batch) {
     this.all_chats = [];
     this.spinner = true;
+    if (this.selected_batch) {
+      this.leave_room();
+    }
     this.selected_batch = selected_batch;
-    let batch_chat: any = await this.chat_service
-      .get_selected_batch_chat(selected_batch)
-      .toPromise();
-    batch_chat = FormativeData.format_firebase_get_request_data(batch_chat);
+    console.log(this.selected_batch._id);
+    this.chat_service
+      .get_chat_message_trainer_mode(this.selected_batch._id)
+      .subscribe((res: any) => {
+        this.all_chats = res.data;
+        console.log(this.all_chats);
+        this.all_chats.sort((a, b) => a.created_at - b.created_at);
 
-    await Promise.all(
-      batch_chat.map(
-        async (bat) =>
-          new Promise((resolve, reject) => {
-            this.chat_service
-              .get_chat_message_trainer_mode(bat.doc_id)
-              .subscribe((res: any) => {
-                const chat = res.map((chat) => {
-                  chat['chat_id'] = bat.doc_id;
-                  return chat;
-                });
-                this.all_chats = [...this.all_chats, ...chat];
-                this.all_chats.sort(
-                  (a, b) => a.created_at.toDate() - b.created_at.toDate()
-                );
-                setTimeout(() => {
-                  this.scroll_chat_container();
-                }, 100);
-                resolve('');
-              });
-          })
-      )
-    );
-
-    this.spinner = false;
-    this.scroll_chat_container();
-    console.log(this.all_chats);
+        this.spinner = false;
+        this.join_room();
+        setTimeout(() => {
+          this.scroll_chat_container();
+        }, 50);
+      });
   }
 
   scroll_chat_container() {
@@ -165,7 +164,36 @@ export class TrainerModeComponent implements OnInit {
     }
   }
 
+  join_room() {
+    this.student_id = [];
+
+    this.all_chats.forEach((message) => {
+      if (!this.student_id.find((out) => out == message.student_id)) {
+        this.student_id.push(message.student_id);
+      }
+    });
+
+    this.student_id.forEach((student) => {
+      this.live_session_chat_service.join_room({
+        room_id: student + this.selected_batch._id,
+      });
+    });
+  }
+
+  leave_room() {
+    this.student_id.forEach((student) => {
+      this.live_session_chat_service.leave({
+        room_id: student + this.selected_batch._id,
+      });
+    });
+  }
+
   ngOnInit(): void {
     this.get_user_all_batch();
+  }
+
+  ngOnDestroy(): void {
+    this.leave_room();
+    this.live_session_chat_service.disconnect();
   }
 }
