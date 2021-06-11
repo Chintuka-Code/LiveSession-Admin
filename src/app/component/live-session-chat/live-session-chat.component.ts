@@ -29,6 +29,7 @@ export class LiveSessionChatComponent implements OnInit {
   files: any[] = [];
   message_sending: boolean = false;
   end_all_chat_button: boolean;
+  @ViewChild('sound') sound: ElementRef;
 
   constructor(
     private chat_service: ChatService,
@@ -50,6 +51,12 @@ export class LiveSessionChatComponent implements OnInit {
 
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
+      this.sound.nativeElement.pause();
+      this.sound.nativeElement.currentTime = 0;
+      if (res.sender_type !== 'admin') {
+        this.sound.nativeElement.play();
+      }
+
       if (this.selected_student_chat_message) {
         this.selected_student_chat_message.push(res);
       }
@@ -190,9 +197,15 @@ export class LiveSessionChatComponent implements OnInit {
   // after student selected get their chat
   get_selected_student_chat(student) {
     this.spinner = true;
-    this.selected_student = student;
 
-    console.log(this.selected_student);
+    if (this.selected_student) {
+      this.live_session_chat_service.leave({
+        room_id:
+          this.selected_student.student_id + this.selected_student.batch_id,
+      });
+    }
+
+    this.selected_student = student;
 
     if (this.selected_student.sme_id === localStorage.getItem('uid')) {
       this.live_session_chat_service.join_room({
@@ -285,6 +298,10 @@ export class LiveSessionChatComponent implements OnInit {
       if (result.isConfirmed) {
         this.spinner = true;
         this.selected_student_chat_message = [];
+        this.live_session_chat_service.leave({
+          room_id:
+            this.selected_student.student_id + this.selected_student.batch_id,
+        });
         this.live_session_chat_service.end_all_chat([this.selected_student]);
         this.selected_student = '';
       }
@@ -349,34 +366,7 @@ export class LiveSessionChatComponent implements OnInit {
 
   load_more() {}
 
-  end_all_chat() {
-    // Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'Do you want to end all chat',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Yes',
-    // }).then(async (result) => {
-    //   if (result.isConfirmed) {
-    //     this.spinner = true;
-    //     this.selected_student_chat_message = undefined;
-    //     await Promise.all(
-    //       this.active_student_list.map(async (student) => {
-    //         if (
-    //           student.sme_id === localStorage.getItem('uid') &&
-    //           student.batch_id === this.selected_batch.batch_id
-    //         ) {
-    //           await this.chat_service.end_all_chat(student);
-    //         }
-    //       })
-    //     );
-    //     this.selected_student = '';
-    //     this.spinner = false;
-    //   }
-    // });
-  }
+  end_all_chat() {}
 
   ngOnInit(): void {
     this.get_admin_batch();
@@ -384,8 +374,13 @@ export class LiveSessionChatComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    this.live_session_chat_service.disconnect();
+    this.live_session_chat_service.remove_listen();
+
+    if (this.selected_student) {
+      this.live_session_chat_service.leave({
+        room_id:
+          this.selected_student.student_id + this.selected_student.batch_id,
+      });
+    }
   }
 }

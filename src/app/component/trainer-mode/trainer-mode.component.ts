@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 
 import { ChatService } from 'src/app/service/chat.service';
@@ -8,6 +8,7 @@ import { FormativeData } from 'src/app/utilities/formative_data';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
+import { AttachmentService } from 'src/app/service/attachment.service';
 
 @Component({
   selector: 'app-trainer-mode',
@@ -21,23 +22,38 @@ export class TrainerModeComponent implements OnInit {
   all_chats: any[] = [];
   user: any;
   student_id: any[] = [];
+  files: any[] = [];
+  message_sending: boolean = false;
+  @ViewChild('textarea') textarea: ElementRef;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private chat_service: ChatService,
     private user_service: UserService,
-    private live_session_chat_service: LiveSessionChatService
+    private live_session_chat_service: LiveSessionChatService,
+    private attachment_service: AttachmentService
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
-      if (res.sender_type === 'student') {
+      if (res.sender_type !== 'admin') {
         this.all_chats.push(res);
       }
 
       setTimeout(() => {
         this.scroll_chat_container();
       }, 50);
+    });
+  }
+
+  error_handler(error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.errorMessage,
+    }).then(() => {
+      this.spinner = false;
+      this.router.navigate(['/main']);
     });
   }
 
@@ -63,14 +79,7 @@ export class TrainerModeComponent implements OnInit {
         });
       },
       (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error.errorMessage,
-        }).then(() => {
-          this.spinner = false;
-          this.router.navigate(['/main']);
-        });
+        this.error_handler(error);
       }
     );
   }
@@ -121,11 +130,10 @@ export class TrainerModeComponent implements OnInit {
       });
 
       this.batch = batch;
-
       this.spinner = false;
     } catch (error) {
       this.spinner = false;
-      console.log(error);
+      this.error_handler(error);
     }
   }
 
@@ -137,20 +145,20 @@ export class TrainerModeComponent implements OnInit {
       this.leave_room();
     }
     this.selected_batch = selected_batch;
-    console.log(this.selected_batch._id);
     this.chat_service
       .get_chat_message_trainer_mode(this.selected_batch._id)
-      .subscribe((res: any) => {
-        this.all_chats = res.data;
-        console.log(this.all_chats);
-        this.all_chats.sort((a, b) => a.created_at - b.created_at);
-
-        this.spinner = false;
-        this.join_room();
-        setTimeout(() => {
-          this.scroll_chat_container();
-        }, 50);
-      });
+      .subscribe(
+        (res: any) => {
+          this.all_chats = res.data;
+          this.all_chats.sort((a, b) => a.created_at - b.created_at);
+          this.spinner = false;
+          this.join_room();
+          setTimeout(() => {
+            this.scroll_chat_container();
+          }, 50);
+        },
+        (error) => this.error_handler(error)
+      );
   }
 
   scroll_chat_container() {
@@ -164,18 +172,37 @@ export class TrainerModeComponent implements OnInit {
     }
   }
 
+  textarea_auto_increment(event) {
+    const tx = event.target;
+    tx.style.height = 'auto';
+    tx.style.height = tx.scrollHeight + 'px';
+  }
+
+  // attachment
+  attchment(event) {
+    this.files = [];
+    for (let i = 0; i < event.target.files.length; i++) {
+      this.files.push(event.target.files[i]);
+    }
+  }
+
   join_room() {
     this.student_id = [];
 
     this.all_chats.forEach((message) => {
-      if (!this.student_id.find((out) => out == message.student_id)) {
-        this.student_id.push(message.student_id);
+      if (
+        !this.student_id.find((out) => out.student_id == message.student_id)
+      ) {
+        this.student_id.push({
+          student_id: message.student_id,
+          chat_id: message.chat_id,
+        });
       }
     });
 
     this.student_id.forEach((student) => {
       this.live_session_chat_service.join_room({
-        room_id: student + this.selected_batch._id,
+        room_id: student.student_id + this.selected_batch._id,
       });
     });
   }
@@ -188,12 +215,51 @@ export class TrainerModeComponent implements OnInit {
     });
   }
 
+  // send message
+  async send_message(message) {
+    this.message_sending = true;
+
+    const message_obj = {
+      text_message: message.value,
+      sme_id: localStorage.getItem('uid'),
+      sender_name: this.user.name,
+      sender_type: 'super admin',
+      attachment: [],
+      created_at: new Date(),
+    };
+
+    this.textarea.nativeElement.value = '';
+    try {
+      if (this.files.length > 0) {
+        const files: any = await this.attachment_service.upload_files(
+          this.files
+        );
+        message_obj['attachment'] = FormativeData.concat_url_with_files(
+          files.files_paths
+        );
+      }
+
+      this.student_id.forEach((id) => {
+        const data = {
+          room_id: id.student_id + this.selected_batch._id,
+          chat_id: id.chat_id,
+        };
+        this.live_session_chat_service.send_message(message_obj, data);
+      });
+
+      this.files = [];
+      this.message_sending = false;
+    } catch (error) {
+      this.error_handler(error);
+    }
+  }
+
   ngOnInit(): void {
     this.get_user_all_batch();
   }
 
   ngOnDestroy(): void {
     this.leave_room();
-    this.live_session_chat_service.disconnect();
+    this.live_session_chat_service.remove_listen();
   }
 }

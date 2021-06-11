@@ -145,9 +145,9 @@
                     class="post-comm"
                     *ngFor="let message of selected_student_chat_message"
                     [ngClass]="
-                      message.sender_type === 'admin'
-                        ? 'align-self-end'
-                        : 'align-self-start'
+                      message.sender_type === 'student'
+                        ? 'align-self-start'
+                        : 'align-self-end'
                     "
                   >
                     <img
@@ -160,9 +160,7 @@
                         {{ message.sender_name }}
                         <small class="comment-date" *ngIf="message.created_at">
                           {{
-                            message.created_at
-                              | amFromUnix
-                              | amDateFormat: "hh:mmA"
+                            message.created_at | amDateFormat: "hh:mmA"
                           }}</small
                         >
                       </span>
@@ -280,6 +278,8 @@
     </div>
   </div>
 </section>
+
+<audio src="../../../assets/Sound/pop.mp3" #sound></audio>
 
 <ng-template #showspinner>
   <div class="spinner">

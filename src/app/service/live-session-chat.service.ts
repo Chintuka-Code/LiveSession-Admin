@@ -7,9 +7,13 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class LiveSessionChatService {
-  constructor() {}
-
-  private socket = io(environment.BASE_SERVER_URL);
+  private socket: any;
+  constructor() {
+    this.socket = io(environment.BASE_SERVER_URL, {
+      upgrade: false,
+      transports: ['websocket'],
+    });
+  }
 
   join_room(data) {
     this.socket.emit('join', data);
@@ -32,7 +36,13 @@ export class LiveSessionChatService {
   }
 
   disconnect() {
-    this.socket.disconnect();
+    this.socket.disconnect(() => {
+      this.socket.removeAllListeners();
+    });
+  }
+
+  remove_listen() {
+    this.socket.removeAllListeners();
   }
 
   leave(data) {
