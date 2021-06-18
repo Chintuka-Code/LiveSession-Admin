@@ -5,6 +5,7 @@ import { Notification } from 'src/app/utilities/ACCESS_DENIED';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
+import { LazyLoadEvent } from 'primeng/api';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',

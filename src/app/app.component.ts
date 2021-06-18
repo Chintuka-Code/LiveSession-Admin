@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
-import { LiveSessionChatService } from './service/live-session-chat.service';
-
 Quill.register('modules/imageResize', ImageResize);
+import { LiveSessionChatService } from './service/live-session-chat.service';
 
 @Component({
   selector: 'app-root',

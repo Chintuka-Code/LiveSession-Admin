@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import firebase from 'firebase/app';
+
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -8,11 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SubjectService {
-  timestamp = firebase.firestore.FieldValue.serverTimestamp();
-  constructor(
-    private firebase_store: AngularFirestore,
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {}
 
   create_subject(data) {
     return this.http.post(
@@ -32,16 +27,5 @@ export class SubjectService {
       `${environment.BASE_SERVER_URL}/subject/update-subject`,
       { data }
     );
-  }
-
-  disabled_subject(data) {
-    return this.firebase_store
-      .collection('subject')
-      .doc(data.doc_id)
-      .update({ disabled: data.disabled });
-  }
-
-  get_subject_by_id(id) {
-    return this.firebase_store.collection('subject').doc(id).get();
   }
 }

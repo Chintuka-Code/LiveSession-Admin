@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MomentModule } from 'ngx-moment';
 import { QuillModule } from 'ngx-quill';
 import { SanitizeHtmlPipe } from '../../pipe/sanitize-html.pipe';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [SpinnerComponent, SanitizeHtmlPipe],
@@ -20,6 +21,7 @@ import { SanitizeHtmlPipe } from '../../pipe/sanitize-html.pipe';
     HttpClientModule,
     MomentModule,
     QuillModule,
+    InfiniteScrollModule,
   ],
   exports: [
     SpinnerComponent,
@@ -30,6 +32,7 @@ import { SanitizeHtmlPipe } from '../../pipe/sanitize-html.pipe';
     MomentModule,
     QuillModule,
     SanitizeHtmlPipe,
+    InfiniteScrollModule,
   ],
 })
 export class SharedUtilitiesModule {}

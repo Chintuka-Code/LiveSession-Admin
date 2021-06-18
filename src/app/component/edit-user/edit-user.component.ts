@@ -8,6 +8,9 @@ import Swal from 'sweetalert2';
 import { UserService } from 'src/app/service/user.service';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { Notification } from 'src/app/utilities/ACCESS_DENIED';
+import { day } from 'src/app/utilities/days';
+import { CategoryService } from 'src/app/service/category.service';
+import { TicketService } from 'src/app/service/ticket.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -24,12 +27,21 @@ export class EditUserComponent implements OnInit {
   personal_info: FormGroup;
   user_info: any;
   user_id: string;
+  ticket: boolean = false;
+  days: string[] = day;
+  category: any[] = [];
+  ticket_permission: TreeNode[] = [];
+  selected_category: any[] = [];
+  selected_ticket_permission: TreeNode[] = [];
+
   constructor(
     private fb: FormBuilder,
     private permission_service: PermissionService,
     private user_service: UserService,
     private activated_route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private category_service: CategoryService,
+    private ticket_service: TicketService
   ) {}
 
   initial_data() {
@@ -52,9 +64,10 @@ export class EditUserComponent implements OnInit {
         this.user_info = res.data;
         this.fill_previous_details();
         this.get_permissions();
+        this.get_ticket_permission();
+        this.get_category();
       },
       (error) => {
-        console.log(error);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -62,6 +75,23 @@ export class EditUserComponent implements OnInit {
         }).then(() => {
           this.spinner = !this.spinner;
         });
+      }
+    );
+  }
+
+  get_category() {
+    this.category_service.get_category_type('Ticket').subscribe(
+      (res: any) => {
+        this.category = res.data;
+
+        this.category.map((cat) => {
+          this.user_info.ticket_handle_category.some((id) => id === cat._id)
+            ? this.selected_category.push(cat._id)
+            : '';
+        });
+      },
+      (error) => {
+        this.error_handler(error);
       }
     );
   }
@@ -74,8 +104,19 @@ export class EditUserComponent implements OnInit {
         this.map_current_user_permission(res.permission);
       },
       (error) => {
-        console.log(error);
+        this.error_handler(error);
       }
+    );
+  }
+
+  get_ticket_permission() {
+    this.spinner = true;
+    this.ticket_service.get_ticket_permission().subscribe(
+      (res: any) => {
+        this.ticket_permission = FormativeData.format(res.permission);
+        this.map_current_user_ticket_permission(res.permission);
+      },
+      (error) => this.error_handler(error)
     );
   }
 
@@ -84,6 +125,9 @@ export class EditUserComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', Validators.required],
       user_type: ['', Validators.required],
+      office_start_time: ['', Validators.required],
+      office_end_time: ['', Validators.required],
+      active_days: ['', Validators.required],
     });
   }
 
@@ -92,11 +136,19 @@ export class EditUserComponent implements OnInit {
     this.personal_info.controls.name.patchValue(this.user_info.name);
     this.personal_info.controls.email.patchValue(this.user_info.email);
     this.personal_info.controls.user_type.patchValue(this.user_info.user_type);
+    this.personal_info.controls.office_start_time.patchValue(
+      new Date(this.user_info.office_start_time)
+    );
+    this.personal_info.controls.office_end_time.patchValue(
+      new Date(this.user_info.office_end_time)
+    );
+    this.personal_info.controls.active_days.patchValue(
+      this.user_info.active_days
+    );
   }
 
   // map permission array
   map_current_user_permission(data) {
-    console.log(data);
     data.forEach((element) => {
       if (this.user_info.permissions.includes(element.code)) {
         this.selected_permission.push({
@@ -107,10 +159,37 @@ export class EditUserComponent implements OnInit {
     this.spinner = false;
   }
 
+  // map permission array
+  map_current_user_ticket_permission(data) {
+    data.forEach((element) => {
+      if (this.user_info.ticket_permission.includes(element.code)) {
+        this.selected_ticket_permission.push({
+          data: { name: element.permission_name, code: element.code },
+        });
+      }
+    });
+    this.spinner = false;
+  }
+
+  error_handler(error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.errorMessage,
+    }).then(() => {
+      this.spinner = false;
+      this.router.navigate(['/main']);
+    });
+  }
+
   get_personal_info() {
     this.spinner = true;
     const data = this.personal_info.getRawValue();
     data['permissions'] = FormativeData.removeParent(this.selected_permission);
+    data['ticket_permission'] = FormativeData.removeParent(
+      this.selected_ticket_permission
+    );
+    data['ticket_handle_category'] = this.selected_category;
 
     this.user_service.update_user_by_id(data, this.user_id).subscribe(
       (res) => {
@@ -124,14 +203,7 @@ export class EditUserComponent implements OnInit {
         });
       },
       (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'ohh...',
-          text: 'Something Went Wrong',
-        }).then(() => {
-          this.spinner = false;
-          this.router.navigate(['../main']);
-        });
+        this.error_handler(error);
       }
     );
   }

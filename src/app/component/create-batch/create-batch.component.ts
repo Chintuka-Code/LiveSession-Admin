@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BatchService } from 'src/app/service/batch.service';
 import { CourseService } from 'src/app/service/course.service';
 import { PermissionService } from 'src/app/service/permission.service';
+import { day } from 'src/app/utilities/days';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { FormativeData } from 'src/app/utilities/formative_data';
 import Swal from 'sweetalert2';
@@ -28,15 +29,7 @@ export class CreateBatchComponent implements OnInit {
     private activated_route: ActivatedRoute,
     private router: Router
   ) {
-    this.days = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
+    this.days = day;
     this.duration = [
       '1 Month',
       '2 Months',

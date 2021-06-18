@@ -9,6 +9,9 @@ import Swal from 'sweetalert2';
 import { eye_button } from 'src/app/utilities/password_eye';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { Notification } from 'src/app/utilities/ACCESS_DENIED';
+import { day } from 'src/app/utilities/days';
+import { TicketService } from 'src/app/service/ticket.service';
+import { CategoryService } from 'src/app/service/category.service';
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -21,8 +24,15 @@ export class CreateUserComponent implements OnInit {
   selected_permission: TreeNode[] = [];
   permissions: TreeNode[];
   spinner: boolean = false;
+  ticket: boolean = false;
   cols: { field: string; header: string }[];
   personal_info: FormGroup;
+  days: string[] = day;
+
+  ticket_permission: TreeNode[] = [];
+  selected_category: any[] = [];
+  selected_ticket_permission: TreeNode[] = [];
+  category: any[] = [];
 
   @ViewChild('password') password: ElementRef;
 
@@ -32,14 +42,15 @@ export class CreateUserComponent implements OnInit {
     private user_service: UserService,
     private messageService: MessageService,
     private activated_route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private ticket_service: TicketService,
+    private category_service: CategoryService
   ) {}
 
   check_permission() {
     this.spinner = !this.spinner;
     this.activated_route.data.subscribe(async (res) => {
       const user: any = ACTIVE_USER();
-      console.log(res.role);
       if (!user.permissions.includes(res.role)) {
         this.router.navigate(['/main']);
         Notification.ACCESS_DENIED();
@@ -55,6 +66,9 @@ export class CreateUserComponent implements OnInit {
       email: ['', Validators.required],
       user_type: ['', Validators.required],
       password: ['', Validators.required],
+      office_start_time: ['', Validators.required],
+      office_end_time: ['', Validators.required],
+      active_days: ['', Validators.required],
     });
   }
 
@@ -70,9 +84,44 @@ export class CreateUserComponent implements OnInit {
         this.permissions = FormativeData.format(res.permission);
       },
       (error) => {
-        console.log(error);
+        this.error_handler(error);
       }
     );
+  }
+
+  get_ticket_permission() {
+    this.spinner = true;
+    this.ticket_service.get_ticket_permission().subscribe(
+      (res: any) => {
+        this.ticket_permission = FormativeData.format(res.permission);
+        this.spinner = false;
+      },
+      (error) => this.error_handler(error)
+    );
+  }
+
+  get_category() {
+    this.spinner = true;
+    this.category_service.get_category_type('Ticket').subscribe(
+      (res: any) => {
+        this.category = res.data;
+        this.spinner = false;
+      },
+      (error) => {
+        this.error_handler(error);
+      }
+    );
+  }
+
+  error_handler(error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.errorMessage,
+    }).then(() => {
+      this.spinner = false;
+      this.router.navigate(['/main']);
+    });
   }
 
   show_password() {
@@ -87,7 +136,10 @@ export class CreateUserComponent implements OnInit {
     );
     user_info['disabled'] = false;
     user_info['batch_ids'] = [];
-
+    user_info['ticket_permission'] = FormativeData.removeParent(
+      this.selected_ticket_permission
+    );
+    user_info['ticket_handle_category'] = this.selected_category;
     this.user_service.create_user(user_info).subscribe(
       (res) => {
         this.messageService.add({
@@ -95,19 +147,13 @@ export class CreateUserComponent implements OnInit {
           summary: 'User Created',
         });
         this.personal_info.reset();
-        this.permission = !this.permission;
+        this.permission = false;
+        this.ticket = false;
         this.selected_permission = [];
         this.spinner = !this.spinner;
       },
       (error) => {
-        console.log(error.error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error.message,
-        }).then(() => {
-          this.spinner = !this.spinner;
-        });
+        this.error_handler(error);
       }
     );
   }
@@ -117,5 +163,7 @@ export class CreateUserComponent implements OnInit {
     this.validation();
     this.initial_data();
     this.get_permissions();
+    this.get_ticket_permission();
+    this.get_category();
   }
 }
