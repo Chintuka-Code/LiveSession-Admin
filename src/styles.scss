@@ -2,6 +2,11 @@ body {
   scroll-behavior: smooth;
 }
 
+@import "~quill/dist/quill.core.css";
+@import "~quill/dist/quill.bubble.css";
+@import "~quill/dist/quill.snow.css";
+@import "~quill-emoji/dist/quill-emoji.css";
+
 .spinner {
   position: absolute;
   top: 0;
@@ -188,11 +193,6 @@ body {
 .mr-3 {
   margin-right: 1rem;
 }
-
-@import "~quill/dist/quill.core.css";
-@import "~quill/dist/quill.bubble.css";
-@import "~quill/dist/quill.snow.css";
-@import "~quill-emoji/dist/quill-emoji.css";
 
 blockquote {
   background: #f9f9f9;
