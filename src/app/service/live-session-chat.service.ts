@@ -83,4 +83,11 @@ export class LiveSessionChatService {
       return () => this.socket.disconnect();
     });
   }
+
+  new_ticket() {
+    return new Observable<any>((observer) => {
+      this.socket.on('ticket-notification', (data) => observer.next(data));
+      return () => this.socket.disconnect();
+    });
+  }
 }
