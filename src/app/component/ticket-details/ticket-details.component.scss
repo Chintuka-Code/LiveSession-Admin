@@ -1,0 +1,69 @@
+.comment-section {
+  background-color: #f3f4f7;
+  border-radius: 5px;
+
+  .message-list {
+    list-style: none;
+    max-height: 370px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+
+    .flex-end {
+      align-self: flex-end;
+    }
+
+    .flex-start {
+      align-self: flex-start;
+      background-color: #0a80ff !important;
+      color: #fff !important;
+    }
+
+    li {
+      width: 80%;
+      background-color: #fff;
+      border-radius: 10px;
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .text {
+        margin-left: 0.8rem;
+        .attachment {
+          width: 100%;
+          list-style: none;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          li {
+            width: 40px;
+            margin: 0 0.3rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.attachment-list {
+  list-style: none;
+  display: flex;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  li {
+    margin: 0.5rem 0.4rem;
+    background-color: #f1f1f1;
+    border-radius: 24px;
+    padding: 0.5rem 1rem;
+    a {
+      text-decoration: none;
+    }
+  }
+}

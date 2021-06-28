@@ -77,27 +77,6 @@ export class CreateSubjectComponent implements OnInit {
         });
       }
     );
-
-    // try {
-    //   await Promise.all(
-    //     subject.map(async (sub) => {
-    //       await this.subject_service.create_subject({ subject_name: sub });
-    //     })
-    //   );
-    //   Swal.fire({
-    //     icon: 'success',
-    //     title: 'Yeah...',
-    //     text: 'Subject Created',
-    //   }).then(() => {
-    //     this.create_subject_form.reset();
-    //     this.subject.clear();
-    //     this.addsubject();
-    //     this.spinner = false;
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    //   this.spinner = false;
-    // }
   }
 
   check_permission() {

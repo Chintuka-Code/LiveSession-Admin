@@ -17,9 +17,6 @@ export class AppComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-
-    console.log();
-
     this.live_session_chat_service.join_room({
       room_id: localStorage.getItem('uid'),
     });

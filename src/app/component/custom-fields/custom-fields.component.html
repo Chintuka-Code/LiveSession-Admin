@@ -1,0 +1,132 @@
+<div class="card" *ngIf="!spinner; else showspinner">
+  <div class="card-body">
+    <div class="header">
+      <h3 class="">Custom Feilds</h3>
+      <button class="btn btn-primary">
+        <a [routerLink]="['../view-subject']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
+    </div>
+    <div class="container-fluid mt-3">
+      <form
+        [formGroup]="custom_fields_form"
+        (ngSubmit)="create_custom_fields()"
+      >
+        <div class="row">
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <input
+                type="text"
+                id="inputtext"
+                class="form-control"
+                formControlName="name"
+                pInputText
+              />
+              <label for="inputtext">Name</label>
+            </span>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <input
+                type="text"
+                id="inputtext"
+                class="form-control"
+                formControlName="placeholder"
+                pInputText
+              />
+              <label for="inputtext">PlaceHolder</label>
+            </span>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-dropdown
+                inputId="dropdown"
+                [autoDisplayFirst]="false"
+                [options]="type"
+                optionLabel="name"
+                optionValue="name"
+                [style]="{ minWidth: '100%' }"
+                formControlName="type"
+                (onChange)="get_change($event)"
+              ></p-dropdown>
+              <label for="dropdown">Type</label>
+            </span>
+          </div>
+
+          <ng-container formArrayName="option" *ngIf="option === 'select'">
+            <div class="col-12 col-md-8 mt-5">
+              <div
+                class="row align-items-center"
+                *ngFor="let _ of option_.controls; index as i"
+              >
+                <div class="col-12 col-md-10" style="margin-top: 2rem">
+                  <span class="p-float-label w-100">
+                    <input
+                      type="text"
+                      id="inputtext"
+                      class="form-control"
+                      [formControlName]="i"
+                      pInputText
+                    />
+
+                    <label for="inputtext">Value</label>
+                  </span>
+                </div>
+                <div class="col-12 col-md-1" style="margin-top: 2rem">
+                  <div class="plus">
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-plus"
+                      class="p-button-rounded"
+                      (click)="addSkill()"
+                    ></button>
+                  </div>
+                </div>
+                <div class="col-12 col-md-1" style="margin-top: 2rem">
+                  <div class="plus">
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-minus"
+                      class="p-button-rounded p-button-danger"
+                      (click)="remove(i)"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="col-12 col-md-2 mt-5">
+            <p-checkbox
+              formControlName="required"
+              binary="true"
+              inputId="binary"
+            ></p-checkbox>
+            <label for="binary" style="padding-left: 0.5rem"> Required </label>
+          </div>
+
+          <div class="col-12 col-md-2 mt-5">
+            <button
+              class="btn btn-primary"
+              [disabled]="custom_fields_form.invalid"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

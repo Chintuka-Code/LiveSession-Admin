@@ -79,9 +79,7 @@
                     <span class="comment-author">
                       {{ chat.sender_name }}
                       <small class="comment-date" *ngIf="chat.created_at">
-                        {{
-                          chat.created_at | amFromUnix | amDateFormat: "hh:mmA"
-                        }}</small
+                        {{ chat.created_at | amDateFormat: "hh:mmA" }}</small
                       >
                     </span>
                   </div>
@@ -130,15 +128,26 @@
                   ></textarea>
                 </div>
                 <div class="chat-control col-2 d-flex align-items-center pl-0">
-                  <div class="attachment position-relative">
-                    <input type="file" multiple (change)="attchment($event)" />
-                    <ng-container>
-                      <i class="fas fa-paperclip"></i>
-                    </ng-container>
-                    <ng-container *ngIf="files.length > 0">
-                      <i class="files-count"> {{ files.length }}</i>
-                    </ng-container>
+                  <div class="attachment">
+                    <div class="file">
+                      <input
+                        type="file"
+                        multiple
+                        name="file"
+                        (change)="attchment($event)"
+                        id="file"
+                      />
+                      <label for="file" title="select files">
+                        <span *ngIf="files.length == 0; else count"
+                          ><i class="fas fa-paperclip"></i
+                        ></span>
+                        <ng-template #count>
+                          <span class="count"> {{ files.length }} </span>
+                        </ng-template>
+                      </label>
+                    </div>
                   </div>
+
                   <div class="send z-1000">
                     <ng-container *ngIf="!message_sending; else wait">
                       <button

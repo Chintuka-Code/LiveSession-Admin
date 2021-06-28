@@ -1,0 +1,146 @@
+<section *ngIf="!spinner; else showspinner">
+  <!-- Enabled Course -->
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">
+          <ng-container *ngIf="type === 'active'; else close">
+            My Active Ticket List
+          </ng-container>
+          <ng-template #close>My Close Ticket List </ng-template>
+        </h3>
+
+        <div class="d-flex align-items-center">
+          <button class="btn btn-primary">
+            <a [routerLink]="['/main']">
+              Raise Ticket <i class="fas fa-plus"></i>
+            </a>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <p-table
+          #tickettable
+          [value]="ticket_list"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="[
+            'heading',
+            '_id',
+            'priority.priority_name',
+            'category.category_name'
+          ]"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    tickettable.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Heading</th>
+              <th>Student</th>
+              <th>SME</th>
+              <th>Last Reply</th>
+              <th>Last Time Reply</th>
+              <th>Unread Message</th>
+              <th *ngFor="let field of feilds">
+                {{ field.name }}
+              </th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-ticket>
+            <tr>
+              <td>
+                <div>
+                  <small class="priority">
+                    {{ ticket.priority.priority_name }}
+                  </small>
+                  <h6 class="h6 p-0 m-0" style="margin-top: 0.1rem">
+                    {{ ticket.heading }}
+                  </h6>
+                  <div>
+                    <small> {{ ticket.category.category_name }} </small> <br />
+                    <small class="d-block" style="margin-top: -0.2rem">
+                      {{ ticket.createdAt | date: "medium" }}
+                    </small>
+                  </div>
+                </div>
+              </td>
+              <td>{{ ticket.student.name }}</td>
+              <td>{{ ticket.sme.name }}</td>
+              <td>
+                <span *ngIf="ticket.comment.message.length > 0; else empty">{{
+                  ticket.comment.message[0].type
+                }}</span>
+                <ng-template #empty> <span>-</span> </ng-template>
+              </td>
+              <td>
+                <span *ngIf="ticket.comment.message.length > 0; else empty">
+                  {{ ticket.comment.message[0].createdAt | date: "medium" }}
+                </span>
+                <ng-template #empty> <span>-</span> </ng-template>
+              </td>
+              <!-- <td>{{ ticket.createdAt | date: "medium" }}</td> -->
+              <td>{{ ticket.comment.admin_read }}</td>
+              <td *ngFor="let fie of feilds">
+                <span *ngIf="ticket.hasOwnProperty(fie.name); else nodata">
+                  {{ ticket[fie.name] }}
+                </span>
+                <ng-template #nodata> - </ng-template>
+              </td>
+              <td class="position-relative">
+                <ng-container>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-ellipsis-h"
+                    class="p-button-rounded p-button-text"
+                    (click)="menu.toggle($event)"
+                  ></button>
+
+                  <p-menu
+                    #menu
+                    [popup]="true"
+                    [model]="items"
+                    (click)="update_menu(subject)"
+                  ></p-menu>
+                </ng-container>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No User found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

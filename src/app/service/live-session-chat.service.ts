@@ -49,6 +49,10 @@ export class LiveSessionChatService {
     this.socket.emit('leave', data);
   }
 
+  update_notification(data) {
+    this.socket.emit('update-notification-read', data);
+  }
+
   new_message_received() {
     return new Observable<any>((observer) => {
       this.socket.on('new message', (data) => observer.next(data));
@@ -89,5 +93,23 @@ export class LiveSessionChatService {
       this.socket.on('ticket-notification', (data) => observer.next(data));
       return () => this.socket.disconnect();
     });
+  }
+
+  new_reply_ticket() {
+    return new Observable<any>((observer) => {
+      this.socket.on('new-reply-ticket', (data) => observer.next(data));
+      return () => this.socket.disconnect();
+    });
+  }
+
+  update_notification_list() {
+    return new Observable<any>((observer) => {
+      this.socket.on('upadte-notification-list', (data) => observer.next(data));
+      return () => this.socket.disconnect();
+    });
+  }
+
+  ticket_reply(message, room, uid) {
+    this.socket.emit('ticket-reply', message, room, uid);
   }
 }

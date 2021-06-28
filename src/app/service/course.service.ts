@@ -1,18 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import firebase from 'firebase/app';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  constructor(
-    private firebase_store: AngularFirestore,
-    private http: HttpClient
-  ) {}
-
-  timestamp = firebase.firestore.FieldValue.serverTimestamp();
+  constructor(private http: HttpClient) {}
 
   create_course(data) {
     return this.http.post(

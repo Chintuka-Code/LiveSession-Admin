@@ -1,0 +1,128 @@
+<section *ngIf="!spinner; else showspinner">
+  <!-- Enabled Course -->
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">
+          <ng-container *ngIf="!disbaled_fields; else dis">
+            Active Custom Fields
+          </ng-container>
+          <ng-template #dis> Disabled Custom Fields </ng-template>
+        </h3>
+
+        <div class="d-flex align-items-center">
+          <button class="btn btn-outline-dark mr-3">
+            <a href="javascript:void(0)" (click)="update_data()">
+              <ng-container *ngIf="!disbaled_fields; else enable">
+                Disabled Fields
+              </ng-container>
+              <ng-template #enable> Active Fields </ng-template>
+            </a>
+          </button>
+
+          <button class="btn btn-primary">
+            <a [routerLink]="['../custom-fields']">
+              Create Custom Fields <i class="fas fa-plus"></i>
+            </a>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <p-table
+          #customfields
+          [value]="custom_fields"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['name']"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    customfields.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Placeholder</th>
+              <th>Option</th>
+              <th>CreatedAt</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-fields>
+            <tr>
+              <td>
+                {{ fields.name }}
+              </td>
+              <td>{{ fields.placeholder }}</td>
+              <td>
+                <ul class="option-list">
+                  <li *ngFor="let item of fields.option">{{ item }}</li>
+                </ul>
+              </td>
+              <td>{{ fields.createdAt | date: "medium" }}</td>
+              <td class="position-relative">
+                <ng-container *ngIf="!disbaled_fields; else en">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-ellipsis-h"
+                    class="p-button-rounded p-button-text"
+                    (click)="menu.toggle($event)"
+                  ></button>
+
+                  <p-menu
+                    #menu
+                    [popup]="true"
+                    [model]="items"
+                    (click)="update_custom_fields(fields)"
+                  ></p-menu>
+                </ng-container>
+
+                <ng-template #en>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-pencil"
+                    class="p-button-rounded p-button-text"
+                    (click)="enable_fields(fields)"
+                  ></button>
+                </ng-template>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No User found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

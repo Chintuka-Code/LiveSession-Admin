@@ -80,6 +80,68 @@
       </ul>
     </li>
 
+    <!-- Tickets -->
+    <li
+      routerLinkActive="active-page"
+      *ngIf="
+        user.ticket_permission.includes('CVAAT00') ||
+        user.ticket_permission.includes('CVACT00') ||
+        user.ticket_permission.includes('CVMCMAT00') ||
+        user.ticket_permission.includes('CVMCMCT00')
+      "
+    >
+      <a href="javascript:void(0)" (click)="accordion_list($event)"
+        ><i class="fas fa-ticket-alt px-3"></i>Tickets<i
+          class="fas fa-chevron-right dropdown-icon"
+        ></i
+      ></a>
+      <ul class="d-none px-3">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="
+            user.ticket_permission.includes('CVAAT00') ||
+            user.ticket_permission.includes('CVMCAAT00')
+          "
+        >
+          <a [routerLink]="['view-tickets', 'active']"
+            ><i class="fas fa-folder-open px-3"></i>All Active Tickets</a
+          >
+        </li>
+
+        <li
+          routerLinkActive="active-page"
+          *ngIf="
+            user.ticket_permission.includes('CVACT00') ||
+            user.ticket_permission.includes('CVMCACT00')
+          "
+        >
+          <a [routerLink]="['view-tickets', 'close']">
+            <span class="pointer-none"
+              ><i class="far fa-folder-open px-3"></i>All Close Tickets</span
+            >
+          </a>
+        </li>
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.ticket_permission.includes('CVMCMAT00')"
+        >
+          <a [routerLink]="['my-tickets', 'active']"
+            ><i class="fas fa-folder-open px-3"></i>My Active Tickets</a
+          >
+        </li>
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.ticket_permission.includes('CVMCMCT00')"
+        >
+          <a [routerLink]="['my-tickets', 'close']">
+            <span class="pointer-none"
+              ><i class="far fa-folder-open px-3"></i>My Close Tickets</span
+            >
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <!-- Admin -->
     <li routerLinkActive="active-page">
       <a [routerLink]="['user-details', 'admin']">
@@ -125,6 +187,22 @@
           <a [routerLink]="['view-category']">
             <span class="pointer-none"
               ><i class="fas fa-book px-3"></i>Category</span
+            >
+          </a>
+        </li>
+
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['view-custom-fields']">
+            <span class="pointer-none"
+              ><i class="fab fa-cuttlefish"></i>Custom Fields</span
+            >
+          </a>
+        </li>
+
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['view-priority']">
+            <span class="pointer-none"
+              ><i class="fas fa-level-up-alt"></i>Priority</span
             >
           </a>
         </li>

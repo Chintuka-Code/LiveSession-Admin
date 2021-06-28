@@ -203,6 +203,55 @@ const routes: Routes = [
             (m) => m.CreateBlogModule
           ),
       },
+      {
+        path: 'view-tickets/:type',
+        loadChildren: () =>
+          import('../view-ticket/view-ticket.module').then(
+            (m) => m.ViewTicketModule
+          ),
+      },
+      {
+        path: 'my-tickets/:type',
+        loadChildren: () =>
+          import('../my-tickets/my-tickets.module').then(
+            (m) => m.MyTicketsModule
+          ),
+      },
+      {
+        path: 'custom-fields',
+        loadChildren: () =>
+          import('../custom-fields/custom-fields.module').then(
+            (m) => m.CustomFieldsModule
+          ),
+      },
+      {
+        path: 'view-custom-fields',
+        loadChildren: () =>
+          import('../view-custom-fields/view-custom-fields.module').then(
+            (m) => m.ViewCustomFieldsModule
+          ),
+      },
+      {
+        path: 'ticket-details/:ticket_id',
+        loadChildren: () =>
+          import('../ticket-details/ticket-details.module').then(
+            (m) => m.TicketDetailsModule
+          ),
+      },
+      {
+        path: 'create-priority',
+        loadChildren: () =>
+          import('../create-priority/create-priority.module').then(
+            (m) => m.CreatePriorityModule
+          ),
+      },
+      {
+        path: 'view-priority',
+        loadChildren: () =>
+          import('../view-priority/view-priority.module').then(
+            (m) => m.ViewPriorityModule
+          ),
+      },
     ],
   },
 ];

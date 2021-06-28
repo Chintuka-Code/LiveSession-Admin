@@ -203,12 +203,13 @@
               </div>
             </div>
 
+            <!-- chat form -->
             <div class="chat-footer">
               <div
                 class="row p-0 align-items-center"
                 *ngIf="selected_student.sme_id; else startchat"
               >
-                <div class="col-10">
+                <div class="col-9 col-md-10">
                   <textarea
                     name="text"
                     placeholder="Write Something"
@@ -216,19 +217,38 @@
                     cols="30"
                     rows="1"
                     class="form-control"
-                    (input)="textarea_auto_increment($event)"
                     #textarea
+                    (input)="textarea_auto_increment($event)"
                   ></textarea>
                 </div>
-                <div class="chat-control col-2 d-flex align-items-center pl-0">
-                  <div class="attachment position-relative">
-                    <input type="file" multiple (change)="attchment($event)" />
-                    <ng-container>
-                      <i class="fas fa-paperclip"></i>
-                    </ng-container>
-                    <ng-container *ngIf="files.length > 0">
-                      <i class="files-count"> {{ files.length }}</i>
-                    </ng-container>
+                <div
+                  class="
+                    chat-control
+                    col-3 col-md-2
+                    d-flex
+                    align-items-center
+                    p-0
+                    pl-0
+                  "
+                >
+                  <div class="attachment">
+                    <div class="file">
+                      <input
+                        type="file"
+                        multiple
+                        name="file"
+                        (change)="attchment($event)"
+                        id="file"
+                      />
+                      <label for="file" title="select files">
+                        <span *ngIf="files.length == 0; else count"
+                          ><i class="fas fa-paperclip"></i
+                        ></span>
+                        <ng-template #count>
+                          <span class="count"> {{ files.length }} </span>
+                        </ng-template>
+                      </label>
+                    </div>
                   </div>
                   <div class="send z-1000">
                     <ng-container *ngIf="!message_sending; else wait">
@@ -270,6 +290,7 @@
               </div>
             </div>
           </ng-container>
+
           <ng-template #warning>
             <h4 class="h4 warnning">Please Select A student to start Chat</h4>
           </ng-template>

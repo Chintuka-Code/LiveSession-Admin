@@ -50,8 +50,8 @@
             </div>
           </li> -->
 
-        <!-- <li class="nav-item dropdown position-relative">
-          <i class="bell-count badge badge-success">3</i>
+        <li class="nav-item dropdown position-relative" *ngIf="notification">
+          <i class="bell-count badge badge-success"> {{ count }} </i>
           <a
             class="nav-link notifications-dropdown"
             href="#"
@@ -65,85 +65,46 @@
           <div
             class="dropdown-menu dropdown-menu-end notif-drop-menu"
             aria-labelledby="notificationsDropDown"
+            infiniteScroll
+            [infiniteScrollDistance]="1"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll()"
+            [scrollWindow]="false"
           >
             <h6 class="dropdown-header">Notifications</h6>
-            <a href="#">
+            <a href="javascript:void(0)" *ngFor="let notify of notification">
               <div class="header-notif">
-                <div class="notif-image">
-                  <span class="notification-badge bg-info text-white">
-                    <i class="fas fa-bullhorn"></i>
-                  </span>
-                </div>
                 <div class="notif-text">
-                  <p class="bold-notif-text">
-                    faucibus dolor in commodo lectus mattis
-                  </p>
-                  <small>19:00</small>
-                </div>
-              </div>
-            </a>
-            <a href="#">
-              <div class="header-notif">
-                <div class="notif-image">
-                  <span class="notification-badge bg-primary text-white">
-                    <i class="fas fa-bolt"></i>
-                  </span>
-                </div>
-                <div class="notif-text">
-                  <p class="bold-notif-text">
-                    faucibus dolor in commodo lectus mattis
-                  </p>
-                  <small>18:00</small>
-                </div>
-              </div>
-            </a>
-            <a href="#">
-              <div class="header-notif">
-                <div class="notif-image">
-                  <span class="notification-badge bg-success text-white">
-                    <i class="fas fa-at"></i>
-                  </span>
-                </div>
-                <div class="notif-text">
-                  <p>faucibus dolor in commodo lectus mattis</p>
-                  <small>yesterday</small>
-                </div>
-              </div>
-            </a>
-            <a href="#">
-              <div class="header-notif">
-                <div class="notif-image">
-                  <span class="notification-badge">
-                    <img
-                      src="../../assets/images/avatars/profile-image.png"
-                      alt=""
-                    />
-                  </span>
-                </div>
-                <div class="notif-text">
-                  <p>faucibus dolor in commodo lectus mattis</p>
-                  <small>yesterday</small>
-                </div>
-              </div>
-            </a>
-            <a href="#">
-              <div class="header-notif">
-                <div class="notif-image">
-                  <span class="notification-badge">
-                    <img
-                      src="../../assets/images/avatars/profile-image-3.jpg"
-                      alt=""
-                    />
-                  </span>
-                </div>
-                <div class="notif-text">
-                  <p>faucibus dolor in commodo lectus mattis</p>
-                  <small>yesterday</small>
+                  <div
+                    class="notification"
+                    *ngIf="notify.notification_type == 'ticket'"
+                  >
+                    <div class="header">
+                      <p *ngIf="!notify.read"><span>New</span></p>
+                      <p>{{ notify.createdAt | date: "shortTime" }}</p>
+                    </div>
+                    <div class="notification-body">
+                      <p>
+                        {{ notify.message }}
+                      </p>
+                    </div>
+                    <div class="notification-footer">
+                      <strong
+                        >Ticket-ID -
+                        <a
+                          [routerLink]="['ticket-details', notify.id]"
+                          routerLinkActive="router-link-active"
+                        >
+                          {{ notify.id }}
+                        </a>
+                      </strong>
+                    </div>
+                  </div>
                 </div>
               </div>
             </a>
           </div>
-        </li> -->
+        </li>
 
         <!-- <li class="nav-item dropdown">
           <a class="nav-link" 
@@ -186,3 +147,5 @@
     </div>
   </nav>
 </div>
+
+<audio src="../../../assets/Sound/pop.mp3" #sound></audio>

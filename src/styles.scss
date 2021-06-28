@@ -52,27 +52,16 @@ body {
 
   .chat-control {
     .attachment {
-      width: 30px;
-      height: 30px;
-
-      background-color: #d6d4d4;
-
-      margin-right: 0.8rem;
-      cursor: pointer;
-      border-radius: 50%;
-      position: relative;
-      input[type="file"] {
-        cursor: pointer;
-        opacity: 0;
-      }
-
-      i {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        cursor: pointer;
+      padding: 0.2rem;
+      .file {
+        label {
+          width: 30px;
+          height: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #15c39a;
+        }
       }
     }
 
@@ -211,4 +200,38 @@ blockquote:before {
 }
 blockquote p {
   display: inline;
+}
+
+.priority {
+  color: rgb(231, 82, 82);
+}
+
+.file {
+  input[type="file"] {
+    display: none;
+  }
+  p {
+    display: block;
+    padding-left: 0.3rem !important;
+  }
+  label {
+    width: 165px;
+    height: 35px;
+    background-color: #d0d0d0db;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    color: #3030308c;
+    span:nth-child(2) {
+      padding: 0.1em 0.6em;
+      border-radius: 50%;
+      background-color: #15c39a;
+      font-size: 12px;
+      color: #fff;
+    }
+  }
 }

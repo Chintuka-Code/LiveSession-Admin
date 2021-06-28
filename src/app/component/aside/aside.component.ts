@@ -13,11 +13,7 @@ export class AsideComponent implements OnInit {
   user: any;
   spinner: boolean = false;
 
-  constructor(private live_session_service: LiveSessionChatService) {
-    this.live_session_service.new_ticket().subscribe((res) => {
-      console.log(res);
-    });
-  }
+  constructor() {}
 
   accordion_list(event) {
     const list = event.target.nextElementSibling;

@@ -1,0 +1,155 @@
+<section class="container-fluid" *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div
+        class="
+          header
+          d-block d-md-flex
+          justify-content-between
+          align-items-center
+        "
+      >
+        <h3 class="" style="word-break: break-all">Ticket : {{ ticket_id }}</h3>
+        <div class="d-flex">
+          <button class="btn btn-danger" style="margin-right: 0.7rem">
+            <a> Close Ticket </a>
+          </button>
+
+          <button class="btn btn-primary">
+            <a [routerLink]="['../view-ticket']">
+              <i class="fas fa-arrow-left"></i> Back
+            </a>
+          </button>
+        </div>
+      </div>
+
+      <div class="details">
+        <h4 class="h4">{{ ticket_details.heading }}</h4>
+
+        <div>
+          <small class="text-success">
+            {{ ticket_details.priority.priority_name }}
+          </small>
+          <small class="" style="display: inline-block; margin-left: 0.5rem">
+            {{ ticket_details.createdAt | date: "medium" }}
+          </small>
+        </div>
+
+        <div class="mt-4" [innerHTML]="ticket_details.body"></div>
+
+        <div>
+          <small style="color: #6bcac2">Attachment</small>
+          <ul class="attachment-list p-0">
+            <li *ngFor="let file of ticket_details.attachment; let i = index">
+              <a [href]="file" target="_blank" download> files{{ i }} </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="comment-section p-3 mt-5">
+        <h5 class="h5">Replies</h5>
+
+        <ul class="p-0 message-list" id="comment-list">
+          <li
+            class="d-flex mt-4 p-2"
+            *ngFor="let message of ticket_details.comment.message"
+            [ngClass]="message.type === 'admin' ? 'flex-end' : 'flex-start'"
+          >
+            <div class="avatar flex-shrink-0">
+              <img src="../../../assets/images/avatars/user.svg" alt="" />
+            </div>
+            <div class="text">
+              <h6 class="h6">{{ message.sender_name }}</h6>
+              <p>
+                {{ message.message }}
+              </p>
+
+              <ul class="p-0 attachment" *ngIf="message.attachment">
+                <li *ngFor="let file of message.attachment; let i = index">
+                  <a [href]="file" target="_blank"> file{{ i }}</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- chat form -->
+      <div class="chat-footer">
+        <div class="row p-0 align-items-center">
+          <div class="col-9 col-md-11">
+            <textarea
+              name="text"
+              placeholder="Write Something"
+              id=""
+              cols="30"
+              rows="1"
+              class="form-control"
+              #textarea
+              (input)="textarea_auto_increment($event)"
+            ></textarea>
+          </div>
+          <div
+            class="
+              chat-control
+              col-3 col-md-1
+              d-flex
+              align-items-center
+              p-0
+              pl-0
+            "
+          >
+            <div class="attachment">
+              <div class="file">
+                <input
+                  type="file"
+                  multiple
+                  name="file"
+                  (change)="attchment($event)"
+                  id="file"
+                />
+                <label for="file" title="select files">
+                  <span *ngIf="files.length == 0; else count"
+                    ><i class="fas fa-paperclip"></i
+                  ></span>
+                  <ng-template #count>
+                    <span class="count"> {{ files.length }} </span>
+                  </ng-template>
+                </label>
+              </div>
+            </div>
+            <div class="send z-1000">
+              <ng-container *ngIf="!message_sending; else wait">
+                <button
+                  type="button"
+                  [disabled]="textarea.value == '' && files.length == 0"
+                  (click)="send_message(textarea)"
+                >
+                  <i class="far fa-paper-plane"></i>
+                </button>
+              </ng-container>
+
+              <ng-template #wait>
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-spin pi-spinner"
+                  class="p-button-rounded"
+                  disabled="true"
+                ></button>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
