@@ -95,6 +95,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = ACTIVE_USER();
-    this.get_notification(0);
+    // this.get_notification(0);
   }
 }
