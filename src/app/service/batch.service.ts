@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import firebase from 'firebase/app';
 
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -8,12 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class BatchService {
-  constructor(
-    private firebase_store: AngularFirestore,
-    private http: HttpClient
-  ) {}
-
-  timestamp = firebase.firestore.FieldValue.serverTimestamp();
+  constructor(private http: HttpClient) {}
 
   create_batch(data) {
     return this.http.post(`${environment.BASE_SERVER_URL}/batch/create-batch`, {
@@ -50,13 +43,6 @@ export class BatchService {
     return this.http.get(
       `${environment.BASE_SERVER_URL}/batch/get-edit-batch-details/${id}`
     );
-  }
-
-  update_batch_details(data) {
-    return this.firebase_store
-      .collection('batch')
-      .doc(data.batch_id)
-      .update(data);
   }
 
   get_batch_details_home() {

@@ -15,16 +15,21 @@ import Swal from 'sweetalert2';
 export class RoleGaurdGuard implements CanActivate {
   constructor(private permission_service: PermissionService) {}
 
-  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let roles = route.data;
-    const check = await this.permission_service.check_role(roles.role);
-    if (!check) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Access Denied',
-      });
-    }
-    return check ? true : false;
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    //   let roles = route.data;
+    //   const check = await this.permission_service.check_role(roles.role);
+    //   if (!check) {
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Oops...',
+    //       text: 'Access Denied',
+    //     });
+    //   }
+    //   return check ? true : false;
+    // }
+    return true;
   }
 }

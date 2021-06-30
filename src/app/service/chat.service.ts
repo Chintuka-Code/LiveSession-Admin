@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import firebase from 'firebase/app';
+
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -8,12 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(
-    private firebase_store: AngularFirestore,
-    private http: HttpClient
-  ) {}
-
-  timestamp = firebase.firestore.FieldValue.serverTimestamp();
+  constructor(private http: HttpClient) {}
 
   get_batch_chat(batch_id) {
     return this.http.get(

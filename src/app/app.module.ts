@@ -22,7 +22,6 @@ import { QuillModule } from 'ngx-quill';
     ReactiveFormsModule,
     PrimengModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
     SharedUtilitiesModule,
     QuillModule.forRoot(),
   ],
