@@ -5,3 +5,11 @@
 .pointer-none {
   pointer-events: none;
 }
+
+.list-unstyled {
+  overflow: scroll;
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}

@@ -83,8 +83,6 @@ export class ViewSubjectComponent implements OnInit {
         },
       });
     }
-
-    this.spinner = false;
   }
 
   async update_subject(subject) {

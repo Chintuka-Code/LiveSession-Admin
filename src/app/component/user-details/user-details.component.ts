@@ -93,8 +93,6 @@ export class UserDetailsComponent implements OnInit {
         },
       });
     }
-
-    this.spinner = false;
   }
 
   set_dynamic_url(id) {
