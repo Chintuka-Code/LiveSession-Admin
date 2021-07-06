@@ -73,6 +73,7 @@ export class EditUserComponent implements OnInit {
           title: 'Oops...',
           text: error.errorMessage,
         }).then(() => {
+          this.router.navigate(['/main']);
           this.spinner = !this.spinner;
         });
       }

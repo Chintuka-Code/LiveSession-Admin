@@ -113,7 +113,7 @@ export class LiveSessionChatComponent implements OnInit {
         this.active_student_list.push(res);
         this.sorting(this.active_student_list);
       }
-      console.log(this.active_student_list);
+      // console.log(this.active_student_list);
       this.spinner = false;
     });
   }
@@ -281,7 +281,7 @@ export class LiveSessionChatComponent implements OnInit {
       this.files = [];
       this.message_sending = false;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 

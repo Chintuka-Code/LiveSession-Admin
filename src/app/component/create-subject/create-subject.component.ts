@@ -54,7 +54,7 @@ export class CreateSubjectComponent implements OnInit {
     const subject = this.subject.getRawValue();
     this.subject_service.create_subject(subject).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           icon: 'success',
           title: 'Yeah...',
@@ -67,7 +67,7 @@ export class CreateSubjectComponent implements OnInit {
         });
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           icon: 'error',
           title: 'Ohh...',
@@ -83,7 +83,7 @@ export class CreateSubjectComponent implements OnInit {
     this.spinner = !this.spinner;
     this.activated_route.data.subscribe(async (res) => {
       const user: any = ACTIVE_USER();
-      console.log(res.role);
+      // console.log(res.role);
       if (!user.permissions.includes(res.role)) {
         this.router.navigate(['/main']);
         Notification.ACCESS_DENIED();

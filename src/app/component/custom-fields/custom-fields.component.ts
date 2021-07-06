@@ -71,7 +71,7 @@ export class CustomFieldsComponent implements OnInit {
     data['disabled'] = false;
     this.custom_fields_service.create_custom_fields(data).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
         this.custom_fields_form.reset();
         this.option_.clear();
         this.option = '';

@@ -27,7 +27,8 @@ export class UpdateStudentProfileComponent implements OnInit {
     private activated_route: ActivatedRoute,
     private student_service: StudentsService,
     private fb: FormBuilder,
-    private subject_service: SubjectService
+    private subject_service: SubjectService,
+    private router: Router
   ) {
     this.cols = [{ field: 'name', header: 'Batch Name' }];
   }
@@ -105,7 +106,7 @@ export class UpdateStudentProfileComponent implements OnInit {
         title: 'Yeah...',
         text: 'Student Updated',
       }).then(() => {
-        this.get_student_details();
+        this.router.navigate(['/main/students-details/students']);
       });
     });
   }

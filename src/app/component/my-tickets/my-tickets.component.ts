@@ -37,7 +37,7 @@ export class MyTicketsComponent implements OnInit {
       .get_my_active_ticket(this.ticket_list.length)
       .subscribe((res: any) => {
         this.ticket_list = res.data;
-        console.log(this.ticket_list);
+        // console.log(this.ticket_list);
         this.custom_feilds();
       });
   }
@@ -77,7 +77,7 @@ export class MyTicketsComponent implements OnInit {
         break;
 
       default:
-        console.log('');
+      // console.log('');
     }
   }
 

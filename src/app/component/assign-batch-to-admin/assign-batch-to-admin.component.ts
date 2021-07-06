@@ -28,7 +28,7 @@ export class AssignBatchToAdminComponent implements OnInit {
     this.batch_service.get_all_batch(false).subscribe(
       (res: any) => {
         this.batch = res.data;
-        console.log(this.batch);
+        // console.log(this.batch);
         this.get_user_info();
       },
       (error) => {
@@ -47,9 +47,9 @@ export class AssignBatchToAdminComponent implements OnInit {
     this.user_service.get_user_by_id(this.user_id).subscribe(
       (res: any) => {
         this.user = res.data;
-        console.log(this.user);
+        // console.log(this.user);
         this.selected_batch = this.user.batch_ids;
-        console.log(this.selected_batch);
+        // console.log(this.selected_batch);
         this.spinner = false;
       },
       (error) => {
@@ -67,7 +67,7 @@ export class AssignBatchToAdminComponent implements OnInit {
   async add_admin_into_batch() {
     this.spinner = true;
     const data = { user_id: this.user_id, batch: this.selected_batch };
-    console.log(data);
+    // console.log(data);
     this.user_service.add_admin_into_batch(data).subscribe(
       (res) => {
         Swal.fire({

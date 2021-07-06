@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
 
     this.live_session_service.update_notification_list().subscribe(() => {
       this.get_notification(0);
-      console.log('get');
+      // console.log('get');
     });
   }
 

@@ -82,6 +82,7 @@ export class ViewBlogComponent implements OnInit {
   }
 
   get_updated_blog() {
+    this.spinner = true;
     this.blog_type_disabled = !this.blog_type_disabled;
     this.get_blog(this.blog_type_disabled);
   }
@@ -91,7 +92,7 @@ export class ViewBlogComponent implements OnInit {
       (res: any) => {
         this.blog = res.data;
         this.spinner = false;
-        console.log(this.blog);
+        // console.log(this.blog);
       },
       (error) => {
         Swal.fire({

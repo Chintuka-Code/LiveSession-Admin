@@ -61,7 +61,7 @@ export class CreateStudentsComponent implements OnInit {
           this.student_record = result;
         },
         (error: NgxCSVParserError) => {
-          console.log('Error', error);
+          // console.log('Error', error);
         }
       );
   }
@@ -77,7 +77,7 @@ export class CreateStudentsComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: 'Yeah...',
-            text: 'Course Created',
+            text: 'Student Account Created',
           });
           this.bulk = false;
           this.student_record = [];

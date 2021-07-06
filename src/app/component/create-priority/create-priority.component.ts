@@ -49,7 +49,7 @@ export class CreatePriorityComponent implements OnInit {
     const data = this.create_priority_form.getRawValue();
     this.priority_service.create_priority(data).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           icon: 'success',
           title: 'Yeah...',
@@ -62,7 +62,7 @@ export class CreatePriorityComponent implements OnInit {
         });
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           icon: 'error',
           title: 'Ohh...',

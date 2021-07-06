@@ -30,7 +30,7 @@ export class CreateCourseComponent implements OnInit {
     this.spinner = !this.spinner;
     this.activated_route.data.subscribe(
       (res) => {
-        console.log(res.role);
+        // console.log(res.role);
         const user: any = ACTIVE_USER();
         if (!user.permissions.includes(res.role)) {
           Swal.fire({

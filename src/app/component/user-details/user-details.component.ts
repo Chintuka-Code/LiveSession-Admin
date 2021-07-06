@@ -110,7 +110,7 @@ export class UserDetailsComponent implements OnInit {
         break;
 
       default:
-        console.log('');
+      // console.log('');
     }
   }
 

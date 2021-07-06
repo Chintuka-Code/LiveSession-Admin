@@ -105,7 +105,6 @@ export class EditBatchComponent implements OnInit {
 
   fill_pervious_details(batch) {
     this.spinner = true;
-    console.log();
     this.update_batch_form.controls.batch_name.patchValue(batch.batch_name);
     this.update_batch_form.controls.batch_duration.patchValue(
       batch.batch_duration
@@ -158,7 +157,7 @@ export class EditBatchComponent implements OnInit {
 
   ngOnInit(): void {
     this.batch_id = this.activated_route.snapshot.params.batch_id;
-    console.log(this.batch_id);
+    // console.log(this.batch_id);
     this.validation();
     this.get_batch_information();
     this.get_all_course();

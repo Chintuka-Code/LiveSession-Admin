@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
       this.batch = batch;
     } catch (error) {
       this.spinner = false;
-      console.log(error);
+      // console.log(error);
     }
   }
 

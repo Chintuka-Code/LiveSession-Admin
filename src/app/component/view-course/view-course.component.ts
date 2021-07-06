@@ -100,7 +100,7 @@ export class ViewCourseComponent implements OnInit {
     this.spinner = true;
     this.course_service.get_all_course(type).subscribe(
       (res: any) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.course = res.data;
         this.spinner = false;
       },
@@ -123,7 +123,7 @@ export class ViewCourseComponent implements OnInit {
     this.course_service.view_details_by_id(course._id).subscribe(
       (res: any) => {
         this.course_details = res.data;
-        console.log(this.course_details);
+        // console.log(this.course_details);
         this.spinner = false;
         this.dialog_visible = true;
       },
@@ -164,7 +164,7 @@ export class ViewCourseComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         course['disabled'] = type;
-        console.log(course);
+        // console.log(course);
         this.course_service.change_status(course).subscribe(
           (res) => {
             Swal.fire('Disabled!', `Course has been ${string}`, 'success').then(

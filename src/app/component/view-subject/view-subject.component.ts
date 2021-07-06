@@ -159,7 +159,7 @@ export class ViewSubjectComponent implements OnInit {
             });
           },
           (error) => {
-            console.log(error);
+            // console.log(error);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',

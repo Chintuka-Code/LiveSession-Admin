@@ -31,7 +31,7 @@ export class EditCourseComponent implements OnInit {
     this.course_service.edit_course_by_id(this.course_id).subscribe(
       (res: any) => {
         this.course = res.data;
-        console.log(this.course);
+        // console.log(this.course);
         this.get_all_subject();
       },
       (error) => {
@@ -53,7 +53,7 @@ export class EditCourseComponent implements OnInit {
     this.subject_service.get_subject(false).subscribe(
       (res: any) => {
         this.subject = res.data;
-        console.log(this.subject);
+        // console.log(this.subject);
         this.fill_pervious_details();
         this.spinner = false;
       },
@@ -105,7 +105,7 @@ export class EditCourseComponent implements OnInit {
         this.spinner = false;
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           icon: 'error',
           title: 'Ooh...',

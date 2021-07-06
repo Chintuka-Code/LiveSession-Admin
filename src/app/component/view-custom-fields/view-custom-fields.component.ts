@@ -50,7 +50,7 @@ export class ViewCustomFieldsComponent implements OnInit {
     this.custom_fields_service.get_custom_fields(type).subscribe(
       (res: any) => {
         this.custom_fields = res.data;
-        console.log(this.custom_fields);
+        // console.log(this.custom_fields);
         this.spinner = false;
       },
       (error) => this.error_handler(error)
@@ -110,7 +110,7 @@ export class ViewCustomFieldsComponent implements OnInit {
 
         this.custom_fields_service.update_status(fields).subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             this.get_custom_fields(this.disbaled_fields);
             this.spinner = false;
           },

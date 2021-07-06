@@ -86,7 +86,7 @@ export class CreateBatchComponent implements OnInit {
       (res: any) => {
         this.courses = res.data;
         this.courses.map((course) => delete course.disabled);
-        console.log(this.courses);
+        // console.log(this.courses);
         this.spinner = false;
       },
       (error) => {
