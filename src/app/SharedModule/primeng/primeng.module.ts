@@ -25,6 +25,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 const primeng = [
   AutoCompleteModule,
@@ -52,6 +53,7 @@ const primeng = [
   BadgeModule,
   TooltipModule,
   DividerModule,
+  InputSwitchModule,
 ];
 
 @NgModule({

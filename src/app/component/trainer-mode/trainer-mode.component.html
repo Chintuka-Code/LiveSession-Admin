@@ -54,13 +54,11 @@
                 class="form-check form-switch d-flex align-items-center"
                 style="padding-right: 1rem; cursor: pointer"
               >
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexSwitchCheckDefault"
-                  style="padding: 1rem; width: 4em; cursor: pointer"
-                  (click)="enable_student_name = !enable_student_name"
-                />
+                <p-inputSwitch
+                  #checked
+                  [(ngModel)]="enable_student_name"
+                  (onChange)="student_name()"
+                ></p-inputSwitch>
               </div>
             </div>
 
@@ -132,7 +130,7 @@
             <div class="chat-footer">
               <div class="row p-0 align-items-center">
                 <div class="col-12 p-0">
-                  <p class="p-0 m-0 ml-2" style="padding: 0 1.5rem !important ">
+                  <p class="p-0 m-0 ml-2" style="padding: 0 1.5rem !important">
                     Message to all students
                   </p>
                 </div>

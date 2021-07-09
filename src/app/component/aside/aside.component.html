@@ -185,7 +185,12 @@
       </a>
     </li>
 
-    <li routerLinkActive="active-page">
+    <li
+      routerLinkActive="active-page"
+      *ngIf="
+        user.permissions.includes('CAT00') || user.permissions.includes('CPIE')
+      "
+    >
       <a href="javascript:void(0)" (click)="accordion_list($event)"
         ><i class="fas fa-cogs px-3"></i>Setting<i
           class="fas fa-chevron-right dropdown-icon"
@@ -203,7 +208,10 @@
           </a>
         </li>
 
-        <li routerLinkActive="active-page">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('CPIE')"
+        >
           <a [routerLink]="['view-custom-fields']">
             <span class="pointer-none"
               ><i class="fab fa-cuttlefish"></i>Custom Fields</span

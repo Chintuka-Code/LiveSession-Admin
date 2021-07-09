@@ -24,7 +24,7 @@ export class TrainerModeComponent implements OnInit {
   student_id: any[] = [];
   files: any[] = [];
   message_sending: boolean = false;
-  enable_student_name: boolean = false;
+  enable_student_name: boolean;
   @ViewChild('textarea') textarea: ElementRef;
 
   constructor(
@@ -214,6 +214,27 @@ export class TrainerModeComponent implements OnInit {
         room_id: student + this.selected_batch._id,
       });
     });
+  }
+
+  student_name() {
+    if (this.enable_student_name) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to enable this Feature`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Yes, Enable it!`,
+      }).then(async (result) => {
+        console.log(result);
+        if (result.isConfirmed) {
+          this.enable_student_name = true;
+        } else {
+          this.enable_student_name = false;
+        }
+      });
+    }
   }
 
   // send message
