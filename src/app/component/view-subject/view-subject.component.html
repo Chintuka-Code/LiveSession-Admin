@@ -12,10 +12,13 @@
                 Disabled Subject
               </ng-container>
               <ng-template #enable> Enable Subject </ng-template>
-            </a>
-          </button>
+            </a></button
+          >user_profile
 
-          <button class="btn btn-primary">
+          <button
+            class="btn btn-primary"
+            *ngIf="user_profile.permissions.includes('SUB01')"
+          >
             <a [routerLink]="['../create-subject']">
               Create Subject <i class="fas fa-plus"></i>
             </a>

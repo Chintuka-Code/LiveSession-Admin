@@ -13,7 +13,10 @@
               <ng-template #enable> Active Student </ng-template>
             </a>
           </button> -->
-          <button class="btn btn-primary">
+          <button
+            class="btn btn-primary"
+            *ngIf="user_profile.permissions.includes('CS10')"
+          >
             <a [routerLink]="['../../create-student']">
               Create Student <i class="fas fa-plus"></i>
             </a>

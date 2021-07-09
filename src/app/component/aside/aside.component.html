@@ -12,14 +12,24 @@
       >
     </li>
 
-    <li routerLinkActive="active-page">
+    <li
+      routerLinkActive="active-page"
+      *ngIf="
+        user.permissions.includes('SUB00') ||
+        user.permissions.includes('C00') ||
+        user.permissions.includes('B00')
+      "
+    >
       <a href="javascript:void(0)" (click)="accordion_list($event)"
         ><i class="fas fa-user-tag px-3"></i>Institute<i
           class="fas fa-chevron-right dropdown-icon"
         ></i
       ></a>
       <ul class="d-none px-3">
-        <li routerLinkActive="active-page">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('SUB00')"
+        >
           <a [routerLink]="['view-subject']">
             <span class="pointer-none"
               ><i class="fas fa-book px-3"></i>Subject</span
@@ -27,7 +37,10 @@
           </a>
         </li>
 
-        <li routerLinkActive="active-page">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('C00')"
+        >
           <a [routerLink]="['view-course']">
             <span class="pointer-none"
               ><i class="fab fa-contao px-3"></i>Course</span
@@ -35,7 +48,10 @@
           </a>
         </li>
 
-        <li routerLinkActive="active-page">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('B00')"
+        >
           <a [routerLink]="['view-batch']">
             <span class="pointer-none"
               ><i class="fas fa-layer-group px-3"></i>Batch</span
@@ -143,32 +159,25 @@
     </li>
 
     <!-- Admin -->
-    <li routerLinkActive="active-page">
+    <li routerLinkActive="active-page" *ngIf="user.permissions.includes('U00')">
       <a [routerLink]="['user-details', 'admin']">
         <i class="fas fa-user-tag px-3"></i>Admin
       </a>
-      <!-- <ul class="d-none px-3">
-      
-        <li routerLinkActive="active-page">
-          <a [routerLink]="['user-details', 'admin']"
-            ><i class="fas fa-id-card"></i>View Admin</a
-          >
-        </li>
-        <li>
-          <a [routerLink]="['students-details', 'students']"
-            ><i class="fas fa-user-graduate"></i>View Students</a
-          >
-        </li>
-      </ul> -->
     </li>
 
-    <li routerLinkActive="active-page">
+    <li
+      routerLinkActive="active-page"
+      *ngIf="user.permissions.includes('RS00')"
+    >
       <a [routerLink]="['students-details', 'students']"
         ><i class="fas fa-user-tag px-3"></i>Student</a
       >
     </li>
 
-    <li routerLinkActive="active-page">
+    <li
+      routerLinkActive="active-page"
+      *ngIf="user.permissions.includes('BLOG00')"
+    >
       <a [routerLink]="['view-blog']">
         <span class="pointer-none"
           ><i class="fas fa-blog px-3"></i>Knowledge Base</span
@@ -183,7 +192,10 @@
         ></i
       ></a>
       <ul class="d-none px-3">
-        <li routerLinkActive="active-page">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('CAT00')"
+        >
           <a [routerLink]="['view-category']">
             <span class="pointer-none"
               ><i class="fas fa-book px-3"></i>Category</span
@@ -199,7 +211,10 @@
           </a>
         </li>
 
-        <li routerLinkActive="active-page">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('CPIE')"
+        >
           <a [routerLink]="['view-priority']">
             <span class="pointer-none"
               ><i class="fas fa-level-up-alt"></i>Priority</span

@@ -20,7 +20,10 @@
             </a>
           </button>
 
-          <button class="btn btn-primary">
+          <button
+            class="btn btn-primary"
+            *ngIf="user_profile.permissions.includes('CPIE')"
+          >
             <a [routerLink]="['../create-priority']">
               Create Priority <i class="fas fa-plus"></i>
             </a>

@@ -14,7 +14,10 @@
             </a>
           </button>
 
-          <button class="btn btn-primary">
+          <button
+            class="btn btn-primary"
+            *ngIf="user_profile.permissions.includes('B10')"
+          >
             <a [routerLink]="['../create-batch']">
               Create Batch <i class="fas fa-plus"></i>
             </a>

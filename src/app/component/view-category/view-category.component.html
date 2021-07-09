@@ -14,9 +14,12 @@
             </a>
           </button>
 
-          <button class="btn btn-primary">
+          <button
+            class="btn btn-primary"
+            *ngIf="user_profile.permissions.includes('CAT01')"
+          >
             <a [routerLink]="['../create-category']">
-              Create Batch <i class="fas fa-plus"></i>
+              Create Category <i class="fas fa-plus"></i>
             </a>
           </button>
         </div>

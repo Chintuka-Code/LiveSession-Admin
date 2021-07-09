@@ -2,7 +2,10 @@
   <div class="card-body">
     <div class="header">
       <h3 class="">Active User</h3>
-      <button class="btn btn-primary">
+      <button
+        class="btn btn-primary"
+        *ngIf="user_profile.permissions.includes('U01')"
+      >
         <a [routerLink]="['../../create-user']">
           Create Admin <i class="fas fa-plus"></i>
         </a>
