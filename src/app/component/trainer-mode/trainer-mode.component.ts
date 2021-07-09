@@ -24,6 +24,7 @@ export class TrainerModeComponent implements OnInit {
   student_id: any[] = [];
   files: any[] = [];
   message_sending: boolean = false;
+  enable_student_name: boolean = false;
   @ViewChild('textarea') textarea: ElementRef;
 
   constructor(

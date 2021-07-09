@@ -49,6 +49,19 @@
               "
             >
               <h3 class="h3">{{ selected_batch.batch_name }}</h3>
+
+              <div
+                class="form-check form-switch d-flex align-items-center"
+                style="padding-right: 1rem; cursor: pointer"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexSwitchCheckDefault"
+                  style="padding: 1rem; width: 4em; cursor: pointer"
+                  (click)="enable_student_name = !enable_student_name"
+                />
+              </div>
             </div>
 
             <div class="chat-body px-2 position-relative" id="chat-body">
@@ -77,7 +90,10 @@
                   />
                   <div class="comment-container pb-2">
                     <span class="comment-author">
-                      {{ chat.sender_name }}
+                      <span *ngIf="enable_student_name">
+                        {{ chat.sender_name }}</span
+                      >
+                      <span *ngIf="!enable_student_name">Student</span>
                       <small class="comment-date" *ngIf="chat.created_at">
                         {{ chat.created_at | amDateFormat: "hh:mmA" }}</small
                       >
@@ -115,6 +131,11 @@
 
             <div class="chat-footer">
               <div class="row p-0 align-items-center">
+                <div class="col-12 p-0">
+                  <p class="p-0 m-0 ml-2" style="padding: 0 1.5rem !important ">
+                    Message to all students
+                  </p>
+                </div>
                 <div class="col-10">
                   <textarea
                     name="text"
