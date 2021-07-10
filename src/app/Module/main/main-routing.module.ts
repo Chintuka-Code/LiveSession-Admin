@@ -252,6 +252,13 @@ const routes: Routes = [
             (m) => m.ViewPriorityModule
           ),
       },
+      {
+        path: 'batch-student/:batch_id/:batch_name',
+        loadChildren: () =>
+          import('../view-batch-student/view-batch-student.module').then(
+            (m) => m.ViewBatchStudentModule
+          ),
+      },
     ],
   },
 ];

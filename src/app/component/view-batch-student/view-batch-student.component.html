@@ -1,0 +1,75 @@
+<section *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Students Inside {{ batch_name }} batch</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../../view-batch']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+
+      <div>
+        <p-table
+          #studentlist
+          [value]="students_list"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="p-datatable-customers"
+          [paginator]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [globalFilterFields]="['name', 'email', '_id']"
+        >
+          <ng-template pTemplate="caption" class="w-100">
+            <div class="p-d-flex w-100">
+              <span class="p-input-icon-left p-ml-auto w-100">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    studentlist.filterGlobal($event.target.value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                  class="w-100"
+                />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+
+              <th>Created At</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-student>
+            <tr>
+              <td>
+                {{ student.name }}
+              </td>
+              <td>{{ student.email }}</td>
+
+              <td>{{ student.createdAt | date: "medium" }}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No User found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

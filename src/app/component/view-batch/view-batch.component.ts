@@ -27,9 +27,7 @@ export class ViewBatchComponent implements OnInit {
   constructor(
     private user_service: UserService,
     private router: Router,
-    private batch_service: BatchService,
-    private course_service: CourseService,
-    private subject_service: SubjectService
+    private batch_service: BatchService
   ) {}
 
   setMenu() {
@@ -53,6 +51,14 @@ export class ViewBatchComponent implements OnInit {
       icon: 'pi pi-eye',
       command: () => {
         this.menu_type = 'view';
+      },
+    });
+
+    this.items[0].items.push({
+      label: 'View-Students',
+      icon: 'pi pi-eye',
+      command: () => {
+        this.menu_type = 'students';
       },
     });
 
@@ -163,6 +169,13 @@ export class ViewBatchComponent implements OnInit {
         break;
       case 'edit':
         this.router.navigate(['/main/edit-batch', batch._id]);
+        break;
+      case 'students':
+        this.router.navigate([
+          '/main/batch-student',
+          batch._id,
+          batch.batch_name,
+        ]);
         break;
       case 'disabled':
         this.disabled_batch(batch);

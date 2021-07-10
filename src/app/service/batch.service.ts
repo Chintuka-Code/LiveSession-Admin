@@ -50,4 +50,10 @@ export class BatchService {
       `${environment.BASE_SERVER_URL}/batch/get-batch-details-home`
     );
   }
+
+  get_student_list(batch_id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/get-batch-student/${batch_id}`
+    );
+  }
 }

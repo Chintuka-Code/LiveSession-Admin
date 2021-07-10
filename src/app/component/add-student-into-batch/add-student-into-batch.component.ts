@@ -27,6 +27,7 @@ export class AddStudentIntoBatchComponent implements OnInit {
   ) {}
 
   async get_batch_details() {
+    this.spinner = true;
     this.batch_service
       .get_batch_details_for_addStudent(this.batch_id)
       .subscribe(
