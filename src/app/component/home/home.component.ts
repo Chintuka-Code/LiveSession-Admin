@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   spinner: boolean = false;
   user: any;
   total_student: number = 0;
+
   constructor(
     private student_service: StudentsService,
     private batch_service: BatchService,

@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
+import { QUILL_TOOLBAR_SETTING } from 'src/app/utilities/quill_setting';
+import 'quill-emoji/dist/quill-emoji.js';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -30,6 +32,8 @@ export class LiveSessionChatComponent implements OnInit {
   message_sending: boolean = false;
   end_all_chat_button: boolean;
   @ViewChild('sound') sound: ElementRef;
+  modules = {};
+  text: any;
 
   constructor(
     private chat_service: ChatService,
@@ -38,6 +42,7 @@ export class LiveSessionChatComponent implements OnInit {
     private attachment_service: AttachmentService,
     private live_session_chat_service: LiveSessionChatService
   ) {
+    this.modules = QUILL_TOOLBAR_SETTING;
     // assign chat to admin
     this.live_session_chat_service.assign_chat().subscribe((res) => {
       this.active_student_list.forEach((stu) => {
@@ -116,6 +121,10 @@ export class LiveSessionChatComponent implements OnInit {
       // console.log(this.active_student_list);
       this.spinner = false;
     });
+  }
+
+  changedEditor(event) {
+    // console.log(event);
   }
 
   filter_data() {
@@ -250,22 +259,23 @@ export class LiveSessionChatComponent implements OnInit {
   }
 
   // send message
-  async send_message(message) {
+  async send_message() {
     this.message_sending = true;
     const message_obj = {
-      text_message: message.value,
+      text_message: this.text,
       sme_id: localStorage.getItem('uid'),
       sender_name: this.user.name,
       sender_type: 'admin',
       attachment: [],
       created_at: new Date(),
     };
+
     const data = {
       room_id:
         this.selected_student.student_id + this.selected_student.batch_id,
       chat_id: this.selected_student._id,
     };
-    this.textarea.nativeElement.value = '';
+    this.text = '';
     try {
       if (this.files.length > 0) {
         const files: any = await this.attachment_service.upload_files(
@@ -275,7 +285,10 @@ export class LiveSessionChatComponent implements OnInit {
           files.files_paths
         );
       }
-
+      this.selected_student_chat_message.push(message_obj);
+      setTimeout(() => {
+        this.scroll_chat_container();
+      }, 50);
       this.live_session_chat_service.send_message(message_obj, data);
 
       this.files = [];
@@ -330,7 +343,7 @@ export class LiveSessionChatComponent implements OnInit {
               stu.batch_id === this.selected_student.batch_id
             )
         );
-
+        console.log(this.selected_student);
         this.live_session_chat_service.transfer(this.selected_student);
         this.live_session_chat_service.leave({
           room_id:

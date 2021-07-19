@@ -168,8 +168,10 @@
 
                     <ng-container *ngIf="message.text_message">
                       <p-divider></p-divider>
-                      <span class="comment-text">
-                        {{ message.text_message }}
+                      <span
+                        class="comment-text"
+                        [innerHTML]="message.text_message"
+                      >
                       </span>
                     </ng-container>
 
@@ -204,63 +206,44 @@
             </div>
 
             <!-- chat form -->
-            <div class="chat-footer">
-              <div
-                class="row p-0 align-items-center"
-                *ngIf="selected_student.sme_id; else startchat"
-              >
-                <div class="col-9 col-md-10">
-                  <textarea
-                    name="text"
-                    placeholder="Write Something"
-                    id=""
-                    cols="30"
-                    rows="1"
-                    class="form-control"
-                    #textarea
-                    (input)="textarea_auto_increment($event)"
-                  ></textarea>
-                </div>
-                <div
-                  class="
-                    chat-control
-                    col-3 col-md-2
-                    d-flex
-                    align-items-center
-                    p-0
-                    pl-0
-                  "
-                >
-                  <div class="attachment">
-                    <div class="file">
-                      <input
-                        type="file"
-                        multiple
-                        name="file"
-                        (change)="attchment($event)"
-                        id="file"
-                      />
-                      <label for="file" title="select files">
-                        <span *ngIf="files.length == 0; else count"
-                          ><i class="fas fa-paperclip"></i
-                        ></span>
-                        <ng-template #count>
-                          <span class="count"> {{ files.length }} </span>
-                        </ng-template>
-                      </label>
-                    </div>
+            <div class="">
+              <ng-container *ngIf="selected_student.sme_id; else startchat">
+                <div class="col-12 mt-3 mt-md-4">
+                  <div>
+                    <quill-editor
+                      [styles]="{ 'min-height': '100px' }"
+                      [modules]="modules"
+                      [(ngModel)]="text"
+                    >
+                    </quill-editor>
                   </div>
-                  <div class="send z-1000">
-                    <ng-container *ngIf="!message_sending; else wait">
-                      <button
-                        type="button"
-                        [disabled]="textarea.value == '' && files.length == 0"
-                        (click)="send_message(textarea)"
-                      >
-                        <i class="far fa-paper-plane"></i>
-                      </button>
-                    </ng-container>
+                </div>
 
+                <div class="d-flex align-items-center mt-3">
+                  <div class="file">
+                    <p class="p-0 m-0">Attachment</p>
+                    <input
+                      type="file"
+                      multiple
+                      (change)="attchment($event)"
+                      name="file"
+                      id="file"
+                    />
+                    <label for="file" title="select files">
+                      <span><i class="fas fa-paperclip"></i></span>
+                      <span *ngIf="files.length > 0"> {{ files.length }} </span>
+                    </label>
+                  </div>
+
+                  <div class="button ml-3" style="margin: 2rem 0 0rem 3rem">
+                    <button
+                      *ngIf="!message_sending; else wait"
+                      class="btn btn-primary"
+                      [disabled]="!text && files.length == 0"
+                      (click)="send_message(textarea)"
+                    >
+                      Send
+                    </button>
                     <ng-template #wait>
                       <button
                         pButton
@@ -273,7 +256,7 @@
                     </ng-template>
                   </div>
                 </div>
-              </div>
+              </ng-container>
 
               <div class="row p-0">
                 <ng-template #startchat>
