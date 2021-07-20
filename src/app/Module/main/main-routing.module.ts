@@ -259,6 +259,20 @@ const routes: Routes = [
             (m) => m.ViewBatchStudentModule
           ),
       },
+      {
+        path: 'view-question-bank',
+        loadChildren: () =>
+          import('../view-question-bank/view-question-bank.module').then(
+            (m) => m.ViewQuestionBankModule
+          ),
+      },
+      {
+        path: 'create-question-bank',
+        loadChildren: () =>
+          import('../create-question-bank/create-question-bank.module').then(
+            (m) => m.CreateQuestionBankModule
+          ),
+      },
     ],
   },
 ];
