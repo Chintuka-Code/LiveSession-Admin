@@ -7,7 +7,9 @@
 
         <div class="d-flex align-items-center">
           <button class="btn btn-primary">
-            <a [routerLink]="['../create-question']">
+            <a
+              [routerLink]="['../create-question', { question_bank_id: null }]"
+            >
               Create Question <i class="fas fa-plus"></i>
             </a>
           </button>

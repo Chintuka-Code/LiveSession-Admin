@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-question',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateQuestionComponent implements OnInit {
   spinner: boolean = false;
-  constructor() {}
+  question_bank_id: string;
+  constructor(private route: ActivatedRoute) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.question_bank_id =
+      this.route.snapshot.paramMap.get('question_bank_id');
+    console.log(this.question_bank_id);
+  }
 }
