@@ -1,1 +1,26 @@
-<p>view-question works!</p>
+<section *ngIf="!spinner; else showspinner">
+  <!-- Enabled Course -->
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Question List</h3>
+
+        <div class="d-flex align-items-center">
+          <button class="btn btn-primary">
+            <a [routerLink]="['../create-question']">
+              Create Question <i class="fas fa-plus"></i>
+            </a>
+          </button>
+        </div>
+      </div>
+
+      <div></div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

@@ -3,13 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-view-question',
   templateUrl: './view-question.component.html',
-  styleUrls: ['./view-question.component.scss']
+  styleUrls: ['./view-question.component.scss'],
 })
 export class ViewQuestionComponent implements OnInit {
+  spinner: boolean = false;
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

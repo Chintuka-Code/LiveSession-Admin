@@ -1,1 +1,19 @@
-<p>create-question-bank works!</p>
+<div class="card" *ngIf="!spinner; else showspinner">
+  <div class="card-body">
+    <div class="header">
+      <h3 class="">Create Question Bank</h3>
+      <button class="btn btn-primary">
+        <a [routerLink]="['../view-question-bank']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
+    </div>
+    <div class="container-fluid"></div>
+  </div>
+</div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

@@ -185,6 +185,15 @@
       </a>
     </li>
 
+    <li routerLinkActive="active-page">
+      <a [routerLink]="['view-question-bank']">
+        <span class="pointer-none">
+          <i class="fas fa-question px-3" aria-hidden="true"></i>Question
+          Bank</span
+        >
+      </a>
+    </li>
+
     <li
       routerLinkActive="active-page"
       *ngIf="
@@ -203,7 +212,7 @@
         >
           <a [routerLink]="['view-category']">
             <span class="pointer-none"
-              ><i class="fas fa-book px-3"></i>Category</span
+              ><i class="fas fa-book"></i>Category</span
             >
           </a>
         </li>
@@ -227,6 +236,14 @@
             <span class="pointer-none"
               ><i class="fas fa-level-up-alt"></i>Priority</span
             >
+          </a>
+        </li>
+
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['view-question']">
+            <span class="pointer-none">
+              <i class="fas fa-question" aria-hidden="true"></i>Question
+            </span>
           </a>
         </li>
       </ul>

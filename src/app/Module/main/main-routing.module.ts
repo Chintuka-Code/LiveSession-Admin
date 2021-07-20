@@ -273,10 +273,22 @@ const routes: Routes = [
             (m) => m.CreateQuestionBankModule
           ),
       },
+      {
+        path: 'view-question',
+        loadChildren: () =>
+          import('../view-question/view-question.module').then(
+            (m) => m.ViewQuestionModule
+          ),
+      },
+      {
+        path: 'create-question',
+        loadChildren: () =>
+          import('../create-question/create-question.module').then(
+            (m) => m.CreateQuestionModule
+          ),
+      },
     ],
   },
-  { path: 'view-question', loadChildren: () => import('../view-question/view-question.module').then(m => m.ViewQuestionModule) },
-  { path: 'create-question', loadChildren: () => import('../create-question/create-question.module').then(m => m.CreateQuestionModule) },
 ];
 
 @NgModule({
