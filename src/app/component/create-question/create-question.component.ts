@@ -14,6 +14,5 @@ export class CreateQuestionComponent implements OnInit {
   ngOnInit(): void {
     this.question_bank_id =
       this.route.snapshot.paramMap.get('question_bank_id');
-    console.log(this.question_bank_id);
   }
 }
