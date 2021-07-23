@@ -1,0 +1,29 @@
+<section *ngIf="!spinner; else showspinner">
+    <!-- Enabled Course -->
+    <div class="card">
+      <div class="card-body">
+        <div class="header">
+          <h3 class="">Exam List</h3>
+  
+          <div class="d-flex align-items-center">
+            <button class="btn btn-primary">
+              <a
+                [routerLink]="['../create-exam']"
+              >
+                Create Exam <i class="fas fa-plus"></i>
+              </a>
+            </button>
+          </div>
+        </div>
+  
+        <div></div>
+      </div>
+    </div>
+  </section>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  

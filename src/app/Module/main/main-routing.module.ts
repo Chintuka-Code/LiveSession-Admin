@@ -287,6 +287,20 @@ const routes: Routes = [
             (m) => m.CreateQuestionModule
           ),
       },
+      {
+        path: 'view-exam',
+        loadChildren: () =>
+          import('../view-exam/view-exam.module').then(
+            (m) => m.ViewExamModule
+          ),
+      },
+      {
+        path: 'create-exam',
+        loadChildren: () =>
+          import('../create-exam/create-exam.module').then(
+            (m) => m.CreateExamModule
+          ),
+      },
     ],
   },
 ];
