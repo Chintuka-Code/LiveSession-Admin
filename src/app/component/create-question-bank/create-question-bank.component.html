@@ -8,7 +8,92 @@
         </a>
       </button>
     </div>
-    <div class="container-fluid"></div>
+    <div class="container-fluid">
+      <form
+        [formGroup]="create_question_bank_form"
+        (ngSubmit)="create_question_bank()"
+      >
+        <div class="row">
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <input
+                type="text"
+                id="inputtext"
+                class="form-control"
+                pInputText
+                formControlName="question_bank_name"
+              />
+              <label for="inputtext">Question-Bank Name</label>
+            </span>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-dropdown
+                inputId="dropdown"
+                [autoDisplayFirst]="false"
+                [options]="subject"
+                [style]="{ minWidth: '100%' }"
+                formControlName="subject_id"
+                optionLabel="subject_name"
+                optionValue="_id"
+              ></p-dropdown>
+              <label for="dropdown">Subject</label>
+            </span>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <input
+                type="text"
+                id="inputtext"
+                class="form-control"
+                pInputText
+                formControlName="chapter_name"
+              />
+              <label for="inputtext">Chapter Name</label>
+            </span>
+          </div>
+
+          <div class="col-12 mt-3 mt-md-4">
+            <div>
+              <span class="quill-heading">Description</span>
+              <quill-editor
+                [styles]="{ 'min-height': '100px', 'padding-top': '2rem' }"
+                [modules]="modules"
+                formControlName="description"
+              >
+              </quill-editor>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <!-- optionLabel="subject_name" -->
+              <p-dropdown
+                inputId="dropdown"
+                [autoDisplayFirst]="false"
+                [options]="difficulty"
+                [style]="{ minWidth: '100%' }"
+                formControlName="difficulty"
+              ></p-dropdown>
+              <label for="dropdown">Difficulty</label>
+            </span>
+          </div>
+
+          <div class="col-12 col-md-4 mt-5">
+            <button
+              type="submit"
+              [disabled]="create_question_bank_form.invalid"
+              style="margin-left: 0.5rem"
+              class="btn btn-primary"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
