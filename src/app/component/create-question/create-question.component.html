@@ -2,13 +2,85 @@
   <div class="card-body">
     <div class="header">
       <h3 class="">Create Question</h3>
-      <button class="btn btn-primary">
-        <a [routerLink]="['../view-question']">
-          <i class="fas fa-arrow-left"></i> Back
-        </a>
-      </button>
+
+      <div class="d-flex align-items-center">
+        <button
+          class="btn btn-primary mr-3"
+          (click)="new_created = !new_created"
+        >
+          <a>
+            <span *ngIf="new_created; else new_create"
+              >Use Existing Question <i class="fas fa-plus"></i
+            ></span>
+            <ng-template #new_create>
+              Create New <i class="fas fa-plus"></i>
+            </ng-template>
+          </a>
+        </button>
+
+        <button class="btn btn-primary">
+          <a [routerLink]="['../view-question']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
     </div>
-    <div class="container-fluid"></div>
+    <div class="container-fluid">
+      <div *ngIf="new_created; else existing">
+        <div class="container-fluid mt-3">
+          <form
+            [formGroup]="create_question_form"
+            (ngSubmit)="create_question()"
+          >
+            <ng-container formArrayName="question">
+              <div *ngFor="let X of question.controls; index as i">
+                <ng-container [formGroupName]="i">
+                  <div class="col-12 col-md-4 mt-5">
+                    <span class="p-float-label w-100">
+                      <input
+                        type="text"
+                        id="inputtext"
+                        class="form-control"
+                        formControlName="name"
+                        pInputText
+                      />
+                      <label for="inputtext">Name</label>
+                    </span>
+                  </div>
+
+                  <ng-container>
+                    <div formArrayName="address">
+                      <div
+                        *ngFor="
+                          let Y of X['controls'].address['controls'];
+                          index as j
+                        "
+                      >
+                        <div>
+                          <input
+                            type="text"
+                            name="percentage"
+                            [formControlName]="j"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <button type="button" (click)="addY(i)">add</button>
+                </ng-container>
+              </div>
+            </ng-container>
+
+            <button type="submit" class="btn btn-success">Create</button>
+          </form>
+        </div>
+      </div>
+
+      <ng-template #existing>
+        <app-add-from-existing-question></app-add-from-existing-question>
+      </ng-template>
+    </div>
   </div>
 </div>
 

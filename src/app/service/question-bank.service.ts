@@ -14,4 +14,10 @@ export class QuestionBankService {
       { data }
     );
   }
+
+  get_all_question_bank(type) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/question-bank/get-all-question-bank/${type}`
+    );
+  }
 }

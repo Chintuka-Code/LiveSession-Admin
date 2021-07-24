@@ -45,17 +45,20 @@ export class CreateQuestionBankComponent implements OnInit {
         this.spinner = false;
       },
       (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error.errorMessage,
-        }).then(() => {
-          this.router.navigate(['/main']);
-          this.spinner = false;
-          return '';
-        });
+        this.error_handler(error);
       }
     );
+  }
+
+  error_handler(error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.errorMessage,
+    }).then(() => {
+      this.spinner = false;
+      this.router.navigate(['/main']);
+    });
   }
 
   validation() {
@@ -71,12 +74,19 @@ export class CreateQuestionBankComponent implements OnInit {
   create_question_bank() {
     this.spinner = true;
     const data = this.create_question_bank_form.getRawValue();
-    console.log(data);
-    this.question_bank_service.create_question_bank(data).subscribe((res) => {
-      console.log(res);
-      this.spinner = false;
-    });
+    this.question_bank_service.create_question_bank(data).subscribe(
+      (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'Question Bank Created',
+        }).then(() => this.create_question_bank_form.reset());
+        this.spinner = false;
+      },
+      (error) => this.error_handler(error)
+    );
   }
+  W;
 
   ngOnInit(): void {
     this.validation();

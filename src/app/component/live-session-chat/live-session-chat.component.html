@@ -54,7 +54,10 @@
                         <span class="author-name">
                           {{ student.student_name }}
                         </span>
-                        <span class="email-date">
+                        <span
+                          class="email-date"
+                          *ngIf="student.admin_unread_count > 0"
+                        >
                           {{ student.admin_unread_count }}
                         </span>
                       </div>
