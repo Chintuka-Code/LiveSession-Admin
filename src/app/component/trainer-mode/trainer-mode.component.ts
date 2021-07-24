@@ -262,6 +262,7 @@ export class TrainerModeComponent implements OnInit {
       }
 
       this.all_chats.push(message_obj);
+      this.scroll_chat_container();
 
       this.student_id.forEach((id) => {
         const data = {
