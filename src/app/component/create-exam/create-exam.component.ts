@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-exam.component.scss']
 })
 export class CreateExamComponent implements OnInit {
-
+  spinner: boolean = false;
   constructor() { }
 
   ngOnInit(): void {
