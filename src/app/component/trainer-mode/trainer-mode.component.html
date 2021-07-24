@@ -100,7 +100,8 @@
 
                   <ng-container *ngIf="chat.text_message">
                     <p-divider></p-divider>
-                    <span class="comment-text"> {{ chat.text_message }} </span>
+                    <span class="comment-text" [innerHTML]="chat.text_message">
+                    </span>
                   </ng-container>
 
                   <div class="attachment" *ngIf="chat.attachment.length > 0">

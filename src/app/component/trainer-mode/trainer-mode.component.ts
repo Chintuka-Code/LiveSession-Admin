@@ -261,6 +261,8 @@ export class TrainerModeComponent implements OnInit {
         );
       }
 
+      this.all_chats.push(message_obj);
+
       this.student_id.forEach((id) => {
         const data = {
           room_id: id.student_id + this.selected_batch._id,
