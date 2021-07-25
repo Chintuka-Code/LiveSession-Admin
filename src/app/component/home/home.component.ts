@@ -58,27 +58,30 @@ export class HomeComponent implements OnInit {
         .toPromise();
 
       const current_day_time = {
-        current_time: FormativeData.formative_date(
-          date_obj.currentDateTime,
-          'shortTime'
+        current_time: new Date(
+          `jan 0, ${new Date(date_obj.currentDateTime).toTimeString()}`
         ),
         current_day: date_obj.dayOfTheWeek,
-        current_date: new Date(date_obj.currentDateTime),
+        current_date: new Date(
+          `${new Date(date_obj.currentDateTime).toDateString()},0:0:0`
+        ),
       };
+
+      console.log(batch);
 
       batch.forEach((bat, index) => {
         const batch_info = {
           batch_start_date: new Date(bat.batch_start_date),
-
-          batch_end_date: new Date(bat.batch_end_date),
-
-          batch_start_time: FormativeData.formative_date(
-            bat.batch_start_time,
-            'shortTime'
+          batch_end_date: new Date(
+            `${new Date(bat.batch_end_date).toDateString()},0:0:0`
           ),
-          batch_end_time: FormativeData.formative_date(
-            bat.batch_end_time,
-            'shortTime'
+
+          batch_start_time: new Date(
+            `jan 0, ${new Date(bat.batch_start_time).toTimeString()}`
+          ),
+
+          batch_end_time: new Date(
+            `jan 0,${new Date(bat.batch_end_time).toTimeString()}`
           ),
         };
 
@@ -96,6 +99,7 @@ export class HomeComponent implements OnInit {
       });
       this.total_student_count();
       this.batch = batch;
+      console.log(this.batch);
     } catch (error) {
       this.spinner = false;
       // console.log(error);

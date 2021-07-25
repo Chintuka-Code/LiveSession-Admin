@@ -9,53 +9,60 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CreateQuestionComponent implements OnInit {
   spinner: boolean = false;
-  new_created: boolean = true;
-  create_question_form: FormGroup;
-  address;
-  group: any = new FormGroup({
-    name: new FormControl(''),
-    address: new FormArray([new FormControl('')]),
-  });
+  myForm: FormGroup;
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder) {}
 
   validation() {
-    this.create_question_form = this.fb.group({
-      question: this.fb.array([this.group]),
+    this.myForm = this.fb.group({
+      // you can also set initial formgroup inside if you like
+      companies: this.fb.array([
+        this.fb.group({
+          company: [''],
+          projects: this.fb.array([]),
+        }),
+      ]),
     });
   }
 
-  get question() {
-    return this.create_question_form.get('question') as FormArray;
+  // getter for easier access
+  get companiesFormArr(): FormArray {
+    return this.myForm.get('companies') as FormArray;
   }
 
-  add_question() {
-    this.question.push(this.group);
+  addNewCompany() {
+    this.companiesFormArr.push(
+      this.fb.group({
+        company: [''],
+        projects: this.fb.array([]),
+      })
+    );
   }
 
-  addY(ix) {
-    const control = (<FormArray>this.create_question_form.controls['question'])
-      .at(ix)
-      .get('address') as FormArray;
-
-    console.log(control);
-
-    control.push(new FormControl(''));
+  deleteCompany(index: number) {
+    this.companiesFormArr.removeAt(index);
   }
 
-  create_question() {
-    const data = this.create_question_form.getRawValue();
+  addNewProject(control) {
+    control.push(
+      // this.fb.group({
+      //   projectName: [''],
+      // })
+      this.fb.control([''])
+    );
+  }
+
+  deleteProject(control, index) {
+    control.removeAt(index);
+  }
+
+  create_company_fun() {
+    const data = this.myForm.getRawValue();
     console.log(data);
-  }
-
-  add() {
-    for (let i = 0; i < 3; i++) {
-      this.add_question();
-    }
   }
 
   ngOnInit(): void {
     this.validation();
-    this.add();
+    // this.add();
   }
 }

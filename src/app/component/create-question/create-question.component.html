@@ -1,4 +1,4 @@
-<div class="card" *ngIf="!spinner; else showspinner">
+<!-- <div class="card" *ngIf="!spinner; else showspinner">
   <div class="card-body">
     <div class="header">
       <h3 class="">Create Question</h3>
@@ -88,4 +88,46 @@
   <div class="spinner">
     <app-spinner></app-spinner>
   </div>
-</ng-template>
+</ng-template> -->
+
+<h3 class="h3">Hello</h3>
+
+<form [formGroup]="myForm" (ngSubmit)="create_company_fun()">
+  <div formArrayName="companies">
+    <div *ngFor="let comp of companiesFormArr.controls; let i = index">
+      <h3>COMPANY {{ i + 1 }}:</h3>
+      <div [formGroupName]="i">
+        <input formControlName="company" />
+        <button type="button" (click)="deleteCompany(i)">Delete Company</button>
+        <button type="button" (click)="addNewCompany()">Add Company</button>
+        <div formArrayName="projects">
+          <!-- Here I has worked around the typechecking, 
+             if you want stronger typechecking, call a function. 
+             Remember: function called on each change detection! -->
+          <div
+            *ngFor="
+              let project of comp.get('projects')['controls'];
+              let j = index
+            "
+          >
+            <h4>PROJECT {{ j + 1 }}</h4>
+            <div>
+              <input [formControlName]="j" />
+              <button
+                type="button"
+                (click)="deleteProject(comp.get('projects'), j)"
+              >
+                Delete Project
+              </button>
+            </div>
+          </div>
+          <button (click)="addNewProject(comp.get('projects'))">
+            Add new Project
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit">Sub</button>
+</form>
