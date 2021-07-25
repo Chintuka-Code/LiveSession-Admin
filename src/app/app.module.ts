@@ -12,6 +12,9 @@ import { SharedUtilitiesModule } from './SharedModule/shared-utilities/shared-ut
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalInterceptor } from './Interceptor/global.interceptor';
 import { QuillModule } from 'ngx-quill';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 @NgModule({
   declarations: [AppComponent, PagenotfoundComponent],
@@ -24,6 +27,9 @@ import { QuillModule } from 'ngx-quill';
     BrowserAnimationsModule,
     SharedUtilitiesModule,
     QuillModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsModule.forRoot([]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [
     {
