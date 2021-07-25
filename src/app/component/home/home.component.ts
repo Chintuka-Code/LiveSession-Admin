@@ -3,9 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { BatchService } from 'src/app/service/batch.service';
 import { StudentsService } from 'src/app/service/students.service';
-import { UserService } from 'src/app/service/user.service';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
-import { FormativeData } from 'src/app/utilities/formative_data';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 @Component({
@@ -66,9 +64,6 @@ export class HomeComponent implements OnInit {
           `${new Date(date_obj.currentDateTime).toDateString()},0:0:0`
         ),
       };
-
-      console.log(batch);
-
       batch.forEach((bat, index) => {
         const batch_info = {
           batch_start_date: new Date(bat.batch_start_date),
