@@ -1,8 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 import { BatchService } from 'src/app/service/batch.service';
 import { StudentsService } from 'src/app/service/students.service';
+import { GlobalSpinner } from 'src/app/store/actions/global.action';
+import { GlobalState } from 'src/app/store/states/global.state';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -20,7 +24,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private student_service: StudentsService,
     private batch_service: BatchService,
-    private http: HttpClient
+    private http: HttpClient,
+    private store: Store
   ) {}
 
   // get all batch
@@ -110,5 +115,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_user_all_batch();
+    // this.store.dispatch(new GlobalSpinner());
+    // this.spinner$.subscribe((res) => console.log(res));
   }
 }

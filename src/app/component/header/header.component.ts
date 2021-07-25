@@ -4,6 +4,10 @@ import Swal from 'sweetalert2';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 import { NotificationService } from 'src/app/service/notification.service';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { GlobalState } from 'src/app/store/states/global.state';
+import { updateAside } from 'src/app/store/actions/global.action';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +21,13 @@ export class HeaderComponent implements OnInit {
   spinner: boolean = false;
   @ViewChild('sound') sound: ElementRef;
 
+  @Select(GlobalState.getAside) aside$: Observable<boolean>;
+
   constructor(
     private live_session_service: LiveSessionChatService,
     private router: Router,
-    private notification_service: NotificationService
+    private notification_service: NotificationService,
+    private store: Store
   ) {
     this.live_session_service.new_ticket().subscribe((res) => {
       if (res.sender_type !== 'admin') {
@@ -40,9 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   show_aside() {
-    const arrow = document.querySelector('.arrow');
-    document.querySelector('body').classList.toggle('sidebar-hidden');
-    arrow.classList.toggle('arrow-swing');
+    this.store.dispatch(new updateAside());
   }
 
   get_notification(skip) {
@@ -93,8 +98,28 @@ export class HeaderComponent implements OnInit {
       );
   }
 
+  aside() {
+    this.aside$.subscribe((res) => {
+      const arrow = document.querySelector('.arrow');
+      if (res) {
+        document.querySelector('body').classList.toggle('sidebar-hidden');
+        arrow.classList.toggle('arrow-swing');
+      } else {
+        document.querySelector('body').classList.toggle('sidebar-hidden');
+        arrow.classList.toggle('arrow-swing');
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.user = ACTIVE_USER();
     this.get_notification(0);
+  }
+
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    this.aside();
+    this.show_aside();
   }
 }

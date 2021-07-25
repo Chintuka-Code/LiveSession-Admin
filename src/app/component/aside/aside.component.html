@@ -78,7 +78,7 @@
           routerLinkActive="active-page"
           *ngIf="user.permissions.includes('LS00')"
         >
-          <a [routerLink]="['live-session-chat']"
+          <a [routerLink]="['live-session-chat']" (click)="updateAside()"
             ><i class="fas fa-comment-dots px-3"></i> Agent</a
           >
         </li>
@@ -87,7 +87,7 @@
           routerLinkActive="active-page"
           *ngIf="user.permissions.includes('TM11')"
         >
-          <a [routerLink]="['trainer-mode']">
+          <a [routerLink]="['trainer-mode']" (click)="updateAside()">
             <span class="pointer-none"
               ><i class="fas fa-user-clock px-3"></i>Trainer Mode</span
             >

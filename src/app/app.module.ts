@@ -15,6 +15,7 @@ import { QuillModule } from 'ngx-quill';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { GlobalState } from './store/states/global.state';
 
 @NgModule({
   declarations: [AppComponent, PagenotfoundComponent],
@@ -28,7 +29,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
     SharedUtilitiesModule,
     QuillModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
-    NgxsModule.forRoot([]),
+    NgxsModule.forRoot([GlobalState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [
