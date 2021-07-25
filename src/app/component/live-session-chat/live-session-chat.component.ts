@@ -87,6 +87,7 @@ export class LiveSessionChatComponent implements OnInit {
         this.active_student_list = this.active_student_list.map((stu) => {
           if (stu._id === res.chat_id) {
             stu.admin_unread_count = res.admin_unread_count + 1;
+            stu.updatedAt = new Date();
           } else {
             stu.admin_unread_count = stu.admin_unread_count;
           }
@@ -142,9 +143,7 @@ export class LiveSessionChatComponent implements OnInit {
   }
 
   sorting(data) {
-    this.active_student_list.sort(
-      (a, b) => b.admin_unread_count - a.admin_unread_count
-    );
+    this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
   }
 
   textarea_auto_increment(event) {
@@ -196,6 +195,9 @@ export class LiveSessionChatComponent implements OnInit {
     this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
       (res: any) => {
         this.active_student_list = res.data;
+
+        console.log(this.active_student_list);
+
         this.sorting(this.active_student_list);
         this.spinner = false;
       },

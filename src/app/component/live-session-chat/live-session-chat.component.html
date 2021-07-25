@@ -39,31 +39,33 @@
           <div class="email-list">
             <ul class="list-unstyled">
               <ng-container *ngIf="active_student_list.length > 0; else nodata">
-                <li
-                  *ngFor="let student of active_student_list"
-                  (click)="get_selected_student_chat(student)"
-                  style="cursor: pointer"
-                >
-                  <a class="javascript:void(0)">
-                    <div class="email-list-item">
-                      <div class="email-author">
-                        <img
-                          src="../../assets/images/avatars/profile-image-1.png"
-                          alt=""
-                        />
-                        <span class="author-name">
-                          {{ student.student_name }}
-                        </span>
-                        <span
-                          class="email-date"
-                          *ngIf="student.admin_unread_count > 0"
-                        >
-                          {{ student.admin_unread_count }}
-                        </span>
+                <ng-container *ngFor="let student of active_student_list">
+                  <li
+                    *ngIf="selected_batch._id === student.batch_id"
+                    (click)="get_selected_student_chat(student)"
+                    style="cursor: pointer"
+                  >
+                    <a class="javascript:void(0)">
+                      <div class="email-list-item">
+                        <div class="email-author">
+                          <img
+                            src="../../assets/images/avatars/profile-image-1.png"
+                            alt=""
+                          />
+                          <span class="author-name">
+                            {{ student.student_name }}
+                          </span>
+                          <span
+                            class="email-date"
+                            *ngIf="student.admin_unread_count > 0"
+                          >
+                            {{ student.admin_unread_count }}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
+                    </a>
+                  </li>
+                </ng-container>
               </ng-container>
 
               <li>
@@ -286,7 +288,7 @@
   </div>
 </section>
 
-<audio src="assets/Sound/pop.mp3" #sound></audio>
+<audio src="../../../assets/Sound/pop.mp3" #sound></audio>
 
 <ng-template #showspinner>
   <div class="spinner">
