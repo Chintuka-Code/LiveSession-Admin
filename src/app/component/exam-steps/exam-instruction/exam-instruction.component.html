@@ -1,0 +1,38 @@
+
+<div class="container-fluid">
+    <form
+      [formGroup]="create_exam_form"
+      (ngSubmit)="exam_form_submit()"
+    >
+      <div class="row">
+    
+        <div class="col-12 mt-3 mt-md-4">
+          <div>
+            <quill-editor
+              [styles]="{ 'min-height': '100px' }"
+              [modules]="modules"
+              formControlName="instruction"
+            >
+            </quill-editor>
+          </div>
+        </div>
+       
+      </div>
+    </form>
+  </div>
+
+  <footer>
+
+    <button class="btn btn-primary">
+        <a [routerLink]="['../form']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
+    <button class="btn btn-primary">
+        <a [routerLink]="['../attempts']">
+          <i class="fas fa-arrow-right"></i> Next
+        </a>
+      </button>
+    
+   
+</footer>

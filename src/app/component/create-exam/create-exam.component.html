@@ -8,7 +8,11 @@
           </a>
         </button>
       </div>
-      <div class="container-fluid"></div>
+      <div class="container-fluid">
+
+        <p-steps [model]="items" [readonly]="false"></p-steps>
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
   

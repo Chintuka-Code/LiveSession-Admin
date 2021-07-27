@@ -1,0 +1,74 @@
+
+<div class="container-fluid">
+    <form
+      [formGroup]="create_exam_form"
+      (ngSubmit)="exam_form_submit()"
+    >
+      <div class="row">
+        <div class="col-12 col-md-4 mt-5">
+          <span class="p-float-label w-100">
+            <input
+              type="number"
+              id="max_attempt"
+              class="form-control"
+              pInputText
+              formControlName="max_attempt"
+            />
+            <label for="max_attempt">how may attempts allowed</label>
+          </span>
+        </div>
+        
+        <div class="col-12 col-md-4 mt-5" >
+          <span class="p-float-label w-100">
+            <p-dropdown
+              inputId="access_control"
+              [autoDisplayFirst]="false"
+              [options]="access_control"
+              [style]="{ minWidth: '100%' }"
+              formControlName="access_control"
+              (onChange)="timedChange($event)"
+            ></p-dropdown>
+              <label for="access_control">Who can attempt this exam</label>
+
+              
+          </span>
+      </div>
+
+      <div class="col-12 col-md-4 mt-5" *ngIf="is_access_control">
+        <span class="p-float-label w-100">
+            <input
+              type="text"
+              id="manual_email"
+              class="form-control"
+              pInputText
+              formControlName="manual_email"
+            />
+            <label for="manual_email">Manually enter email</label>
+        </span>
+    </div>
+
+        
+        
+
+    
+        
+       
+      </div>
+    </form>
+  </div>
+
+  <footer>
+
+    <button class="btn btn-primary">
+        <a [routerLink]="['../instruction']">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </button>
+    <button class="btn btn-primary">
+        <a [routerLink]="['../settings']">
+          <i class="fas fa-arrow-right"></i> Next
+        </a>
+      </button>
+    
+   
+</footer>
