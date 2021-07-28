@@ -72,4 +72,17 @@ export class StudentsService {
       { data: student }
     );
   }
+
+  get_student_batch(id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/student/get-student-batch/${id}`
+    );
+  }
+
+  change_batch(data) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/student/change-batch`,
+      { data }
+    );
+  }
 }

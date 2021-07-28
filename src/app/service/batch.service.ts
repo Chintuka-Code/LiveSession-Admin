@@ -56,4 +56,10 @@ export class BatchService {
       `${environment.BASE_SERVER_URL}/batch/get-batch-student/${batch_id}`
     );
   }
+
+  get_batch_change() {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/get-batch/change`
+    );
+  }
 }

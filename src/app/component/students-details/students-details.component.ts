@@ -90,15 +90,34 @@ export class StudentsDetailsComponent implements OnInit {
         },
       });
     }
+
+    if (this.user_profile.permissions.includes('SBC11')) {
+      this.items[0].items.push({
+        label: 'Change Batch',
+        icon: 'pi pi-replay',
+        command: () => {
+          this.menu_type = 'change-batch';
+        },
+      });
+    }
   }
 
   set_dynamic_url(student) {
-    if (this.menu_type === 'view') {
-      this.router.navigate(['main/student-profile', student._id]);
-    } else if (this.menu_type === 'edit') {
-      this.router.navigate(['main/update-student', student._id]);
-    } else {
-      this.resetPassword(student);
+    switch (this.menu_type) {
+      case 'view':
+        this.router.navigate(['main/student-profile', student._id]);
+        break;
+      case 'edit':
+        this.router.navigate(['main/update-student', student._id]);
+        break;
+      case 'reset':
+        this.resetPassword(student);
+        break;
+      case 'change-batch':
+        this.router.navigate(['main/change-batch', student._id]);
+        break;
+      default:
+        console.log('');
     }
   }
 

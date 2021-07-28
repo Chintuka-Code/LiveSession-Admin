@@ -1,0 +1,80 @@
+<section *ngIf="!spinner; else showspinner">
+  <div class="card">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Change Batch</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../../students-details/student']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+
+      <div class="">
+        <form [formGroup]="change_batch_form" (ngSubmit)="changed_batch()">
+          <div class="row">
+            <div class="col-12 col-md-6 mt-5">
+              <span class="p-float-label w-100">
+                <p-dropdown
+                  inputId="dropdown"
+                  [autoDisplayFirst]="false"
+                  [options]="student_batch"
+                  optionLabel="batch_name"
+                  optionValue="_id"
+                  [style]="{ minWidth: '100%' }"
+                  formControlName="changed_batch"
+                ></p-dropdown>
+                <label for="dropdown">Current Batch</label>
+              </span>
+            </div>
+
+            <div class="col-12 col-md-6 mt-5">
+              <span class="p-float-label w-100">
+                <p-dropdown
+                  inputId="dropdown"
+                  [autoDisplayFirst]="false"
+                  [options]="all_batch"
+                  optionLabel="batch_name"
+                  optionValue="_id"
+                  [style]="{ minWidth: '100%' }"
+                  formControlName="new_batch"
+                ></p-dropdown>
+                <label for="dropdown">Select New Batch</label>
+              </span>
+            </div>
+
+            <div class="col-12 col-md-10 mt-5">
+              <div class="form-group">
+                <span class="p-float-label w-100">
+                  <p-multiSelect
+                    inputId="multiselect"
+                    [options]="all_subject"
+                    optionLabel="subject_name"
+                    optionValue="_id"
+                    [filter]="true"
+                    display="chip"
+                    [style]="{ minWidth: '100%' }"
+                    formControlName="subject_ids"
+                  ></p-multiSelect>
+                  <label for="multiselect">Select Subject</label>
+                </span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-2 mt-5">
+              <button
+                class="btn btn-primary"
+                [disabled]="change_batch_form.invalid"
+                type="submit"
+              >
+                Change
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #showspinner></ng-template>
