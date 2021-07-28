@@ -26,6 +26,7 @@ import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { CardModule } from 'primeng/card';
 
 const primeng = [
   AutoCompleteModule,
@@ -54,6 +55,7 @@ const primeng = [
   TooltipModule,
   DividerModule,
   InputSwitchModule,
+  CardModule
 ];
 
 @NgModule({

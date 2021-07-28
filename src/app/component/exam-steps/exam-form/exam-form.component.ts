@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { ExamService } from '../../../service/exam.service'
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-exam-form',
@@ -9,40 +10,47 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ExamFormComponent implements OnInit {
 
-  create_exam_form: FormGroup;
+  examForm: any;
+
+  submitted: boolean = false;
+
   is_timed: string[] = ['Yes', 'No'];
   is_timed_show = true;
 
   constructor(
-    private fb: FormBuilder,
+    private examService: ExamService,
+    private router: Router
+
   ) { }
 
   ngOnInit(): void {
-    this.validation();
+    this.examForm = this.examService.getTicketInformation().examForm;
   }
 
-  validation() {
-    this.create_exam_form = this.fb.group({
-      exam_name: ['', Validators.required],
-      is_timed: ['Yes', Validators.required],
-      exam_duration: ['', ],
-   
-    });
-  }
 
-  exam_form_submit(){
-    console.log('mkkl');
-    
-  }
 
   timedChange(event){
-    console.log(event.value);
    
       this.is_timed_show =!this.is_timed_show; 
-    console.log(this.is_timed_show);
+
     
   }
 
+
+  nextPage() {
+    if (this.examForm.exam_name && this.examForm.is_timed ) {
+        this.examService.examDetails.examForm = this.examForm;
+        console.log(this.examForm);
+        if(this.examForm.is_timed == 'Yes' && !this.examForm.exam_duration)
+          return;
+        else
+          this.router.navigate(['main/create-exam/instruction']);
+        
+        return;
+    }
+
+    this.submitted = true;
+}
 
 
 

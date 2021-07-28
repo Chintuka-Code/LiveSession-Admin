@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="container-fluid">
     <form
       [formGroup]="create_exam_form"
@@ -35,4 +35,43 @@
       </button>
     
    
-</footer>
+</footer> -->
+
+<div class="stepsdemo-content">
+  <p-card>
+      <ng-template pTemplate="title">
+          Exam Instruction
+      </ng-template>
+      <ng-template pTemplate="subtitle">
+          Write exam instruction
+      </ng-template>
+      <ng-template pTemplate="content">
+        
+
+        <div class="row">
+    
+          <div class="col-12 mt-3 mt-md-4">
+            <div>
+              <quill-editor
+                [styles]="{ 'min-height': '100px' }"
+                [modules]="modules"
+                [(ngModel)]="instruction"
+                [ngClass]="{'ng-dirty': (instruction.invalid && submitted) || (instruction.dirty && instruction.invalid)}"
+              >
+              
+              </quill-editor>
+              <small *ngIf="(instruction.invalid && submitted) || (instruction.dirty && instruction.invalid)" class="p-error">Max Attempts is required.</small>
+            </div>
+          </div>
+         
+        </div>
+        
+      </ng-template>
+      <ng-template pTemplate="footer">
+          <div class="p-grid p-nogutter p-justify-between">
+              <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
+              <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+          </div>
+      </ng-template>
+  </p-card>
+</div>

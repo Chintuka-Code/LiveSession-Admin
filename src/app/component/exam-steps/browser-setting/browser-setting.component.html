@@ -1,64 +1,63 @@
 
-<div class="container-fluid">
-    <form
-      [formGroup]="create_exam_form"
-      (ngSubmit)="exam_form_submit()"
-    >
-        <div class="p-field-checkbox">
-          <p-checkbox  [formControl]="create_exam_form.controls['right_click']" [binary]="true" inputId="right_click"></p-checkbox>
-          <label for="right_click">Disable right-click context menu</label>
-        </div>
-        <div class="p-field-checkbox">
-            <p-checkbox [formControl]="create_exam_form.controls['copy_paste']" [binary]="true" inputId="copy_paste"></p-checkbox>
-            <label for="copy_paste">Disable copy/paste</label>
-        </div>
+<div class="stepsdemo-content">
+  <p-card>
+      <ng-template pTemplate="title">
+          Brower Settings
+      </ng-template>
+      <ng-template pTemplate="subtitle">
+          Choose browser settings for this exam
+      </ng-template>
+      <ng-template pTemplate="content">
+        
 
-        <div class="p-field-checkbox">
-            <p-checkbox  [formControl]="create_exam_form.controls['auto_complete']" [binary]="true" inputId="auto_complete"></p-checkbox>
-            <label for="auto_complete">Disable autocomplete</label>
-        </div>
-        <div class="p-field-checkbox">
-            <p-checkbox  [formControl]="create_exam_form.controls['spell_check']" [binary]="true" inputId="spell_check"></p-checkbox>
-            <label for="spell_check">Disable spellcheck</label>
-        </div>
-        <div class="p-field-checkbox">
-            <p-checkbox  [formControl]="create_exam_form.controls['printing']" [binary]="true" inputId="printing"></p-checkbox>
-            <label for="printing">Disable printing</label>
-        </div>
-        <div class="p-field-checkbox">
-            <p-checkbox  [formControl]="create_exam_form.controls['tab_switching']" [binary]="true" inputId="tab_switching"></p-checkbox>
-            <label for="tab_switching">Disable tab switching</label>
-        </div>
-        <div class="p-field-checkbox">
-            <p-checkbox  [formControl]="create_exam_form.controls['window_minimize']" [binary]="true" inputId="window_minimize"></p-checkbox>
-            <label for="window_minimize">Disable window minimize</label>
-        </div>
-        <div class="p-field-checkbox">
-            <p-checkbox  [formControl]="create_exam_form.controls['live_screen_monitoring']" [binary]="true" inputId="live_screen_monitoring"></p-checkbox>
-            <label for="live_screen_monitoring">Enable live screen monitoring</label>
-        </div>
-
-
-      
-      <div class="col-12 col-md-4 mt-5">
-        <button
-          class="btn btn-primary"
-         type="submit"
-        >
-          Create
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <footer>
-
-    <button class="btn btn-primary">
-        <a [routerLink]="['../attempts']">
-          <i class="fas fa-arrow-left"></i> Back
-        </a>
-      </button>
-
+        <div class="row">
     
-   
-</footer>
+          <div class="col-12 mt-3 mt-md-4">
+           
+            <div class="p-field-checkbox">
+              <p-checkbox  [(ngModel)]="browser_settings.right_click"  [binary]="true" inputId="right_click"></p-checkbox>
+              <label for="right_click">Disable right-click context menu</label>
+            </div>
+            <div class="p-field-checkbox">
+                <p-checkbox [(ngModel)]="browser_settings.copy_paste"  [binary]="true" inputId="copy_paste"></p-checkbox>
+                <label for="copy_paste">Disable copy/paste</label>
+            </div>
+    
+            <div class="p-field-checkbox">
+                <p-checkbox  [(ngModel)]="browser_settings.auto_complete"  [binary]="true" inputId="auto_complete"></p-checkbox>
+                <label for="auto_complete">Disable autocomplete</label>
+            </div>
+            <div class="p-field-checkbox">
+                <p-checkbox  [(ngModel)]="browser_settings.spell_check"  [binary]="true" inputId="spell_check"></p-checkbox>
+                <label for="spell_check">Disable spellcheck</label>
+            </div>
+            <div class="p-field-checkbox">
+                <p-checkbox  [(ngModel)]="browser_settings.printing"  [binary]="true" inputId="printing"></p-checkbox>
+                <label for="printing">Disable printing</label>
+            </div>
+            <div class="p-field-checkbox">
+                <p-checkbox  [(ngModel)]="browser_settings.tab_switching"  [binary]="true" inputId="tab_switching"></p-checkbox>
+                <label for="tab_switching">Disable tab switching</label>
+            </div>
+            <div class="p-field-checkbox">
+                <p-checkbox  [(ngModel)]="browser_settings.window_minimize"  [binary]="true" inputId="window_minimize"></p-checkbox>
+                <label for="window_minimize">Disable window minimize</label>
+            </div>
+            <div class="p-field-checkbox">
+                <p-checkbox  [(ngModel)]="browser_settings.live_screen_monitoring"  [binary]="true" inputId="live_screen_monitoring"></p-checkbox>
+                <label for="live_screen_monitoring">Enable live screen monitoring</label>
+            </div>
+
+          </div>
+         
+        </div>
+        
+      </ng-template>
+      <ng-template pTemplate="footer">
+          <div class="p-grid p-nogutter p-justify-between">
+              <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
+              <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+          </div>
+      </ng-template>
+  </p-card>
+</div>

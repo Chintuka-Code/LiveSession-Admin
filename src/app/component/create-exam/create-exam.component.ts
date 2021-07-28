@@ -30,7 +30,11 @@ export class CreateExamComponent implements OnInit {
       {
           label: 'Browser settings',
           routerLink: 'settings'
-      }
+      },
+      {
+          label: 'Add questions',
+          routerLink: 'exam_question'
+      },
     ];
 
   }
