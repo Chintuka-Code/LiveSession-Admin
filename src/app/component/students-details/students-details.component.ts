@@ -80,14 +80,66 @@ export class StudentsDetailsComponent implements OnInit {
         },
       });
     }
+
+    if (this.user_profile.permissions.includes('SPR11')) {
+      this.items[0].items.push({
+        label: 'Reset Password',
+        icon: 'pi pi-user-edit',
+        command: () => {
+          this.menu_type = 'reset';
+        },
+      });
+    }
   }
 
-  set_dynamic_url(id) {
+  set_dynamic_url(student) {
     if (this.menu_type === 'view') {
-      this.router.navigate(['main/student-profile', id]);
+      this.router.navigate(['main/student-profile', student._id]);
+    } else if (this.menu_type === 'edit') {
+      this.router.navigate(['main/update-student', student._id]);
     } else {
-      this.router.navigate(['main/update-student', id]);
+      this.resetPassword(student);
     }
+  }
+
+  resetPassword(student) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Would you like to reset ${student.name} password`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Yes, reset it!`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.spinner = true;
+
+        this.student_service.reset_password(student).subscribe(
+          (res) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Yeah...',
+              text: 'Password Reset',
+            }).then(() => {
+              this.spinner = false;
+            });
+          },
+          (error) => this.error_handler(error)
+        );
+      }
+    });
+  }
+
+  error_handler(error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.errorMessage,
+    }).then(() => {
+      this.spinner = false;
+      this.router.navigate(['/main']);
+    });
   }
 
   ngOnInit(): void {

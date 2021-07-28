@@ -65,4 +65,11 @@ export class StudentsService {
       { data }
     );
   }
+
+  reset_password(student) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/student/reset-student-password`,
+      { data: student }
+    );
+  }
 }
