@@ -140,6 +140,7 @@ export class StudentsDetailsComponent implements OnInit {
               icon: 'success',
               title: 'Yeah...',
               text: 'Password Reset',
+              footer: `New Password is 'datatrained'`,
             }).then(() => {
               this.spinner = false;
             });
