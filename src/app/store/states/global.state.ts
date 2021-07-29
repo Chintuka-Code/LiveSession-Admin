@@ -33,22 +33,18 @@ export class GlobalState {
   @Action(GlobalSpinner)
   spinner({ getState, setState }: StateContext<GlobalStateModel>) {
     const state = getState();
-
     setState({ ...state, spinner: !state.spinner });
   }
 
   @Action(updateAside)
   updateAside({ getState, setState }: StateContext<GlobalStateModel>) {
     const state = getState();
-
-    console.log('update aside');
-
     setState({ ...state, aside: !state.aside });
   }
 
   @Action(HideAside)
   hideAside({ getState, setState }: StateContext<GlobalStateModel>) {
     const state = getState();
-    setState({ ...state, aside: false });
+    setState({ ...state, aside: true });
   }
 }

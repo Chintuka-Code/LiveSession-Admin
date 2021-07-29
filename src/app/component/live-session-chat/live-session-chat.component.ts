@@ -35,6 +35,8 @@ export class LiveSessionChatComponent implements OnInit {
   modules = {};
   text: any;
 
+  slots: any[] = [];
+
   constructor(
     private chat_service: ChatService,
     private router: Router,
@@ -217,6 +219,14 @@ export class LiveSessionChatComponent implements OnInit {
     }
 
     this.selected_student = student;
+
+    if (this.slots.length <= 1) {
+      this.slots.push(student);
+      console.log(this.slots);
+    } else {
+      console.log('Do you want to replace chat');
+      console.log(this.slots);
+    }
 
     if (this.selected_student.sme_id === localStorage.getItem('uid')) {
       this.live_session_chat_service.join_room({

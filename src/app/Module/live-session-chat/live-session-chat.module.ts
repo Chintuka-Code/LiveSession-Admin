@@ -6,9 +6,10 @@ import { LiveSessionChatComponent } from '../../component/live-session-chat/live
 import { PrimengModule } from 'src/app/SharedModule/primeng/primeng.module';
 import { SharedUtilitiesModule } from 'src/app/SharedModule/shared-utilities/shared-utilities.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ChatWindowComponent } from '../../component/chat-window/chat-window.component';
 
 @NgModule({
-  declarations: [LiveSessionChatComponent],
+  declarations: [LiveSessionChatComponent, ChatWindowComponent],
   imports: [
     CommonModule,
     LiveSessionChatRoutingModule,
