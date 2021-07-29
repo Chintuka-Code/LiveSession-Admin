@@ -198,7 +198,7 @@ export class LiveSessionChatComponent implements OnInit {
       (res: any) => {
         this.active_student_list = res.data;
 
-        console.log(this.active_student_list);
+        // console.log(this.active_student_list);
 
         this.sorting(this.active_student_list);
         this.spinner = false;
@@ -222,10 +222,10 @@ export class LiveSessionChatComponent implements OnInit {
 
     if (this.slots.length <= 1) {
       this.slots.push(student);
-      console.log(this.slots);
+      // console.log(this.slots);
     } else {
-      console.log('Do you want to replace chat');
-      console.log(this.slots);
+      // console.log('Do you want to replace chat');
+      // console.log(this.slots);
     }
 
     if (this.selected_student.sme_id === localStorage.getItem('uid')) {
@@ -355,7 +355,7 @@ export class LiveSessionChatComponent implements OnInit {
               stu.batch_id === this.selected_student.batch_id
             )
         );
-        console.log(this.selected_student);
+        // console.log(this.selected_student);
         this.live_session_chat_service.transfer(this.selected_student);
         this.live_session_chat_service.leave({
           room_id:
