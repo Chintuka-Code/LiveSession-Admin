@@ -15,6 +15,37 @@ export class AddQuestionComponent implements OnInit {
   } 
   question_bank = ['qb1','qb2', 'qb3'];
   question = ['q1','q2','q3'];
+
+  groupedCities = [
+    {
+        label: 'Germany', value: 'de', 
+        items: [
+            {label: 'Berlin', value: 'Berlin'},
+            {label: 'Frankfurt', value: 'Frankfurt'},
+            {label: 'Hamburg', value: 'Hamburg'},
+            {label: 'Munich', value: 'Munich'}
+        ]
+    },
+    {
+        label: 'USA', value: 'us', 
+        items: [
+            {label: 'Chicago', value: 'Chicago'},
+            {label: 'Los Angeles', value: 'Los Angeles'},
+            {label: 'New York', value: 'New York'},
+            {label: 'San Francisco', value: 'San Francisco'}
+        ]
+    },
+    {
+        label: 'Japan', value: 'jp', 
+        items: [
+            {label: 'Kyoto', value: 'Kyoto'},
+            {label: 'Osaka', value: 'Osaka'},
+            {label: 'Tokyo', value: 'Tokyo'},
+            {label: 'Yokohama', value: 'Yokohama'}
+        ]
+    }
+];
+
   constructor(
     private examService: ExamService,
     private router: Router
@@ -32,8 +63,15 @@ export class AddQuestionComponent implements OnInit {
 
   }
 
-  nextPage() {
+  publish() {
     this.examService.examDetails.questions = this.questions;
+    
+    // this.router.navigate(['main/create-exam/attempts']);
+
+  }
+  create() {
+    this.examService.examDetails.questions = this.questions;
+
     // this.router.navigate(['main/create-exam/attempts']);
 
   }

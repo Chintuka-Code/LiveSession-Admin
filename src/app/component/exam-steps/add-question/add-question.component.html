@@ -14,17 +14,24 @@
                 
                 <div class="col-12 col-md-4 mt-5" >
                   <span class="p-float-label w-100">
-                    <p-dropdown
-                      
-                      inputId="question_bank"
+                  
+    
+                    <p-multiSelect 
+
+                     display="chip"
+                     
+                     inputId="question_bank"
                       [autoDisplayFirst]="false"
                       [options]="question_bank"
                       [style]="{ minWidth: '100%' }"
                       [(ngModel)]="questions.question_bank"
                       (onChange)="questionBankChange($event)"
-                      
-                    ></p-dropdown>
-    
+                     >
+
+                     
+                    
+                    </p-multiSelect>
+
                     <label for="question_bank">Select question bank</label>
                     <small *ngIf="(question_bank.invalid && submitted) || (question_bank.dirty && question_bank.invalid)" class="p-error">Question bank is required.</small>
     
@@ -34,7 +41,7 @@
                 <div class="col-12 col-md-4 mt-5" >
                     <span class="p-float-label w-100">
                 
-                        <p-multiSelect
+                        <!-- <p-multiSelect
                       
                         inputId="question"
                         [autoDisplayFirst]="false"
@@ -43,9 +50,19 @@
                         [(ngModel)]="questions.question"
                         (onChange)="questionChange($event)"
                         
-                      ></p-multiSelect>
+                      ></p-multiSelect> -->
+
+                      <p-multiSelect [options]="groupedCities" [group]="true" [(ngModel)]="questions.question" defaultLabel="Select questions" scrollHeight="250px" display="chip">
+                        <ng-template let-group pTemplate="group">
+                            <div class="p-d-flex p-ai-center">
+                                <!-- <img src="assets/showcase/images/demo/flag/flag_placeholder.png" [class]="'p-mr-2 flag flag-' + group.value" style="width: 20px"/> -->
+                                <span>{{group.label}}</span>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+
       
-                      <label for="question">Select question</label>
+                      <!-- <label for="question">Select question</label> -->
                       <small *ngIf="(question.invalid && submitted) || (question.dirty && question.invalid)" class="p-error">Question is required.</small>
                   </span>
     
@@ -56,7 +73,8 @@
         <ng-template pTemplate="footer">
             <div class="p-grid p-nogutter p-justify-between">
                 <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
-                <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+                <p-button label="Create" (onClick)="create()"  ></p-button>
+                <p-button label="Publish" (onClick)="publish()" iconPos="right" ></p-button>
             </div>
         </ng-template>
     </p-card>

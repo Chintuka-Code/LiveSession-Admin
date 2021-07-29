@@ -18,7 +18,7 @@ export class ExamService {
         exam_duration: ''
     },
     instruction: '',
-    attempts: {},
+    attempts: {access_control:{cname:'',code:''}},
     browser_settings: {
       right_click:'',
       auto_complete:'',
