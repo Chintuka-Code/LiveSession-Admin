@@ -24,13 +24,17 @@ export class CreateExamComponent implements OnInit {
           routerLink: 'instruction'
       },
       {
-          label: 'Attempts',
+          label: 'Access settings',
           routerLink: 'attempts'
       },
       {
-          label: 'Browser settings',
+          label: 'Security settings',
           routerLink: 'settings'
-      }
+      },
+      {
+          label: 'Add questions',
+          routerLink: 'exam_question'
+      },
     ];
 
   }

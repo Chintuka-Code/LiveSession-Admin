@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QUILL_TOOLBAR_SETTING } from 'src/app/utilities/quill_setting';
 import 'quill-emoji/dist/quill-emoji.js';
+import { ExamService } from '../../../service/exam.service'
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-exam-instruction',
@@ -9,30 +11,34 @@ import 'quill-emoji/dist/quill-emoji.js';
   styleUrls: ['./exam-instruction.component.scss']
 })
 export class ExamInstructionComponent implements OnInit {
-  create_exam_form: FormGroup;
+
   modules = {};
+  content = ''
+
+
+  instruction: any;
   constructor(
-    private fb: FormBuilder,
+    private examService: ExamService,
+    private router: Router
+    
   ) {
     this.modules = QUILL_TOOLBAR_SETTING;
    }
 
   ngOnInit(): void {
-    this.validation()
-  }
-
-  validation() {
-    this.create_exam_form = this.fb.group({
-      instruction: ['', Validators.required],
-      
    
-    });
-  }
+    this.instruction = this.examService.examDetails.instruction;
 
-  exam_form_submit(){
-    console.log('mkkl');
-    
   }
 
 
+  nextPage() {
+      this.examService.examDetails.instruction = this.instruction;
+      this.router.navigate(['main/create-exam/attempts']);
+
+  }
+
+  prevPage() {
+      this.router.navigate(['main/create-exam/form']);
+  }
 }

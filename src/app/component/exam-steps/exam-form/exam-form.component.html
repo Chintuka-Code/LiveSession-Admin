@@ -1,67 +1,95 @@
-<div class="container-fluid">
-    <form
-      [formGroup]="create_exam_form"
-      (ngSubmit)="exam_form_submit()"
-    >
-      <div class="row">
-        <div class="col-12 col-md-4 mt-5">
-          <span class="p-float-label w-100">
-            <input
-              type="text"
-              id="exam_name"
-              class="form-control"
-              pInputText
-              formControlName="exam_name"
-            />
-            <label for="exam_name">Exam Name</label>
-          </span>
-        </div>
 
-        
-        <div class="col-12 col-md-4 mt-5" >
-            <span class="p-float-label w-100">
-                <p-dropdown
-                inputId="is_timed"
-                [autoDisplayFirst]="false"
-                [options]="is_timed"
-                [style]="{ minWidth: '100%' }"
-                formControlName="is_timed"
-                (onChange)="timedChange($event)"
-              ></p-dropdown>
-                <label for="is_timed">Is this exam timed</label>
-
-                
-              </span>
-        </div>
-
-        <div class="col-12 col-md-4 mt-5" *ngIf="is_timed_show">
-            <span class="p-float-label w-100">
+  <div class="stepsdemo-content">
+    <p-card>
+        <ng-template pTemplate="title">
+            Exam Information
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Enter your exam information
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="row">
+            <div class="col-12 col-md-4 mt-5">
+              <span class="p-float-label w-100">
                 <input
+                  #exam_name="ngModel"
                   type="text"
+                  id="exam_name"
+                  class="form-control"
+                  pInputText
+                  required
+                  [(ngModel)]="examForm.exam_name"
+                  [ngClass]="{'ng-dirty': (exam_name.invalid && submitted) || (exam_name.dirty && exam_name.invalid)}"
+                />
+                <label for="exam_name">Exam Name</label>
+                <small *ngIf="(exam_name.invalid && submitted) || (exam_name.dirty && exam_name.invalid)" class="p-error">Exam Name is required.</small>
+            </span>
+            </div>
+    
+            
+            <div class="col-12 col-md-4 mt-5" >
+              <span class="p-float-label w-100">
+                <p-dropdown
+                  
+                  inputId="is_timed"
+                  [autoDisplayFirst]="false"
+                  [options]="is_timed"
+                  [style]="{ minWidth: '100%' }"
+                  [(ngModel)]="examForm.is_timed"
+                  (onChange)="timedChange($event)"
+                  
+                ></p-dropdown>
+
+                <label for="is_timed">Is this exam timed</label>
+                <small *ngIf="(is_timed.invalid && submitted) || (is_timed.dirty && is_timed.invalid)" class="p-error">Is this exam timed is required.</small>
+
+              </span>
+            </div>
+    
+            <div class="col-12 col-md-4 mt-5" *ngIf="examForm.is_timed == 'Yes'">
+                <span class="p-float-label w-100">
+            
+                  <input
+                  #exam_duration="ngModel"
+                  type="number"
                   id="exam_duration"
                   class="form-control"
                   pInputText
-                  formControlName="exam_duration"
+                  required
+                  [(ngModel)]="examForm.exam_duration"
+                  [ngClass]="{'ng-dirty': (exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)}"
                 />
                 <label for="exam_duration">Exam Duration</label>
+                <small *ngIf="(exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)" class="p-error">Exam Duration is required.</small>
               </span>
-        </div>
 
-        <footer>
-            <div class="container">
-                <a 
-               
-                [routerLink]="['../instruction']"
-                style="margin-right: 0.5rem; margin-top: 10px;"
-                class="btn btn-primary"
-                >
-                    <i class="fas fa-arrow-right"></i> Next
-                  </a>
-                
             </div>
-           
-        </footer>
-       
-      </div>
-    </form>
-  </div>
+          </div>
+
+          <div class="row">
+    
+            <div class="col-12 mt-3 mt-md-4">
+             
+              <div class="p-field-checkbox">
+                <p-checkbox  [(ngModel)]="examForm.score"  [binary]="true" inputId="score"></p-checkbox>
+                <label for="score">Dispaly score</label>
+              </div>
+              <div class="p-field-checkbox">
+                  <p-checkbox [(ngModel)]="examForm.show_correct_answer"  [binary]="true" inputId="show_correct_answer"></p-checkbox>
+                  <label for="show_correct_answer">Display correct answer</label>
+              </div>
+              <div class="p-field-checkbox">
+                  <p-checkbox [(ngModel)]="examForm.certificate_issue"  [binary]="true" inputId="certificate_issue"></p-checkbox>
+                  <label for="certificate_issue">Dispaly certificate issue</label>
+              </div>
+            </div>
+          </div>
+          
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="p-grid p-nogutter p-justify-end">
+                <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

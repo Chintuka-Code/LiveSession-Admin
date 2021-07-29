@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ExamService } from '../../../service/exam.service'
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,13 +15,24 @@ export class BrowserSettingComponent implements OnInit {
   create_exam_form: FormGroup;
   // selectedValues: string[] = ['val1','val2'];
   selectedCities: string[] = [];
-
+  browser_settings = {
+    right_click:'',
+    auto_complete:'',
+    spell_check:'',
+    printing:'',
+    tab_switching:'',
+    window_minimize:'',
+    live_screen_monitoring:'',
+  }
   constructor(
     private fb: FormBuilder,
+    private examService: ExamService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.validation()
+    // this.validation()
+    this.browser_settings = this.examService.examDetails.browser_settings;
   }
 
   validation() {
@@ -40,5 +54,16 @@ export class BrowserSettingComponent implements OnInit {
     console.log(this.create_exam_form.value);
     
   }
+
+
+  nextPage() {
+    this.examService.examDetails.browser_settings = this.browser_settings;
+    this.router.navigate(['main/create-exam/exam_question']);
+    
+}
+
+prevPage() {
+    this.router.navigate(['main/create-exam/attempts']);
+}
 
 }
