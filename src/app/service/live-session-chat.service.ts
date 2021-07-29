@@ -55,7 +55,13 @@ export class LiveSessionChatService {
 
   new_message_received() {
     return new Observable<any>((observer) => {
-      this.socket.on('new message', (data) => observer.next(data));
+      this.socket.on('new message', (res, chat) => {
+        const data = {
+          message: res,
+          chat: chat,
+        };
+        observer.next(data);
+      });
       return () => this.socket.disconnect();
     });
   }
