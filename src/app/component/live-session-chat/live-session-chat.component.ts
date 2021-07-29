@@ -34,8 +34,11 @@ export class LiveSessionChatComponent implements OnInit {
   @ViewChild('sound') sound: ElementRef;
   modules = {};
   text: any;
-
+  display: boolean = false;
   slots: any[] = [];
+  replace: any;
+
+  temp_student: any;
 
   constructor(
     private chat_service: ChatService,
@@ -207,45 +210,47 @@ export class LiveSessionChatComponent implements OnInit {
     );
   }
 
+  findIndex(chat) {
+    return this.slots.findIndex((ch) => ch._id == chat._id);
+  }
+
   // after student selected get their chat
   get_selected_student_chat(student) {
-    this.spinner = true;
+    // this.spinner = true;
 
-    if (this.selected_student) {
-      this.live_session_chat_service.leave({
-        room_id:
-          this.selected_student.student_id + this.selected_student.batch_id,
-      });
-    }
+    // if (this.selected_student) {
+    //   this.live_session_chat_service.leave({
+    //     room_id:
+    //       this.selected_student.student_id + this.selected_student.batch_id,
+    //   });
+    // }
 
-    this.selected_student = student;
-
+    // this.selected_student = student;
+    this.temp_student = student;
     if (this.slots.length <= 1) {
       this.slots.push(student);
-      // console.log(this.slots);
     } else {
-      // console.log('Do you want to replace chat');
-      // console.log(this.slots);
+      this.findIndex(student) == -1 ? (this.display = true) : '';
     }
 
-    if (this.selected_student.sme_id === localStorage.getItem('uid')) {
-      this.live_session_chat_service.join_room({
-        room_id:
-          this.selected_student.student_id + this.selected_student.batch_id,
-      });
-    }
+    // if (this.selected_student.sme_id === localStorage.getItem('uid')) {
+    //   this.live_session_chat_service.join_room({
+    //     room_id:
+    //       this.selected_student.student_id + this.selected_student.batch_id,
+    //   });
+    // }
 
-    this.chat_service
-      .get_selected_studentChat(this.selected_student._id)
-      .subscribe(
-        (res: any) => {
-          const response = res.data;
-          this.selected_student_chat_message = response.message;
-          this.scroll_chat_container();
-          this.spinner = false;
-        },
-        (error) => this.error_handler(error)
-      );
+    // this.chat_service
+    //   .get_selected_studentChat(this.selected_student._id)
+    //   .subscribe(
+    //     (res: any) => {
+    //       const response = res.data;
+    //       this.selected_student_chat_message = response.message;
+    //       this.scroll_chat_container();
+    //       this.spinner = false;
+    //     },
+    //     (error) => this.error_handler(error)
+    //   );
   }
 
   assign_chat_to_admin() {
@@ -331,6 +336,21 @@ export class LiveSessionChatComponent implements OnInit {
         this.selected_student = '';
       }
     });
+  }
+
+  replace_chat() {
+    const index = this.findIndex(this.replace);
+    this.live_session_chat_service.leave({
+      room_id: this.temp_student.student_id + this.temp_student.batch_id,
+    });
+
+    this.slots.splice(index, 1);
+
+    setTimeout(() => {
+      this.slots.push(this.temp_student);
+      this.display = false;
+      this.replace = '';
+    }, 50);
   }
 
   transfer_chat(doc) {

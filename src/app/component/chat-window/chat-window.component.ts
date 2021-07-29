@@ -37,30 +37,14 @@ export class ChatWindowComponent implements OnInit {
       if (res.sender_type !== 'admin') {
         this.sound.nativeElement.play();
       }
-
+      console.log(res);
       const index = this.chats.findIndex(
         (ch) => ch.chat._id == res.chat.chat_id
       );
+      console.log(index);
       if (index > -1) {
         this.chats[index].message.push(res.message);
       }
-
-      // this.student_message.push(res);
-
-      // console.log(this.student_message);
-
-      // if (this.selected_student_chat_message) {
-      //   this.selected_student_chat_message.push(res);
-      // }
-
-      // update admin read counter
-      // this.active_student_list.forEach((stu) => {
-      //   if (stu._id === this.selected_student._id) {
-      //     stu.admin_unread_count = 0;
-      //   }
-      // });
-
-      // this.sorting(this.active_student_list);
 
       setTimeout(() => {
         this.scroll_chat_container();
@@ -80,9 +64,7 @@ export class ChatWindowComponent implements OnInit {
       (res: any) => {
         const response = res.data;
         this.student_message = response.message;
-
         this.chats.push({ chat: this.chat, message: this.student_message });
-
         setTimeout(() => {
           this.scroll_chat_container();
         }, 50);
@@ -129,10 +111,8 @@ export class ChatWindowComponent implements OnInit {
   }
 
   async send_message(chat) {
-    console.log(chat);
-
     const message_obj = {
-      text_message: 'This is spam message to chat 01',
+      text_message: 'This is spam message to chat 01s ',
       sme_id: localStorage.getItem('uid'),
       sender_name: localStorage.getItem('uid'),
       sender_type: 'admin',
@@ -155,9 +135,6 @@ export class ChatWindowComponent implements OnInit {
         );
       }
       const index = this.chats.findIndex((ch) => ch.chat._id == chat._id);
-
-      console.log(index);
-
       if (index > -1) {
         this.chats[index].message.push(message_obj);
       }
@@ -175,5 +152,10 @@ export class ChatWindowComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_student_chat();
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
   }
 }

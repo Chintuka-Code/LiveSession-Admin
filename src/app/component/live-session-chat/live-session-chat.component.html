@@ -93,6 +93,52 @@
 
 <audio src="../../../assets/Sound/pop.mp3" #sound></audio>
 
+<!-- Error Handler -->
+<p-dialog
+  header="Warning"
+  [(visible)]="display"
+  [breakpoints]="{ '960px': '100vw' }"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+>
+  <div>
+    <h3 class="h3 text-center text-danger">
+      Live Session Chat is Currently Unavailable
+    </h3>
+    <p class="mt-4">You can access this option only on :</p>
+
+    <div class="row">
+      <div class="col-12 mt-5" style="height: 200px">
+        <span class="p-float-label w-100">
+          <p-dropdown
+            inputId="dropdown"
+            [autoDisplayFirst]="false"
+            [options]="slots"
+            optionLabel="student_name"
+            [style]="{ minWidth: '100%', heigth: '300px' }"
+            [(ngModel)]="replace"
+          ></p-dropdown>
+          <label for="dropdown">Course</label>
+        </span>
+      </div>
+
+      <div class="mt-5">
+        <button class="btn btn-primary" (click)="replace_chat()">
+          Replace
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
 <ng-template #showspinner>
   <div class="spinner">
     <app-spinner></app-spinner>
