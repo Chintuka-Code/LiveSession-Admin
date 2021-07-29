@@ -1,7 +1,7 @@
 <section *ngIf="!spinner; else showspinner">
   <!-- chat module -->
   <div class="row">
-    <div class="col-sm-12 col-md-4 m-b-md">
+    <div class="col-sm-12 col-md-3 m-b-md">
       <div class="card">
         <div class="card-body p-0 p-2">
           <div class="row align-items-center">
@@ -42,7 +42,7 @@
                 <ng-container *ngFor="let student of active_student_list">
                   <li
                     *ngIf="selected_batch._id === student.batch_id"
-                    (click)="get_selected_student_chat(student)"
+                    (click)="check_slot(student)"
                     style="cursor: pointer"
                   >
                     <a class="javascript:void(0)">
@@ -81,10 +81,17 @@
       </div>
     </div>
 
-    <div class="col-sm-12 col-md-8">
+    <div class="col-sm-12 col-md-9">
       <div class="row">
-        <div class="col-12 col-md-4" *ngFor="let stu of slots">
-          <app-chat-window [chat]="stu"></app-chat-window>
+        <div
+          class="col-12 col-md-4 p-0 p-2"
+          *ngFor="let stu of slots; let i = index"
+        >
+          <app-chat-window
+            [chat]="stu"
+            [index]="i"
+            (onMessageSend)="newMessageSend($event)"
+          ></app-chat-window>
         </div>
       </div>
     </div>
@@ -135,6 +142,7 @@
       icon="pi pi-check"
       label="Ok"
       styleClass="p-button-text"
+      (click)="display = false"
     ></p-button>
   </ng-template>
 </p-dialog>

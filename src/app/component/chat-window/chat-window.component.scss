@@ -1,0 +1,48 @@
+.card-body-custom {
+  padding: 0.5rem;
+  .chat-body {
+    margin-top: 0.5rem;
+    height: 290px;
+    &::-webkit-scrollbar {
+      width: 0 !important;
+    }
+  }
+  .post-comments {
+    .post-comm {
+      width: 90%;
+      padding: 5px;
+      .comment-text {
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .chat-new-footer {
+    .footer-box {
+      width: 100%;
+      .textarea {
+        width: 100%;
+        textarea {
+          width: 100%;
+          outline: none;
+          border: 0.1px solid grey;
+          border-radius: 4px;
+          padding: 0.5rem 0 0 0.5rem;
+        }
+      }
+      .function-button {
+        .file {
+          label {
+            width: 35px;
+            span {
+              margin-left: -0.3rem;
+            }
+          }
+        }
+        .button {
+          margin-left: 0.3rem;
+        }
+      }
+    }
+  }
+}

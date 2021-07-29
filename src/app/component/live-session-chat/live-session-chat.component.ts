@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 import { QUILL_TOOLBAR_SETTING } from 'src/app/utilities/quill_setting';
 import 'quill-emoji/dist/quill-emoji.js';
+import { ChatWindowComponent } from '../chat-window/chat-window.component';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -37,8 +38,8 @@ export class LiveSessionChatComponent implements OnInit {
   display: boolean = false;
   slots: any[] = [];
   replace: any;
-
   temp_student: any;
+  @ViewChild(ChatWindowComponent) child: ChatWindowComponent;
 
   constructor(
     private chat_service: ChatService,
@@ -129,10 +130,6 @@ export class LiveSessionChatComponent implements OnInit {
     });
   }
 
-  changedEditor(event) {
-    // console.log(event);
-  }
-
   filter_data() {
     this.active_student_list = this.active_student_list.filter(
       (stu) => stu.sme_id === localStorage.getItem('uid') || stu.sme_id == null
@@ -197,12 +194,10 @@ export class LiveSessionChatComponent implements OnInit {
     this.spinner = true;
     this.selected_student = '';
     this.selected_student_chat_message = [];
+    this.slots = [];
     this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
       (res: any) => {
         this.active_student_list = res.data;
-
-        // console.log(this.active_student_list);
-
         this.sorting(this.active_student_list);
         this.spinner = false;
       },
@@ -215,42 +210,36 @@ export class LiveSessionChatComponent implements OnInit {
   }
 
   // after student selected get their chat
-  get_selected_student_chat(student) {
-    // this.spinner = true;
-
-    // if (this.selected_student) {
-    //   this.live_session_chat_service.leave({
-    //     room_id:
-    //       this.selected_student.student_id + this.selected_student.batch_id,
-    //   });
-    // }
-
-    // this.selected_student = student;
+  check_slot(student) {
     this.temp_student = student;
-    if (this.slots.length <= 1) {
-      this.slots.push(student);
+    if (this.slots.length <= 2) {
+      this.get_selected_student_chat(student);
     } else {
       this.findIndex(student) == -1 ? (this.display = true) : '';
     }
+  }
 
-    // if (this.selected_student.sme_id === localStorage.getItem('uid')) {
-    //   this.live_session_chat_service.join_room({
-    //     room_id:
-    //       this.selected_student.student_id + this.selected_student.batch_id,
-    //   });
-    // }
+  get_selected_student_chat(student) {
+    this.spinner = true;
+    if (student.sme_id === localStorage.getItem('uid')) {
+      this.live_session_chat_service.join_room({
+        room_id: student.student_id + student.batch_id,
+      });
+    }
+    this.chat_service.get_selected_studentChat(student._id).subscribe(
+      (res: any) => {
+        const response = res.data;
 
-    // this.chat_service
-    //   .get_selected_studentChat(this.selected_student._id)
-    //   .subscribe(
-    //     (res: any) => {
-    //       const response = res.data;
-    //       this.selected_student_chat_message = response.message;
-    //       this.scroll_chat_container();
-    //       this.spinner = false;
-    //     },
-    //     (error) => this.error_handler(error)
-    //   );
+        this.slots.push({
+          chat: student,
+          message: response.message,
+          files: [],
+        });
+
+        this.spinner = false;
+      },
+      (error) => this.error_handler(error)
+    );
   }
 
   assign_chat_to_admin() {
@@ -272,46 +261,6 @@ export class LiveSessionChatComponent implements OnInit {
     this.files = [];
     for (let i = 0; i < event.target.files.length; i++) {
       this.files.push(event.target.files[i]);
-    }
-  }
-
-  // send message
-  async send_message() {
-    this.message_sending = true;
-    const message_obj = {
-      text_message: this.text,
-      sme_id: localStorage.getItem('uid'),
-      sender_name: this.user.name,
-      sender_type: 'admin',
-      attachment: [],
-      created_at: new Date(),
-    };
-
-    const data = {
-      room_id:
-        this.selected_student.student_id + this.selected_student.batch_id,
-      chat_id: this.selected_student._id,
-    };
-    this.text = '';
-    try {
-      if (this.files.length > 0) {
-        const files: any = await this.attachment_service.upload_files(
-          this.files
-        );
-        message_obj['attachment'] = FormativeData.concat_url_with_files(
-          files.files_paths
-        );
-      }
-      this.selected_student_chat_message.push(message_obj);
-      setTimeout(() => {
-        this.scroll_chat_container();
-      }, 50);
-      this.live_session_chat_service.send_message(message_obj, data);
-
-      this.files = [];
-      this.message_sending = false;
-    } catch (error) {
-      // console.log(error);
     }
   }
 
@@ -343,9 +292,7 @@ export class LiveSessionChatComponent implements OnInit {
     this.live_session_chat_service.leave({
       room_id: this.temp_student.student_id + this.temp_student.batch_id,
     });
-
     this.slots.splice(index, 1);
-
     setTimeout(() => {
       this.slots.push(this.temp_student);
       this.display = false;
@@ -409,9 +356,44 @@ export class LiveSessionChatComponent implements OnInit {
     );
   }
 
-  load_more() {}
+  async newMessageSend(data) {
+    const chat_data = {
+      room_id:
+        this.slots[data.index].chat.student_id +
+        this.slots[data.index].chat.batch_id,
+      chat_id: this.slots[data.index].chat._id,
+    };
 
-  end_all_chat() {}
+    try {
+      if (this.slots[data.index].files.length > 0) {
+        const files: any = await this.attachment_service.upload_files(
+          this.files
+        );
+        data.message['attachment'] = FormativeData.concat_url_with_files(
+          files.files_paths
+        );
+      }
+      // const index = this.chats.findIndex((ch) => ch.chat._id == chat._id);
+      // if (index > -1) {
+      //   this.chats[index].message.push(message_obj);
+      // }
+
+      // this.student_message.push(message_obj);
+
+      this.slots[data.index].message.push(data.message);
+
+      setTimeout(() => {
+        this.child.scroll_chat_container();
+      }, 50);
+
+      this.live_session_chat_service.send_message(data.message, chat_data);
+
+      this.files = [];
+      this.message_sending = false;
+    } catch (error) {
+      // console.log(error);
+    }
+  }
 
   ngOnInit(): void {
     this.get_admin_batch();
@@ -420,12 +402,5 @@ export class LiveSessionChatComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.live_session_chat_service.remove_listen();
-
-    if (this.selected_student) {
-      this.live_session_chat_service.leave({
-        room_id:
-          this.selected_student.student_id + this.selected_student.batch_id,
-      });
-    }
   }
 }

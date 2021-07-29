@@ -1,15 +1,15 @@
 <!-- chat container -->
 <div class="" *ngIf="!spinner; else showspinner">
   <div class="card">
-    <div class="card-body">
+    <div class="card-body-custom">
       <ng-container>
         <div
           class="chat-header d-flex justify-content-between align-items-center"
         >
           <h3 class="h3">
-            {{ chat.student_name }}
+            {{ chat.chat.student_name }}
           </h3>
-          <div class="control d-flex" *ngIf="chat.sme_id == admin_id">
+          <div class="control d-flex" *ngIf="chat.chat.sme_id == admin_id">
             <!-- <div class="batch_list">
                 <p-dropdown
                   #transfer_admin_id
@@ -55,10 +55,10 @@
           </div>
 
           <div class="post-comments d-flex flex-column">
-            <ng-container *ngIf="student_message">
+            <ng-container *ngIf="chat.message">
               <div
                 class="post-comm"
-                *ngFor="let message of chats[0].message"
+                *ngFor="let message of chat.message"
                 [ngClass]="
                   message.sender_type === 'student'
                     ? 'align-self-start'
@@ -113,69 +113,57 @@
         </div>
 
         <!-- chat form -->
-        <div class="">
-          <ng-container *ngIf="chat.sme_id; else startchat">
-            <div class="col-12 mt-3 mt-md-4">
-              <div>
-                <quill-editor
-                  [styles]="{ 'min-height': '100px' }"
-                  [modules]="modules"
-                  [(ngModel)]="text"
-                >
-                </quill-editor>
+        <div class="chat-new-footer">
+          <ng-container *ngIf="chat.chat.sme_id; else startchat">
+            <div class="footer-box col-12 mt-3 mt-md-4 p-0">
+              <div class="textarea">
+                <textarea name="" id="" cols="30" rows="2" #textarea></textarea>
               </div>
-            </div>
 
-            <div class="d-flex align-items-center mt-3">
-              <!-- <div class="file">
-                <p class="p-0 m-0">Attachment</p>
-                <input
-                  type="file"
-                  multiple
-                  (change)="attchment($event)"
-                  name="file"
-                  id="file"
-                />
-                <label for="file" title="select files">
-                  <span><i class="fas fa-paperclip"></i></span>
-                  <span *ngIf="files.length > 0"> {{ files.length }} </span>
-                </label>
-              </div> -->
+              <div class="function-button d-flex">
+                <div class="file">
+                  <input
+                    type="file"
+                    multiple
+                    (change)="attchment($event)"
+                    name="file"
+                    id="file"
+                  />
+                  <label for="file" title="select files">
+                    <span><i class="fas fa-paperclip"></i></span>
+                    <span *ngIf="chat.files.length > 0">
+                      {{ chat.files.length }}
+                    </span>
+                  </label>
+                </div>
 
-              <div class="button ml-3" style="margin: 2rem 0 0rem 3rem">
-                <button
-                  class="btn btn-primary"
-                  (click)="send_message(chats[0].chat)"
-                >
-                  <!-- *ngIf="!message_sending; else wait"
+                <div class="button">
+                  <button
+                    class="btn btn-primary"
+                    *ngIf="!message_sending; else wait"
+                    (click)="send_message(textarea)"
+                  >
+                    <!-- *ngIf="!message_sending; else wait"
                   [disabled]="!text && files.length == 0"
                   (click)="send_message(textarea)" -->
-                  Send
-                </button>
-                <ng-template #wait>
-                  <button
-                    pButton
-                    pRipple
-                    type="button"
-                    icon="pi pi-spin pi-spinner"
-                    class="p-button-rounded"
-                    disabled="true"
-                  ></button>
-                </ng-template>
+                    Send
+                  </button>
+                  <ng-template #wait>
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-spin pi-spinner"
+                      class="p-button-rounded"
+                      disabled="true"
+                    ></button>
+                  </ng-template>
+                </div>
               </div>
             </div>
           </ng-container>
 
-          <div class="row p-0">
-            <ng-template #startchat>
-              <div class="col-12">
-                <button class="btn btn-success w-100">Start Chat</button>
-
-                <!-- [disabled]="!selected_student"
-                  (click)="assign_chat_to_admin()" -->
-              </div>
-            </ng-template>
-          </div>
+          <ng-template #startchat></ng-template>
         </div>
       </ng-container>
     </div>
