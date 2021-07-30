@@ -279,9 +279,11 @@ export class LiveSessionMultiComponent implements OnInit {
 
   open_files(ch) {
     const files: NodeListOf<Element> = document.querySelectorAll('.files');
+
     this.last_index = ch;
+
     // @ts-ignore
-    files[ch].click();
+    files[0].click();
   }
 
   async send_message(textarea, index) {
