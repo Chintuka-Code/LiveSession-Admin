@@ -1,0 +1,356 @@
+<section *ngIf="!spinner; else showspinner">
+  <!-- chat module -->
+  <div class="row">
+    <div class="col-sm-12 col-md-3 m-b-md">
+      <div class="card">
+        <div class="card-body p-0 p-2">
+          <div class="row align-items-center">
+            <!-- batch area -->
+            <div class="col-7">
+              <p-dropdown
+                [options]="batch"
+                placeholder="Select a Batch"
+                optionLabel="batch_name"
+                [style]="{ minWidth: '100%', 'border-radius': '10px' }"
+                [(ngModel)]="selected_batch"
+                display="chip"
+                (onChange)="get_all_student_chat()"
+              >
+              </p-dropdown>
+            </div>
+
+            <div class="col-5">
+              <button
+                type="button"
+                class="btn btn-danger"
+                [disabled]="!end_all_chat_button"
+                (click)="end_all_chat()"
+              >
+                End All Chat
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- student list -->
+      <div class="card">
+        <div class="card-body">
+          <div class="email-list">
+            <ul class="list-unstyled">
+              <ng-container *ngIf="active_student_list.length > 0; else nodata">
+                <ng-container *ngFor="let student of active_student_list">
+                  <li
+                    *ngIf="selected_batch._id === student.batch_id"
+                    (click)="check_slot(student)"
+                    style="cursor: pointer"
+                  >
+                    <a class="javascript:void(0)">
+                      <div class="email-list-item">
+                        <div class="email-author">
+                          <img
+                            src="../../assets/images/avatars/profile-image-1.png"
+                            alt=""
+                          />
+                          <span class="author-name">
+                            {{ student.student_name }}
+                          </span>
+                          <span
+                            class="email-date"
+                            *ngIf="student.admin_unread_count > 0"
+                          >
+                            {{ student.admin_unread_count }}
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ng-container>
+              </ng-container>
+
+              <li>
+                <ng-template #nodata>
+                  <h4 class="h4 warnning">
+                    Please Select A batch from the dropdown above
+                  </h4>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-9">
+      <div class="row">
+        <div
+          class="col-12 col-md-4 p-0 p-2"
+          *ngFor="let stu of slots; let i = index"
+        >
+          <div class="card">
+            <div class="card-body-custom">
+              <ng-container>
+                <div
+                  class="
+                    chat-header
+                    d-flex
+                    justify-content-between
+                    align-items-center
+                  "
+                >
+                  <h3 class="h3">
+                    {{ stu.chat.student_name }}
+                  </h3>
+                  <div
+                    class="control d-flex"
+                    *ngIf="stu.chat.sme_id == admin_id"
+                  >
+                    <!-- <div class="batch_list">
+                      <p-dropdown
+                        #transfer_admin_id
+                        [options]="transfer_admin"
+                        placeholder="Transfer Chat"
+                        (onChange)="transfer_chat(transfer_admin_id)"
+                        optionLabel="name"
+                        optionValue="_id"
+                        [style]="{ minWidth: '100%', 'border-radius': '10px' }"
+                      >
+                        <ng-template let-group pTemplate="group">
+                          <div class="p-d-flex p-ai-center">
+                            <span>{{ group.label }}</span>
+                          </div>
+                        </ng-template>
+                      </p-dropdown>
+                    </div> -->
+
+                    <div class="control">
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-sign-out"
+                        class="
+                          p-button-rounded p-button-danger p-button-outlined
+                        "
+                        pTooltip="End Chat"
+                        (click)="end_chat(stu, i)"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-body px-2">
+                  <div class="d-flex">
+                    <button
+                      pButton
+                      pRipple
+                      pTooltip="Load more"
+                      type="button"
+                      icon="pi pi-cloud-download"
+                      class="p-button-rounded p-button-outlined m-auto"
+                    ></button>
+                  </div>
+
+                  <div class="post-comments d-flex flex-column">
+                    <ng-container *ngIf="stu.message">
+                      <div
+                        class="post-comm"
+                        *ngFor="let message of stu.message"
+                        [ngClass]="
+                          message.sender_type === 'student'
+                            ? 'align-self-start'
+                            : 'align-self-end'
+                        "
+                      >
+                        <img
+                          src="../../assets/images/avatars/profile-image-2.png"
+                          class="comment-img"
+                          alt=""
+                        />
+                        <div class="comment-container pb-2">
+                          <span class="comment-author">
+                            {{ message.sender_name }}
+                            <small
+                              class="comment-date"
+                              *ngIf="message.created_at"
+                            >
+                              {{
+                                message.created_at | amDateFormat: "hh:mmA"
+                              }}</small
+                            >
+                          </span>
+                        </div>
+
+                        <ng-container *ngIf="message.text_message">
+                          <p-divider></p-divider>
+                          <span
+                            class="comment-text"
+                            [innerHTML]="message.text_message"
+                          >
+                          </span>
+                        </ng-container>
+
+                        <div
+                          class="attachment"
+                          *ngIf="message.attachment?.length > 0"
+                        >
+                          <p-divider></p-divider>
+                          <small>Attachments</small>
+                          <ul
+                            class="d-flex flex-wrap"
+                            style="list-style: none; margin: 0; padding: 0"
+                          >
+                            <li
+                              class="mr-2"
+                              *ngFor="
+                                let file of message.attachment;
+                                index as j
+                              "
+                            >
+                              <a
+                                [href]="file"
+                                target="_blank"
+                                [ngClass]="{
+                                  'text-white':
+                                    message.sender_type === 'student'
+                                }"
+                                >file{{ j }}</a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+
+                <!-- chat form -->
+                <div class="chat-new-footer">
+                  <ng-container *ngIf="stu.chat.sme_id; else startchat">
+                    <div class="footer-box col-12 mt-3 mt-md-4 p-0">
+                      <div class="textarea">
+                        <textarea
+                          name=""
+                          id=""
+                          cols="30"
+                          rows="2"
+                          #textarea
+                        ></textarea>
+                      </div>
+
+                      <div class="function-button d-flex">
+                        <div class="file">
+                          <input
+                            type="file"
+                            multiple
+                            (change)="attchment($event, i, stu.chat)"
+                            name="file"
+                            id="file"
+                            class="files"
+                            style="display: none"
+                          />
+                          <button (click)="open_files(i)">
+                            <span><i class="fas fa-paperclip"></i></span>
+
+                            <span *ngIf="stu.files.length > 0">
+                              {{ stu.files.length }}
+                            </span>
+                          </button>
+                        </div>
+
+                        <div class="button">
+                          <button
+                            class="btn btn-primary"
+                            *ngIf="!stu.message_sending; else wait"
+                            (click)="send_message(textarea, i)"
+                          >
+                            Send
+                          </button>
+                          <ng-template #wait>
+                            <button
+                              pButton
+                              pRipple
+                              type="button"
+                              icon="pi pi-spin pi-spinner"
+                              class="p-button-rounded"
+                              disabled="true"
+                            ></button>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #startchat>
+                    <div class="col-12">
+                      <button
+                        class="btn btn-success w-100"
+                        (click)="assign_chat_to_admin(stu, i)"
+                      >
+                        Start Chat
+                      </button>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<audio src="../../../assets/Sound/pop.mp3" #sound></audio>
+
+<!-- Error Handler -->
+<p-dialog
+  header="Warning"
+  [(visible)]="display"
+  [breakpoints]="{ '960px': '100vw' }"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+>
+  <div>
+    <h3 class="h3 text-center text-danger">
+      Please select a chat from which you want to replace this selected chat.
+    </h3>
+
+    <div class="row">
+      <div class="col-12 mt-5" style="height: 200px">
+        <span class="p-float-label w-100">
+          <p-dropdown
+            inputId="dropdown"
+            [autoDisplayFirst]="false"
+            [options]="slots"
+            optionLabel="chat.student_name"
+            [style]="{ minWidth: '100%', heigth: '300px' }"
+            [(ngModel)]="replace"
+          ></p-dropdown>
+          <label for="dropdown">Chat</label>
+        </span>
+      </div>
+
+      <div class="mt-5">
+        <button class="btn btn-primary" (click)="replace_chat()">
+          Replace
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      label="Ok"
+      styleClass="p-button-text"
+      (click)="display = false"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

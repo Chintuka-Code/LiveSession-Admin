@@ -6,6 +6,7 @@ import {
   Output,
   ViewChild,
   EventEmitter,
+  ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -21,11 +22,13 @@ import Swal from 'sweetalert2';
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ChatWindowComponent implements OnInit {
   @Input() chat: any;
   @Input() index: any;
   @Output() onMessageSend: EventEmitter<any> = new EventEmitter();
+  @Output() onAttachment: EventEmitter<any> = new EventEmitter();
   spinner: boolean = true;
   student_message: any[] = [];
   @ViewChild('sound') sound: ElementRef;
@@ -45,27 +48,27 @@ export class ChatWindowComponent implements OnInit {
     this.admin = ACTIVE_USER();
 
     // new message
-    this.live_session_chat_service.new_message_received().subscribe((res) => {
-      this.sound.nativeElement.pause();
-      this.sound.nativeElement.currentTime = 0;
-      if (res.sender_type !== 'admin') {
-        this.sound.nativeElement.play();
-      }
-      // console.log(res);
-      // const index = this.chats.findIndex(
-      //   (ch) => ch.chat._id == res.chat.chat_id
-      // );
-      // console.log(index);
-      // if (index > -1) {
-      //   this.chats[index].message.push(res.message);
-      // }
+    // this.live_session_chat_service.new_message_received().subscribe((res) => {
+    //   this.sound.nativeElement.pause();
+    //   this.sound.nativeElement.currentTime = 0;
+    //   if (res.sender_type !== 'admin') {
+    //     this.sound.nativeElement.play();
+    //   }
+    //   // console.log(res);
+    //   // const index = this.chats.findIndex(
+    //   //   (ch) => ch.chat._id == res.chat.chat_id
+    //   // );
+    //   // console.log(index);
+    //   // if (index > -1) {
+    //   //   this.chats[index].message.push(res.message);
+    //   // }
 
-      this.student_message.push(res.message);
+    //   this.student_message.push(res.message);
 
-      setTimeout(() => {
-        this.scroll_chat_container();
-      }, 50);
-    });
+    //   setTimeout(() => {
+    //     this.scroll_chat_container();
+    //   }, 50);
+    // });
   }
 
   findIndex(chat) {
@@ -98,11 +101,19 @@ export class ChatWindowComponent implements OnInit {
 
   // attachment
   attchment(event) {
-    // console.log(this.chats);
     this.files = [];
     for (let i = 0; i < event.target.files.length; i++) {
       this.files.push(event.target.files[i]);
     }
+
+    setTimeout(() => {
+      console.log(event);
+      this.onAttachment.emit({ event: event, index: this.index });
+    }, 50);
+  }
+
+  check() {
+    console.log(this.index);
   }
 
   async send_message(message) {
@@ -169,6 +180,6 @@ export class ChatWindowComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.live_session_chat_service.remove_listen();
+    // this.live_session_chat_service.remove_listen();
   }
 }

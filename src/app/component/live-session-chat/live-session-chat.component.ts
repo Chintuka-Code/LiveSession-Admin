@@ -62,15 +62,17 @@ export class LiveSessionChatComponent implements OnInit {
 
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
+      // console.log(res);
+
       this.sound.nativeElement.pause();
       this.sound.nativeElement.currentTime = 0;
       if (res.sender_type !== 'admin') {
         this.sound.nativeElement.play();
       }
 
-      if (this.selected_student_chat_message) {
-        this.selected_student_chat_message.push(res);
-      }
+      // if (this.selected_student_chat_message) {
+      //   this.selected_student_chat_message.push(res);
+      // }
 
       // update admin read counter
       this.active_student_list.forEach((stu) => {
@@ -79,10 +81,18 @@ export class LiveSessionChatComponent implements OnInit {
         }
       });
 
+      const index = this.slots.findIndex(
+        (ch) => ch.chat._id == res.chat.chat_id
+      );
+
+      // console.log(index);
+
+      this.slots[index].message.push(res.message);
+
       this.sorting(this.active_student_list);
 
       setTimeout(() => {
-        this.scroll_chat_container();
+        this.child.scroll_chat_container();
       }, 50);
     });
 
@@ -147,6 +157,10 @@ export class LiveSessionChatComponent implements OnInit {
   sorting(data) {
     this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
   }
+
+  // findIndex(chat) {
+  //   return this.chats.findIndex((ch) => ch.chat._id == chat._id);
+  // }
 
   textarea_auto_increment(event) {
     const tx = event.target;
@@ -221,6 +235,8 @@ export class LiveSessionChatComponent implements OnInit {
 
   get_selected_student_chat(student) {
     this.spinner = true;
+
+    // joining room
     if (student.sme_id === localStorage.getItem('uid')) {
       this.live_session_chat_service.join_room({
         room_id: student.student_id + student.batch_id,
@@ -356,43 +372,51 @@ export class LiveSessionChatComponent implements OnInit {
     );
   }
 
+  newAttachment(event) {
+    console.log(event);
+    // this.slots[event.index].files = event.files;
+    // console.log(this.slots[event.index]);
+  }
+
   async newMessageSend(data) {
-    const chat_data = {
-      room_id:
-        this.slots[data.index].chat.student_id +
-        this.slots[data.index].chat.batch_id,
-      chat_id: this.slots[data.index].chat._id,
-    };
+    console.log(data);
 
-    try {
-      if (this.slots[data.index].files.length > 0) {
-        const files: any = await this.attachment_service.upload_files(
-          this.files
-        );
-        data.message['attachment'] = FormativeData.concat_url_with_files(
-          files.files_paths
-        );
-      }
-      // const index = this.chats.findIndex((ch) => ch.chat._id == chat._id);
-      // if (index > -1) {
-      //   this.chats[index].message.push(message_obj);
-      // }
+    // const chat_data = {
+    //   room_id:
+    //     this.slots[data.index].chat.student_id +
+    //     this.slots[data.index].chat.batch_id,
+    //   chat_id: this.slots[data.index].chat._id,
+    // };
 
-      // this.student_message.push(message_obj);
+    // try {
+    //   if (this.slots[data.index].files.length > 0) {
+    //     const files: any = await this.attachment_service.upload_files(
+    //       this.files
+    //     );
+    //     data.message['attachment'] = FormativeData.concat_url_with_files(
+    //       files.files_paths
+    //     );
+    //   }
+    //   // const index = this.chats.findIndex((ch) => ch.chat._id == chat._id);
+    //   // if (index > -1) {
+    //   //   this.chats[index].message.push(message_obj);
+    //   // }
 
-      this.slots[data.index].message.push(data.message);
+    //   // this.student_message.push(message_obj);
 
-      setTimeout(() => {
-        this.child.scroll_chat_container();
-      }, 50);
+    //   this.slots[data.index].message.push(data.message);
 
-      this.live_session_chat_service.send_message(data.message, chat_data);
+    //   setTimeout(() => {
+    //     this.child.scroll_chat_container();
+    //   }, 50);
 
-      this.files = [];
-      this.message_sending = false;
-    } catch (error) {
-      // console.log(error);
-    }
+    //   this.live_session_chat_service.send_message(data.message, chat_data);
+
+    //   this.files = [];
+    //   this.message_sending = false;
+    // } catch (error) {
+    //   // console.log(error);
+    // }
   }
 
   ngOnInit(): void {

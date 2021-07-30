@@ -1,0 +1,67 @@
+.card-body-custom {
+  padding: 0.5rem;
+  .chat-body {
+    margin-top: 0.5rem;
+    height: 290px;
+    &::-webkit-scrollbar {
+      width: 0 !important;
+    }
+  }
+  .post-comments {
+    .post-comm {
+      width: 90%;
+      padding: 5px;
+      .comment-text {
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .chat-new-footer {
+    .footer-box {
+      width: 100%;
+      .textarea {
+        width: 100%;
+        textarea {
+          width: 100%;
+          outline: none;
+          border: 0.1px solid grey;
+          border-radius: 4px;
+          padding: 0.5rem 0 0 0.5rem;
+        }
+      }
+      .function-button {
+        .file {
+          input[type="file"] {
+            display: none !important;
+          }
+          button {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: none;
+            position: relative;
+            outline: none;
+
+            span:nth-child(2) {
+              position: absolute;
+              top: 0;
+              right: 0;
+              padding: 0.1em 0.6em;
+              border-radius: 50%;
+              background-color: #15c39a;
+              font-size: 12px;
+              color: #fff;
+            }
+          }
+        }
+        .button {
+          margin-left: 0.3rem;
+        }
+      }
+    }
+  }
+}
