@@ -30,8 +30,17 @@
           <div class="col-12 col-md-4 mt-5" >
             <span class="p-float-label w-100">
 
-              <p-cascadeSelect [(ngModel)]="access_setting.access_control" [options]="countries" optionLabel="cname" optionGroupLabel="name" 
-                [optionGroupChildren]="['states', 'cities']" [style]="{'minWidth': '100%'}" (onChange)="timedChange($event)"  placeholder="Who can attempt this exam"></p-cascadeSelect>
+              <p-cascadeSelect 
+                [(ngModel)]="access_setting.access_control" 
+                [options]="countries" 
+                optionLabel="cname" 
+                optionGroupLabel="name" 
+                optionValue="code"
+                [optionGroupChildren]="['states', 'cities']" 
+                [style]="{'minWidth': '100%'}" 
+                (onChange)="timedChange($event)"  
+                placeholder="Who can attempt this exam">
+              </p-cascadeSelect>
 
               <!-- <label for="access_control">Who can attempt this exam</label> -->
               <small *ngIf="(access_control.invalid && submitted) || (access_control.dirty && access_control.invalid)" class="p-error">Is this exam timed is required.</small>
@@ -48,13 +57,15 @@
             </span>
 
           </div>
-          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control.code == 'align with batch'">
+          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'align with batch'">
               <span class="p-float-label w-100">
                  
                   <p-multiSelect 
                      display="chip"
                      inputId="batch"
                       [autoDisplayFirst]="false"
+                      optionLabel="batch_name"
+                      optionValue="_id"
                       [options]="batchList"
                       [style]="{ minWidth: '100%' }"
                       [(ngModel)]="access_setting.batch"
@@ -69,13 +80,20 @@
         </div>
         
         <div class="row">
-          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control.code == 'align with batch'">
+          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'align with batch'">
             <span class="p-float-label w-100">
-                <p-multiSelect [options]="groupedCities" [group]="true" [(ngModel)]="access_setting.student" defaultLabel="Select a City" scrollHeight="250px" display="chip">
+                <p-multiSelect 
+                [options]="batchStudents" 
+                [group]="true" 
+                optionLabel="email"
+                optionValue="_id"
+                [(ngModel)]="access_setting.student" 
+                defaultLabel="Select student" 
+                scrollHeight="250px" 
+                display="chip">
                     <ng-template let-group pTemplate="group">
                         <div class="p-d-flex p-ai-center">
-                           
-                            <span>{{group.label}}</span>
+                            <span>{{group.batch_name}}</span>
                         </div>
                     </ng-template>
                 </p-multiSelect>
