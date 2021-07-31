@@ -80,4 +80,10 @@ export class AddQuestionComponent implements OnInit {
       this.router.navigate(['main/create-exam/settings']);
   }
 
+  nextPage() {
+    // this.examService.examDetails.attempts = this.attempts;
+    // this.submitted = true;
+    this.router.navigate(['main/create-exam/publish']);
+  }
+
 }

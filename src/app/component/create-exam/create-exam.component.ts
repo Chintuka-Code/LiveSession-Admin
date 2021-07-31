@@ -35,6 +35,10 @@ export class CreateExamComponent implements OnInit {
           label: 'Add questions',
           routerLink: 'exam_question'
       },
+      {
+          label: 'Publish',
+          routerLink: 'publish'
+      },
     ];
 
   }
