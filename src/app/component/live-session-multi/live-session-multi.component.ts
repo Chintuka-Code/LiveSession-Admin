@@ -225,7 +225,7 @@ export class LiveSessionMultiComponent implements OnInit {
 
         setTimeout(() => {
           this.scroll_chat_container();
-        }, 20);
+        }, 40);
 
         this.spinner = false;
       },
@@ -336,13 +336,14 @@ export class LiveSessionMultiComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
-
         this.live_session_chat_service.leave({
           room_id: stu.chat.student_id + stu.chat.batch_id,
         });
         this.live_session_chat_service.end_all_chat([stu.chat]);
-
         this.slots.splice(index, 1);
+        setTimeout(() => {
+          this.scroll_chat_container();
+        }, 40);
       }
     });
   }
