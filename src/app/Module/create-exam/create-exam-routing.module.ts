@@ -8,6 +8,7 @@ import { BrowserSettingComponent } from '../../component/exam-steps/browser-sett
 import { ExamFormComponent } from '../../component/exam-steps/exam-form/exam-form.component';
 import { AttemptsComponent } from '../../component/exam-steps/attempts/attempts.component';
 import { AddQuestionComponent } from '../../component/exam-steps/add-question/add-question.component'
+import { PublishComponent } from '../../component/exam-steps/publish/publish.component'
 
 const routes: Routes = [
   { path: '', component: CreateExamComponent, children:[
@@ -17,6 +18,7 @@ const routes: Routes = [
     {path: 'attempts', component: AttemptsComponent},
     {path: 'settings', component: BrowserSettingComponent},
     {path: 'exam_question', component: AddQuestionComponent},
+    {path: 'publish', component: PublishComponent},
   ]}
 ];
 

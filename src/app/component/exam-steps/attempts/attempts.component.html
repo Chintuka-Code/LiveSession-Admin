@@ -18,7 +18,7 @@
                 class="form-control"
                 pInputText
                 required
-                [(ngModel)]="attempts.max_attempt"
+                [(ngModel)]="access_setting.max_attempt"
                 [ngClass]="{'ng-dirty': (max_attempt.invalid && submitted) || (max_attempt.dirty && max_attempt.invalid)}"
               />
               <label for="max_attempt">Max Attempt</label>
@@ -30,8 +30,8 @@
           <div class="col-12 col-md-4 mt-5" >
             <span class="p-float-label w-100">
 
-              <p-cascadeSelect [(ngModel)]="attempts.access_control" [options]="countries" optionLabel="cname" optionGroupLabel="name" 
-    [optionGroupChildren]="['states', 'cities']" [style]="{'minWidth': '100%'}" (onChange)="timedChange($event)"  placeholder="Who can attempt this exam"></p-cascadeSelect>
+              <p-cascadeSelect [(ngModel)]="access_setting.access_control" [options]="countries" optionLabel="cname" optionGroupLabel="name" 
+                [optionGroupChildren]="['states', 'cities']" [style]="{'minWidth': '100%'}" (onChange)="timedChange($event)"  placeholder="Who can attempt this exam"></p-cascadeSelect>
 
               <!-- <label for="access_control">Who can attempt this exam</label> -->
               <small *ngIf="(access_control.invalid && submitted) || (access_control.dirty && access_control.invalid)" class="p-error">Is this exam timed is required.</small>
@@ -39,35 +39,56 @@
             </span>
           </div>
   
-          <div class="col-12 col-md-4 mt-5" *ngIf="attempts.access_control.code == 'manual enter email'">
+          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control.code == 'manual enter email'">
               <span class="p-float-label w-100">
           
-                <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" [(ngModel)]="attempts.exam_duration"></textarea>
+                <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" [(ngModel)]="access_setting.exam_duration"></textarea>
 
                 <label for="access_control">Enter email</label>
             </span>
 
           </div>
-          <div class="col-12 col-md-4 mt-5" *ngIf="attempts.access_control.code == 'align with batch'">
+          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control.code == 'align with batch'">
               <span class="p-float-label w-100">
-                  <p-multiSelect [options]="groupedCities" [group]="true" [(ngModel)]="attempts.student" defaultLabel="Select a City" scrollHeight="250px" display="chip">
-                      <ng-template let-group pTemplate="group">
-                          <div class="p-d-flex p-ai-center">
-                              <!-- <img src="assets/showcase/images/demo/flag/flag_placeholder.png" [class]="'p-mr-2 flag flag-' + group.value" style="width: 20px"/> -->
-                              <span>{{group.label}}</span>
-                          </div>
-                      </ng-template>
-                  </p-multiSelect>
+                 
+                  <p-multiSelect 
+                     display="chip"
+                     inputId="batch"
+                      [autoDisplayFirst]="false"
+                      [options]="batchList"
+                      [style]="{ minWidth: '100%' }"
+                      [(ngModel)]="access_setting.batch"
+                      (onChange)="batchChange($event)"
+                     >
+                    </p-multiSelect>
+                    <label for="batch">Select batch</label>
+                    <!-- <small *ngIf="(batch.invalid && submitted) || (batch.dirty && batch.invalid)" class="p-error">Batch is required.</small> -->
             </span>
 
           </div>
         </div>
         
+        <div class="row">
+          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control.code == 'align with batch'">
+            <span class="p-float-label w-100">
+                <p-multiSelect [options]="groupedCities" [group]="true" [(ngModel)]="access_setting.student" defaultLabel="Select a City" scrollHeight="250px" display="chip">
+                    <ng-template let-group pTemplate="group">
+                        <div class="p-d-flex p-ai-center">
+                           
+                            <span>{{group.label}}</span>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
+               
+          </span>
+
+        </div>
+        </div>
       </ng-template>
       <ng-template pTemplate="footer">
         <div class="p-grid p-nogutter p-justify-between">
           <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
-          <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+          <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right" ></p-button>
       </div>
       </ng-template>
   </p-card>

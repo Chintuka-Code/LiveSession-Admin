@@ -14,9 +14,10 @@ export class AttemptsComponent implements OnInit {
   access_control: string[] = ['Any one with link', 'restrict with email'];
   is_access_control = true;
   selectedCities4:any;
-  attempts = {access_control:{cname:'', code:''}}
+  access_setting = {access_control:{cname:'', code:''}}
   submitted: boolean = false;
   question = ['q1','q2','q3'];
+  batchList = ['b1','b2','b3'];
   groupedCities = [
     {
         label: 'Germany', value: 'de', 
@@ -84,38 +85,29 @@ countries = [
 
   ngOnInit(): void {
     // this.validation()
-    this.attempts = this.examService.examDetails.attempts;
+    this.access_setting = this.examService.examDetails.access_setting;
   }
 
-  // validation() {
-  //   this.create_exam_form = this.fb.group({
-  //     max_attempt: ['', Validators.required],
-  //     access_control: ['', Validators.required],
-  //     manual_email: ['', Validators.required],
-    
-   
-  //   });
-  // }
 
-  // exam_form_submit(){
-  //   console.log('mkkl');
-    
-  // }
 
 
   timedChange(event){
     console.log(event.value);
-    // this.examService.examDetails.attempts = event.value;
+   
       this.is_access_control =!this.is_access_control; 
-      console.log(this.attempts.access_control.code);
+      console.log(this.access_setting.access_control.code);
       
 
     
   }
 
+  batchChange(){
+    console.log('khkh');
+    
+  }
 
   nextPage() {
-    this.examService.examDetails.attempts = this.attempts;
+    this.examService.examDetails.access_setting = this.access_setting;
     this.submitted = true;
     this.router.navigate(['main/create-exam/settings']);
   }

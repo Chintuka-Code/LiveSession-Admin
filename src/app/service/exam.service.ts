@@ -18,7 +18,7 @@ export class ExamService {
         exam_duration: ''
     },
     instruction: '',
-    attempts: {access_control:{cname:'',code:''}},
+    access_setting: {access_control:{cname:'',code:''}},
     browser_settings: {
       right_click:'',
       auto_complete:'',
@@ -30,7 +30,8 @@ export class ExamService {
     },
     questions:{
       
-    }
+    },
+    publish:{}
   };
 
   private paymentComplete = new Subject<any>();

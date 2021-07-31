@@ -10,11 +10,12 @@ import {ExamInstructionComponent} from '../../component/exam-steps/exam-instruct
 import {AttemptsComponent} from '../../component/exam-steps/attempts/attempts.component'
 import {BrowserSettingComponent} from '../../component/exam-steps/browser-setting/browser-setting.component'
 import { AddQuestionComponent } from '../../component/exam-steps/add-question/add-question.component'
+import { PublishComponent } from '../../component/exam-steps/publish/publish.component'
 
 
 @NgModule({
   declarations: [CreateExamComponent, ExamFormComponent, ExamInstructionComponent, 
-    AttemptsComponent, BrowserSettingComponent, AddQuestionComponent ],
+    AttemptsComponent, BrowserSettingComponent, AddQuestionComponent, PublishComponent ],
   imports: [
     CommonModule,
     CreateExamRoutingModule,
