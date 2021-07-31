@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from 'src/app/service/question.service';
+
 import Swal from 'sweetalert2';
 
 @Component({
@@ -54,7 +55,7 @@ export class CreateQuestionComponent implements OnInit {
           no_of_answer: [''],
           option: this.fb.array([]),
           multiple_answer: this.fb.array([]),
-          right_answer: [''],
+          right_answer: ['', Validators.required],
         }),
       ]),
     });
@@ -95,7 +96,7 @@ export class CreateQuestionComponent implements OnInit {
   }
 
   addNewOption(control) {
-    control.push(this.fb.control(null));
+    control.push(this.fb.control('', Validators.required));
   }
 
   deleteOption(control, index) {
@@ -111,17 +112,21 @@ export class CreateQuestionComponent implements OnInit {
   }
 
   // when question type is selected
-  type_selected(comp) {
+  type_selected(comp, i) {
     const value = comp.get('type').value;
     switch (value) {
       case 'radio':
-        const control = comp.controls['right_answer'] as FormControl;
-        control.clearValidators();
+        this.addNewOption(this.questionFormArr.controls[i].get('option'));
         break;
       case 'checkbox':
         console.log('option required');
         break;
       case 'singleInput':
+        const controls = this.questionFormArr.controls[i].get(
+          'option'
+        ) as FormArray;
+        controls.clear();
+        controls.updateValueAndValidity();
         console.log('Answer Required');
         break;
       case 'multipleInput':
@@ -145,37 +150,35 @@ export class CreateQuestionComponent implements OnInit {
 
   create_company_fun() {
     const data = this.myForm.getRawValue();
-    this.spinner = true;
+    // this.spinner = true;
     console.log(data);
 
-    if (this.questionBank_Id) {
-      this.question_service
-        .create_question_add_into_question_bank({
-          question: data.questions,
-          questionBank_id: this.questionBank_Id,
-        })
-        .subscribe(
-          (res) => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Yeah...',
-              text: 'Priority Created',
-            }).then(() => {
-              this.myForm.reset();
-              this.spinner = false;
-            });
-          },
-          (error) => this.error_handler(error)
-        );
-    } else {
-      console.log('create');
-    }
+    // if (this.questionBank_Id) {
+    //   this.question_service
+    //     .create_question_add_into_question_bank({
+    //       question: data.questions,
+    //       questionBank_id: this.questionBank_Id,
+    //     })
+    //     .subscribe(
+    //       (res) => {
+    //         Swal.fire({
+    //           icon: 'success',
+    //           title: 'Yeah...',
+    //           text: 'Priority Created',
+    //         }).then(() => {
+    //           this.myForm.reset();
+    //           this.spinner = false;
+    //         });
+    //       },
+    //       (error) => this.error_handler(error)
+    //     );
+    // } else {
+    //   console.log('create');
+    // }
   }
 
   ngOnInit(): void {
     this.validation();
-    this.addNewOption(this.questionFormArr.controls[0].get('option'));
-    this.addNewAnswer(this.questionFormArr.controls[0].get('multiple_answer'));
     this.activated_route.queryParams.subscribe((params) => {
       this.questionBank_Id = params.question_bank_id;
       this.questionBank_name = params.question_bank_name;
