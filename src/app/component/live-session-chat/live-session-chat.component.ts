@@ -58,14 +58,15 @@ export class LiveSessionChatComponent implements OnInit {
 
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
+      console.log(res);
       this.sound.nativeElement.pause();
       this.sound.nativeElement.currentTime = 0;
-      if (res.sender_type !== 'admin') {
+      if (res.message.sender_type !== 'admin') {
         this.sound.nativeElement.play();
       }
 
       if (this.selected_student_chat_message) {
-        this.selected_student_chat_message.push(res);
+        this.selected_student_chat_message.push(res.message);
       }
 
       // update admin read counter

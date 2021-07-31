@@ -306,6 +306,13 @@ const routes: Routes = [
             (m) => m.ChangeBatchModule
           ),
       },
+      {
+        path: 'live-session-multi',
+        loadChildren: () =>
+          import('../live-session-multi/live-session-multi.module').then(
+            (m) => m.LiveSessionMultiModule
+          ),
+      },
     ],
   },
 ];

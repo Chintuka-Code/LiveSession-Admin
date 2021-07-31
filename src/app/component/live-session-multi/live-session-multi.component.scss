@@ -32,10 +32,29 @@
       }
       .function-button {
         .file {
-          label {
-            width: 35px;
-            span {
-              margin-left: -0.3rem;
+          input[type="file"] {
+            display: none !important;
+          }
+          button {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: none;
+            position: relative;
+            outline: none;
+
+            span:nth-child(2) {
+              position: absolute;
+              top: 0;
+              right: 0;
+              padding: 0.1em 0.6em;
+              border-radius: 50%;
+              background-color: #15c39a;
+              font-size: 12px;
+              color: #fff;
             }
           }
         }

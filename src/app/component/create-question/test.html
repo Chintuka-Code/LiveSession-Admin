@@ -1,30 +1,5 @@
-<div class="card" *ngIf="!spinner; else showspinner">
+<div class="card">
   <div class="card-body">
-    <div class="header">
-      <h3 class="">Create Question</h3>
-
-      <div class="d-flex align-items-center">
-        <button
-          class="btn btn-primary mr-3"
-          (click)="new_created = !new_created"
-        >
-          <a>
-            <span *ngIf="new_created; else new_create"
-              >Use Existing Question <i class="fas fa-plus"></i
-            ></span>
-            <ng-template #new_create>
-              Create New <i class="fas fa-plus"></i>
-            </ng-template>
-          </a>
-        </button>
-
-        <button class="btn btn-primary">
-          <a [routerLink]="['../view-question-bank']">
-            <i class="fas fa-arrow-left"></i> Back
-          </a>
-        </button>
-      </div>
-    </div>
     <div class="container-fluid">
       <div *ngIf="new_created; else existing">
         <div class="container-fluid mt-3">
@@ -34,30 +9,19 @@
                 class="row"
                 *ngFor="let comp of questionFormArr.controls; let i = index"
               >
-                <p-divider align="center" class="mt-3">
-                  <div class="p-d-inline-flex p-ai-center">
-                    <i class="pi pi-question p-mr-2"></i>
-                    <b>Question {{ i + 1 }} </b>
-                  </div>
-                </p-divider>
                 <ng-container [formGroupName]="i">
                   <div class="col-12 col-md-9 mt-5">
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="question_name"
-                      />
-                      <label for="inputtext">Question Name</label>
-                    </span>
+                    <input
+                      type="text"
+                      id="inputtext"
+                      class="form-control"
+                      pInputText
+                      formControlName="question_name"
+                    />
                   </div>
                   <div class="col-12 col-md-3 mt-5 d-flex">
                     <div>
                       <button
-                        pButton
-                        pRipple
                         type="button"
                         icon="pi pi-plus"
                         (click)="addNewQuestion()"
@@ -67,8 +31,6 @@
 
                     <div style="margin-left: 1rem">
                       <button
-                        pButton
-                        pRipple
                         type="button"
                         icon="pi pi-minus"
                         (click)="deleteQuestion(i)"
@@ -78,16 +40,13 @@
                   </div>
 
                   <div class="col-12 col-md-4 mt-5">
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="point"
-                      />
-                      <label for="inputtext">Points</label>
-                    </span>
+                    <input
+                      type="text"
+                      id="inputtext"
+                      class="form-control"
+                      pInputText
+                      formControlName="point"
+                    />
                   </div>
                   <div class="col-12 col-md-4 mt-5">
                     <span class="p-float-label w-100">
@@ -108,16 +67,14 @@
                     class="col-12 col-md-4 mt-5"
                     *ngIf="comp.get('type').value == 'multipleInput'"
                   >
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="no_of_answer"
-                      />
-                      <label for="inputtext">Number of Answer</label>
-                    </span>
+                    <input
+                      type="text"
+                      id="inputtext"
+                      class="form-control"
+                      pInputText
+                      formControlName="no_of_answer"
+                    />
+                    <label for="inputtext">Number of Answer</label>
                   </div>
 
                   <ng-container
@@ -135,22 +92,18 @@
                         "
                       >
                         <div class="col-12 col-md-9 mt-5">
-                          <span class="p-float-label w-100">
-                            <input
-                              type="text"
-                              id="inputtext"
-                              class="form-control"
-                              pInputText
-                              [formControlName]="j"
-                            />
-                            <label for="inputtext">Option {{ j + 1 }} </label>
-                          </span>
+                          <input
+                            type="text"
+                            id="inputtext"
+                            class="form-control"
+                            pInputText
+                            [formControlName]="j"
+                          />
+                          <label for="inputtext">Option {{ j + 1 }} </label>
                         </div>
                         <div class="col-12 col-md-3 mt-5 d-flex">
                           <div>
                             <button
-                              pButton
-                              pRipple
                               type="button"
                               icon="pi pi-plus"
                               (click)="addNewOption(comp.get('option'))"
@@ -160,8 +113,6 @@
 
                           <div style="margin-left: 1rem">
                             <button
-                              pButton
-                              pRipple
                               type="button"
                               icon="pi pi-minus"
                               (click)="deleteOption(comp.get('option'), j)"
@@ -177,16 +128,14 @@
                     class="col-12 col-md-9 mt-5"
                     *ngIf="comp.get('type').value !== 'multipleInput'"
                   >
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="right_answer"
-                      />
-                      <label for="inputtext">Right Answer</label>
-                    </span>
+                    <input
+                      type="text"
+                      id="inputtext"
+                      class="form-control"
+                      pInputText
+                      formControlName="right_answer"
+                    />
+                    <label for="inputtext">Right Answer</label>
                   </div>
 
                   <ng-container
@@ -203,22 +152,18 @@
                         "
                       >
                         <div class="col-12 col-md-9 mt-5">
-                          <span class="p-float-label w-100">
-                            <input
-                              type="text"
-                              id="inputtext"
-                              class="form-control"
-                              pInputText
-                              [formControlName]="j"
-                            />
-                            <label for="inputtext">Answer {{ j + 1 }} </label>
-                          </span>
+                          <input
+                            type="text"
+                            id="inputtext"
+                            class="form-control"
+                            pInputText
+                            [formControlName]="j"
+                          />
+                          <label for="inputtext">Answer {{ j + 1 }} </label>
                         </div>
                         <div class="col-12 col-md-3 mt-5 d-flex">
                           <div>
                             <button
-                              pButton
-                              pRipple
                               type="button"
                               icon="pi pi-plus"
                               (click)="
@@ -230,8 +175,6 @@
 
                           <div style="margin-left: 1rem">
                             <button
-                              pButton
-                              pRipple
                               type="button"
                               icon="pi pi-minus"
                               (click)="
@@ -256,57 +199,6 @@
           </form>
         </div>
       </div>
-
-      <ng-template #existing>
-        <app-add-from-existing-question></app-add-from-existing-question>
-      </ng-template>
     </div>
   </div>
 </div>
-
-<ng-template #showspinner>
-  <div class="spinner">
-    <app-spinner></app-spinner>
-  </div>
-</ng-template>
-
-<!-- <h3 class="h3">Hello</h3>
-
-<form [formGroup]="myForm" (ngSubmit)="create_company_fun()">
-  <div formArrayName="questions">
-    <div *ngFor="let comp of questionFormArr.controls; let i = index">
-      <h3>Question {{ i + 1 }}:</h3>
-      <div [formGroupName]="i">
-        <input formControlName="question_name" />
-        <button type="button" (click)="deleteQuestion(i)">
-          Delete Question
-        </button>
-        <button type="button" (click)="addNewQuestion()">Add Question</button>
-        <div formArrayName="option">
-          <div
-            *ngFor="
-              let project of comp.get('option')['controls'];
-              let j = index
-            "
-          >
-            <h4>Option {{ j + 1 }}</h4>
-            <div>
-              <input [formControlName]="j" />
-              <button
-                type="button"
-                (click)="deleteOption(comp.get('option'), j)"
-              >
-                Delete Option
-              </button>
-            </div>
-          </div>
-          <button (click)="addNewOption(comp.get('option'))">
-            Add new Option
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <button type="submit">Sub</button>
-</form> -->

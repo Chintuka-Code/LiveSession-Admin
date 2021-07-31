@@ -39,33 +39,28 @@
           <div class="email-list">
             <ul class="list-unstyled">
               <ng-container *ngIf="active_student_list.length > 0; else nodata">
-                <ng-container *ngFor="let student of active_student_list">
-                  <li
-                    *ngIf="selected_batch._id === student.batch_id"
-                    (click)="get_selected_student_chat(student)"
-                    style="cursor: pointer"
-                  >
-                    <a class="javascript:void(0)">
-                      <div class="email-list-item">
-                        <div class="email-author">
-                          <img
-                            src="../../assets/images/avatars/profile-image-1.png"
-                            alt=""
-                          />
-                          <span class="author-name">
-                            {{ student.student_name }}
-                          </span>
-                          <span
-                            class="email-date"
-                            *ngIf="student.admin_unread_count > 0"
-                          >
-                            {{ student.admin_unread_count }}
-                          </span>
-                        </div>
+                <li
+                  *ngFor="let student of active_student_list"
+                  (click)="get_selected_student_chat(student)"
+                  style="cursor: pointer"
+                >
+                  <a class="javascript:void(0)">
+                    <div class="email-list-item">
+                      <div class="email-author">
+                        <img
+                          src="../../assets/images/avatars/profile-image-1.png"
+                          alt=""
+                        />
+                        <span class="author-name">
+                          {{ student.student_name }}
+                        </span>
+                        <span class="email-date">
+                          {{ student.admin_unread_count }}
+                        </span>
                       </div>
-                    </a>
-                  </li>
-                </ng-container>
+                    </div>
+                  </a>
+                </li>
               </ng-container>
 
               <li>
@@ -81,17 +76,214 @@
       </div>
     </div>
 
-    <div class="col-sm-12 col-md-8">
-      <div class="row">
-        <div class="col-12 col-md-4" *ngFor="let stu of slots">
-          <app-chat-window [chat]="stu"></app-chat-window>
+    <!-- chat container -->
+    <div class="col-sm-12 col-md-8" *ngIf="selected_batch">
+      <div class="card">
+        <div class="card-body">
+          <ng-container *ngIf="selected_student; else warning">
+            <div
+              class="
+                chat-header
+                d-flex
+                justify-content-between
+                align-items-center
+              "
+            >
+              <h3 class="h3" *ngIf="selected_student">
+                {{ selected_student.student_name }}
+              </h3>
+              <div
+                class="control d-flex"
+                *ngIf="selected_student && selected_student.sme_id == admin_id"
+              >
+                <div class="batch_list">
+                  <p-dropdown
+                    #transfer_admin_id
+                    [options]="transfer_admin"
+                    placeholder="Transfer Chat"
+                    (onChange)="transfer_chat(transfer_admin_id)"
+                    optionLabel="name"
+                    optionValue="_id"
+                    [style]="{ minWidth: '100%', 'border-radius': '10px' }"
+                  >
+                    <ng-template let-group pTemplate="group">
+                      <div class="p-d-flex p-ai-center">
+                        <span>{{ group.label }}</span>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                </div>
+                <div class="control">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="end_chat()"
+                  >
+                    End Chat
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-body px-2" id="chat-body">
+              <div class="d-flex">
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Load more"
+                  type="button"
+                  icon="pi pi-cloud-download"
+                  class="p-button-rounded p-button-outlined m-auto"
+                  [disabled]="!selected_student_chat_message"
+                  (click)="load_more()"
+                ></button>
+              </div>
+
+              <div class="post-comments d-flex flex-column">
+                <ng-container *ngIf="selected_student_chat_message">
+                  <div
+                    class="post-comm"
+                    *ngFor="let message of selected_student_chat_message"
+                    [ngClass]="
+                      message.sender_type === 'student'
+                        ? 'align-self-start'
+                        : 'align-self-end'
+                    "
+                  >
+                    <img
+                      src="../../assets/images/avatars/profile-image-2.png"
+                      class="comment-img"
+                      alt=""
+                    />
+                    <div class="comment-container pb-2">
+                      <span class="comment-author">
+                        {{ message.sender_name }}
+                        <small class="comment-date" *ngIf="message.created_at">
+                          {{
+                            message.created_at | amDateFormat: "hh:mmA"
+                          }}</small
+                        >
+                      </span>
+                    </div>
+
+                    <ng-container *ngIf="message.text_message">
+                      <p-divider></p-divider>
+                      <span
+                        class="comment-text"
+                        [innerHTML]="message.text_message"
+                      >
+                      </span>
+                    </ng-container>
+
+                    <div
+                      class="attachment"
+                      *ngIf="message.attachment?.length > 0"
+                    >
+                      <p-divider></p-divider>
+                      <small>Attachments</small>
+                      <ul
+                        class="d-flex flex-wrap"
+                        style="list-style: none; margin: 0; padding: 0"
+                      >
+                        <li
+                          class="mr-2"
+                          *ngFor="let file of message.attachment; index as i"
+                        >
+                          <a
+                            [href]="file"
+                            target="_blank"
+                            [ngClass]="{
+                              'text-white': message.sender_type === 'student'
+                            }"
+                            >file{{ i }}</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- chat form -->
+            <div class="">
+              <ng-container *ngIf="selected_student.sme_id; else startchat">
+                <div class="col-12 mt-3 mt-md-4">
+                  <div>
+                    <quill-editor
+                      [styles]="{ 'min-height': '100px' }"
+                      [modules]="modules"
+                      [(ngModel)]="text"
+                    >
+                    </quill-editor>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center mt-3">
+                  <div class="file">
+                    <p class="p-0 m-0">Attachment</p>
+                    <input
+                      type="file"
+                      multiple
+                      (change)="attchment($event)"
+                      name="file"
+                      id="file"
+                    />
+                    <label for="file" title="select files">
+                      <span><i class="fas fa-paperclip"></i></span>
+                      <span *ngIf="files.length > 0"> {{ files.length }} </span>
+                    </label>
+                  </div>
+
+                  <div class="button ml-3" style="margin: 2rem 0 0rem 3rem">
+                    <button
+                      *ngIf="!message_sending; else wait"
+                      class="btn btn-primary"
+                      [disabled]="!text && files.length == 0"
+                      (click)="send_message(textarea)"
+                    >
+                      Send
+                    </button>
+                    <ng-template #wait>
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-spin pi-spinner"
+                        class="p-button-rounded"
+                        disabled="true"
+                      ></button>
+                    </ng-template>
+                  </div>
+                </div>
+              </ng-container>
+
+              <div class="row p-0">
+                <ng-template #startchat>
+                  <div class="col-12">
+                    <button
+                      class="btn btn-success w-100"
+                      [disabled]="!selected_student"
+                      (click)="assign_chat_to_admin()"
+                    >
+                      Start Chat
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template #warning>
+            <h4 class="h4 warnning">Please Select A student to start Chat</h4>
+          </ng-template>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<audio src="../../../assets/Sound/pop.mp3" #sound></audio>
+<audio src="assets/Sound/pop.mp3" #sound></audio>
 
 <ng-template #showspinner>
   <div class="spinner">
