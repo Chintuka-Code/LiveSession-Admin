@@ -17,37 +17,68 @@ export class AttemptsComponent implements OnInit {
   access_setting = {access_control:{cname:'', code:''}}
   submitted: boolean = false;
   question = ['q1','q2','q3'];
-  batchList = ['b1','b2','b3'];
-  groupedCities = [
-    {
-        label: 'Germany', value: 'de', 
-        items: [
-            {label: 'Berlin', value: 'Berlin'},
-            {label: 'Frankfurt', value: 'Frankfurt'},
-            {label: 'Hamburg', value: 'Hamburg'},
-            {label: 'Munich', value: 'Munich'}
-        ]
-    },
-    {
-        label: 'USA', value: 'us', 
-        items: [
-            {label: 'Chicago', value: 'Chicago'},
-            {label: 'Los Angeles', value: 'Los Angeles'},
-            {label: 'New York', value: 'New York'},
-            {label: 'San Francisco', value: 'San Francisco'}
-        ]
-    },
-    {
-        label: 'Japan', value: 'jp', 
-        items: [
-            {label: 'Kyoto', value: 'Kyoto'},
-            {label: 'Osaka', value: 'Osaka'},
-            {label: 'Tokyo', value: 'Tokyo'},
-            {label: 'Yokohama', value: 'Yokohama'}
-        ]
-    }
-];
+  batchList = [{_id:'1',batch_name:'b1'},{_id:'2',batch_name:'b2'}];
 
+
+
+data =[
+  {
+    student_id:'1',
+    email:'s1@test.com',
+    batch_id:'b1'
+  },
+  {
+    student_id:'2',
+    email:'s2@test.com',
+    batch_id:'b1'
+  },
+  {
+    student_id:'3',
+    email:'s3@test.com',
+    batch_id:'b2'
+  },
+  {
+    student_id:'4',
+    email:'s4@test.com',
+    batch_id:'b2'
+  },
+  {
+    student_id:'5',
+    email:'s5@test.com',
+    batch_id:'b2'
+  },
+  {
+    student_id:'2',
+    email:'s2@test.com',
+    batch_id:'b1'
+    
+  }
+]
+
+batchStudents = [
+  {
+    batch_name: 'B1', _id: '1', 
+    items: [
+          {email: 's1@test.com', _id: 's1', batch_id:'b1'},
+          {email: 's2@test.com', _id: 's2', batch_id:'b1'},
+          {email: 's3@test.com', _id: 's3', batch_id:'b1'},
+          {email: 's4@test.com', _id: 's4', batch_id:'b1'},
+         
+      ]
+  },
+  {
+    batch_name: 'B2', _id: '2', 
+    items: [
+          {email: 's11@test.com', _id: 's11', batch_id:'b2'},
+          {email: 's22@test.com', _id: 's22', batch_id:'b2'},
+          {email: 's33@test.com', _id: 's33', batch_id:'b2'},
+          {email: 's44@test.com', _id: 's44', batch_id:'b2'},
+         
+      ]
+  },
+ 
+ 
+];
 
 
 
@@ -95,10 +126,6 @@ countries = [
     console.log(event.value);
    
       this.is_access_control =!this.is_access_control; 
-      console.log(this.access_setting.access_control.code);
-      
-
-    
   }
 
   batchChange(){

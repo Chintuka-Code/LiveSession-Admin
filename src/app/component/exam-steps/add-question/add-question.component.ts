@@ -10,10 +10,27 @@ import { Router } from '@angular/router';
 })
 export class AddQuestionComponent implements OnInit {
 
-  questions ={
+  selected_question = {
+    
+  }
 
-  } 
-  question_bank = ['qb1','qb2', 'qb3'];
+  selectedQuestion = {}
+
+  question_banks = [
+    {
+      name:'QB1',
+      _id:'ww1'
+    },
+    {
+      name:'QB2',
+      _id:'ww2'
+    },
+    {
+      name:'QB3',
+      _id:'ww3'
+    },
+  ];
+
   question = ['q1','q2','q3'];
 
   groupedCities = [
@@ -46,31 +63,54 @@ export class AddQuestionComponent implements OnInit {
     }
 ];
 
+  questionList = [
+    {
+      qb_name: 'QB1', qb_name_id: '1', 
+      items: [
+          {name: 'q1', _id: '1', qb_name_id: 'ww1'},
+          {name: 'q2', _id: '2', qb_name_id: 'ww1'},
+          {name: 'q3', _id: '3', qb_name_id: 'ww1'},
+          {name: 'q4', _id: '4', qb_name_id: 'ww1'}
+      ]
+    },
+    {
+      qb_name: 'QB2', qb_name_id: '2', 
+      items: [
+          {name: 'q11', _id: '11', qb_name_id: 'ww2'},
+          {name: 'q22', _id: '22', qb_name_id: 'ww2'},
+          {name: 'q33', _id: '33', qb_name_id: 'ww2'},
+          {name: 'q44', _id: '44', qb_name_id: 'ww2'}
+      ]
+    },
+  ]
+
   constructor(
     private examService: ExamService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.questions = this.examService.examDetails.questions;
+    this.selected_question = this.examService.examDetails.selected_question;
   }
 
 
   questionBankChange(event){
-
+    console.log(event.value);
+    
   }
   questionChange(event){
+    console.log(event.value);
 
   }
 
   publish() {
-    this.examService.examDetails.questions = this.questions;
+    // this.examService.examDetails.questions = this.questions;
     
     // this.router.navigate(['main/create-exam/attempts']);
 
   }
   create() {
-    this.examService.examDetails.questions = this.questions;
+    // this.examService.examDetails.questions = this.questions;
 
     // this.router.navigate(['main/create-exam/attempts']);
 

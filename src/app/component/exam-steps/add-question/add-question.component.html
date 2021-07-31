@@ -12,27 +12,37 @@
                 <div class="col-12 col-md-4 mt-5" >
                   <span class="p-float-label w-100">
                     <p-multiSelect 
-                     display="chip"
-                     inputId="question_bank"
+                      display="chip"
+                      inputId="question_bank"
                       [autoDisplayFirst]="false"
-                      [options]="question_bank"
+                      optionLabel="name"
+                      optionValue="_id"
+                      [options]="question_banks"
                       [style]="{ minWidth: '100%' }"
-                      [(ngModel)]="questions.question_bank"
+                      [(ngModel)]="selected_question.question_bank"
                       (onChange)="questionBankChange($event)"
                      >
 
                     </p-multiSelect>
                     <label for="question_bank">Select question bank</label>
-                    <small *ngIf="(question_bank.invalid && submitted) || (question_bank.dirty && question_bank.invalid)" class="p-error">Question bank is required.</small>
+                    <!-- <small *ngIf="(question_bank.invalid && submitted) || (question_bank.dirty && question_bank.invalid)" class="p-error">Question bank is required.</small> -->
                   </span>
                 </div>
         
                 <div class="col-12 col-md-4 mt-5" >
                     <span class="p-float-label w-100">
-                      <p-multiSelect [options]="groupedCities" [group]="true" [(ngModel)]="questions.question" defaultLabel="Select questions" scrollHeight="250px" display="chip">
+                      <p-multiSelect 
+                      [options]="questionList" 
+                      [group]="true" 
+                      optionLabel="name"
+                      [(ngModel)]="selected_question.question" 
+                      defaultLabel="Select questions" 
+                      scrollHeight="250px" 
+                      (onChange)="questionChange($event)"
+                      display="chip">
                         <ng-template let-group pTemplate="group">
                             <div class="p-d-flex p-ai-center">
-                                <span>{{group.label}}</span>
+                                <span>{{group.qb_name}}</span>
                             </div>
                         </ng-template>
                     </p-multiSelect>

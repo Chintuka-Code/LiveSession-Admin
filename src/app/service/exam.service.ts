@@ -28,10 +28,9 @@ export class ExamService {
       window_minimize:'',
       live_screen_monitoring:'',
     },
-    questions:{
-      
-    },
-    publish:{}
+    questions:[],
+    publish:{},
+    selected_question:{question:[],question_bank:[]}
   };
 
   private paymentComplete = new Subject<any>();
