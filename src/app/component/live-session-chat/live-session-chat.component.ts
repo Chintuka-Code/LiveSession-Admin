@@ -58,7 +58,6 @@ export class LiveSessionChatComponent implements OnInit {
 
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
-      console.log(res);
       this.sound.nativeElement.pause();
       this.sound.nativeElement.currentTime = 0;
       if (res.message.sender_type !== 'admin') {
@@ -67,6 +66,7 @@ export class LiveSessionChatComponent implements OnInit {
 
       if (this.selected_student_chat_message) {
         this.selected_student_chat_message.push(res.message);
+        this.message_sending = false;
       }
 
       // update admin read counter
@@ -298,14 +298,13 @@ export class LiveSessionChatComponent implements OnInit {
           files.files_paths
         );
       }
-      this.selected_student_chat_message.push(message_obj);
+      // this.selected_student_chat_message.push(message_obj);
       setTimeout(() => {
         this.scroll_chat_container();
       }, 50);
       this.live_session_chat_service.send_message(message_obj, data);
 
       this.files = [];
-      this.message_sending = false;
     } catch (error) {
       // console.log(error);
     }
