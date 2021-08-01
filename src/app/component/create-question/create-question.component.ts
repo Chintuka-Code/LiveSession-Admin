@@ -72,10 +72,10 @@ export class CreateQuestionComponent implements OnInit {
         question_name: ['', Validators.required],
         type: ['', Validators.required],
         point: ['', Validators.required],
-        no_of_answer: [''],
+        no_of_answer: ['', Validators.required],
         option: this.fb.array([]),
         multiple_answer: this.fb.array([]),
-        right_answer: [''],
+        right_answer: ['', Validators.required],
       })
     );
     this.addNewOption(
@@ -111,25 +111,68 @@ export class CreateQuestionComponent implements OnInit {
     control.removeAt(index);
   }
 
+  reset_option(i) {
+    const controls = this.questionFormArr.controls[i].get(
+      'option'
+    ) as FormArray;
+    controls.clear();
+    controls.updateValueAndValidity();
+  }
+
+  reset_right_answer(i) {
+    const controls = this.questionFormArr.controls[i].get(
+      'right_answer'
+    ) as FormControl;
+    controls.clearValidators();
+    controls.updateValueAndValidity();
+  }
+
+  set_right_answer(i) {
+    const controls = this.questionFormArr.controls[i].get(
+      'right_answer'
+    ) as FormControl;
+    controls.setValidators(Validators.required);
+    controls.updateValueAndValidity();
+  }
+
+  set_number_of_answer(i) {
+    const controls = this.questionFormArr.controls[i].get(
+      'no_of_answer'
+    ) as FormControl;
+    controls.setValidators(Validators.required);
+    controls.updateValueAndValidity();
+  }
+
+  reset_number_of_answer(i) {
+    const controls = this.questionFormArr.controls[i].get(
+      'no_of_answer'
+    ) as FormControl;
+    controls.clearValidators();
+    controls.updateValueAndValidity();
+  }
+
   // when question type is selected
   type_selected(comp, i) {
     const value = comp.get('type').value;
     switch (value) {
       case 'radio':
         this.addNewOption(this.questionFormArr.controls[i].get('option'));
+        this.set_right_answer(i);
+        this.reset_number_of_answer(i);
         break;
       case 'checkbox':
         console.log('option required');
         break;
       case 'singleInput':
-        const controls = this.questionFormArr.controls[i].get(
-          'option'
-        ) as FormArray;
-        controls.clear();
-        controls.updateValueAndValidity();
+        this.reset_option(i);
+        this.set_right_answer(i);
+        this.reset_number_of_answer(i);
         console.log('Answer Required');
         break;
       case 'multipleInput':
+        this.reset_right_answer(i);
+        this.reset_option(i);
+        this.set_number_of_answer(i);
         console.log('Multiple Answer Required');
         break;
       default:
@@ -150,31 +193,31 @@ export class CreateQuestionComponent implements OnInit {
 
   create_company_fun() {
     const data = this.myForm.getRawValue();
-    // this.spinner = true;
+    this.spinner = true;
     console.log(data);
 
-    // if (this.questionBank_Id) {
-    //   this.question_service
-    //     .create_question_add_into_question_bank({
-    //       question: data.questions,
-    //       questionBank_id: this.questionBank_Id,
-    //     })
-    //     .subscribe(
-    //       (res) => {
-    //         Swal.fire({
-    //           icon: 'success',
-    //           title: 'Yeah...',
-    //           text: 'Priority Created',
-    //         }).then(() => {
-    //           this.myForm.reset();
-    //           this.spinner = false;
-    //         });
-    //       },
-    //       (error) => this.error_handler(error)
-    //     );
-    // } else {
-    //   console.log('create');
-    // }
+    if (this.questionBank_Id) {
+      this.question_service
+        .create_question_add_into_question_bank({
+          question: data.questions,
+          questionBank_id: this.questionBank_Id,
+        })
+        .subscribe(
+          (res) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Yeah...',
+              text: 'Priority Created',
+            }).then(() => {
+              this.myForm.reset();
+              this.spinner = false;
+            });
+          },
+          (error) => this.error_handler(error)
+        );
+    } else {
+      console.log('create');
+    }
   }
 
   ngOnInit(): void {
