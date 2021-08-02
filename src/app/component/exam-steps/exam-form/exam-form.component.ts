@@ -24,7 +24,7 @@ export class ExamFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.examForm = this.examService.getTicketInformation().examForm;
+    this.examForm = this.examService.examDetails.examForm;
   }
 
 
