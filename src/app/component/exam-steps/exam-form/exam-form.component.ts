@@ -38,9 +38,9 @@ export class ExamFormComponent implements OnInit {
 
 
   nextPage() {
+    this.examService.examDetails.examForm = this.examForm;
     if (this.examForm.exam_name && this.examForm.is_timed ) {
-        this.examService.examDetails.examForm = this.examForm;
-        console.log(this.examForm);
+        
         if(this.examForm.is_timed == 'Yes' && !this.examForm.exam_duration)
           return;
         else
@@ -48,7 +48,8 @@ export class ExamFormComponent implements OnInit {
         
         return;
     }
-
+    console.log(this.examForm);
+    
     this.submitted = true;
 }
 

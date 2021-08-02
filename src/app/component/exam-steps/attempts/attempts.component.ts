@@ -74,8 +74,28 @@ console.log(event.value);
 
   nextPage() {
     this.examService.examDetails.access_setting = this.access_setting;
+    
+    if(this.access_setting['max_attempt'] && this.access_setting['access_control']){
+
+      // if(this.access_setting['access_control'] == 'Any one with link'){
+
+      //   this.router.navigate(['main/create-exam/settings']);
+      // }else{
+      //   if(this.access_setting['access_control'] == 'align with batch' && this.access_setting['batch'] && this.access_setting['student']){
+      //     this.router.navigate(['main/create-exam/settings']);
+      //   }
+
+      //   if(this.access_setting['access_control'] == 'manual enter email' && this.access_setting['student']){
+
+      //   }
+      // }
+      this.router.navigate(['main/create-exam/settings']);
+
+      
+    }
+    
     this.submitted = true;
-    this.router.navigate(['main/create-exam/settings']);
+
   }
 
   prevPage() {

@@ -31,6 +31,7 @@
             <span class="p-float-label w-100">
 
               <p-cascadeSelect 
+                #access_control1="ngModel"
                 [(ngModel)]="access_setting.access_control" 
                 [options]="access_control_opt" 
                 optionLabel="cname" 
@@ -39,11 +40,14 @@
                 [optionGroupChildren]="['restrict_opt']" 
                 [style]="{'minWidth': '100%'}" 
                 (onChange)="timedChange($event)"  
-                placeholder="Who can attempt this exam">
+                placeholder="Who can attempt this exam"
+                required
+                [ngClass]="{'ng-dirty': (access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)}"
+                >
               </p-cascadeSelect>
 
               <!-- <label for="access_control">Who can attempt this exam</label> -->
-              <!-- <small *ngIf="(access_control.invalid && submitted) || (access_control.dirty && access_control.invalid)" class="p-error">Is this exam timed is required.</small> -->
+              <small *ngIf="(access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)" class="p-error">Is this exam timed is required.</small>
 
             </span>
           </div>
@@ -51,7 +55,7 @@
           <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'manual enter email'">
               <span class="p-float-label w-100">
           
-                <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" [(ngModel)]="access_setting.menual_email"></textarea>
+                <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" [(ngModel)]="access_setting.menual_student"></textarea>
 
                 <label for="access_control">Enter email</label>
             </span>

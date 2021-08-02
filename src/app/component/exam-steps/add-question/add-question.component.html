@@ -1,4 +1,4 @@
-
+<section *ngIf="!spinner; else showspinner">
 <div class="stepsdemo-content">
     <p-card>
         <ng-template pTemplate="title">
@@ -15,7 +15,7 @@
                       display="chip"
                       inputId="question_bank"
                       [autoDisplayFirst]="false"
-                      optionLabel="name"
+                      optionLabel="question_bank_name"
                       optionValue="_id"
                       [options]="question_banks"
                       [style]="{ minWidth: '100%' }"
@@ -32,9 +32,9 @@
                 <div class="col-12 col-md-4 mt-5" >
                     <span class="p-float-label w-100">
                       <p-multiSelect 
-                      [options]="questionList" 
+                      [options]="QB_questions" 
                       [group]="true" 
-                      optionLabel="name"
+                      optionLabel="question_name"
                       [(ngModel)]="selected_question.question" 
                       defaultLabel="Select questions" 
                       scrollHeight="250px" 
@@ -42,11 +42,11 @@
                       display="chip">
                         <ng-template let-group pTemplate="group">
                             <div class="p-d-flex p-ai-center">
-                                <span>{{group.qb_name}}</span>
+                                <span>{{group.question_bank_name}}</span>
                             </div>
                         </ng-template>
                     </p-multiSelect>
-                      <small *ngIf="(question.invalid && submitted) || (question.dirty && question.invalid)" class="p-error">Question is required.</small>
+                      <!-- <small *ngIf="(question.invalid && submitted) || (question.dirty && question.invalid)" class="p-error">Question is required.</small> -->
                   </span>
                 </div>
               </div>
@@ -60,3 +60,10 @@
         </ng-template>
     </p-card>
   </div>
+</section>
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  
