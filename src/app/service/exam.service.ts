@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 
 export class ExamService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   examDetails = {
     examForm: {
@@ -18,7 +18,7 @@ export class ExamService {
         exam_duration: ''
     },
     instruction: '',
-    access_setting: {access_control:{cname:'',code:''}},
+    access_setting: {},
     browser_settings: {
       right_click:'',
       auto_complete:'',
@@ -33,20 +33,33 @@ export class ExamService {
     selected_question:{question:[],question_bank:[]}
   };
 
-  private paymentComplete = new Subject<any>();
+  // private paymentComplete = new Subject<any>();
 
-  paymentComplete$ = this.paymentComplete.asObservable();
+  // paymentComplete$ = this.paymentComplete.asObservable();
 
-  getTicketInformation() {
-      return this.examDetails;
+  // getTicketInformation() {
+  //     return this.examDetails;
+  // }
+
+  // setTicketInformation(ticketInformation) {
+  //     this.examDetails = ticketInformation;
+  // }
+
+  // complete() {
+  //     this.paymentComplete.next(this.examDetails.examForm);
+  // }
+
+
+  get_all_batch() {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/batch/get-batch-exam`
+    );
   }
 
-  setTicketInformation(ticketInformation) {
-      this.examDetails = ticketInformation;
-  }
-
-  complete() {
-      this.paymentComplete.next(this.examDetails.examForm);
+  get_students_by_batch(ids:[]) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/batch/get-student-batch-exam`, {ids}
+    );
   }
 
 }
