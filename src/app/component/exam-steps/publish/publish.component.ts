@@ -25,31 +25,10 @@ export class PublishComponent implements OnInit {
   }
 
   examPublish() {
-    // this.examService.examDetails.attempts = this.attempts;
-    // this.submitted = true;
-   
 
-    let question = this.examService.examDetails.selected_question.question
-   
-    var group = question.reduce((r, a) => {
-     
-      r[a.qb_name_id] = [...r[a.qb_name_id] || [], a];
-      return r;
-     }, {});
-
-     console.log("data", group);
-     let qArr = [];
-     for (const [key, value] of Object.entries(group)) {
-     
-      qArr.push({question_bamk_id:key, questions:value})
-    }
-
-    this.examService.examDetails.questions = qArr
-    
-    
     console.log(this.examService.examDetails);
     
-    this.router.navigate(['main/create-exam/publish']);
+    // this.router.navigate(['main/create-exam/publish']);
   }
 
 }

@@ -30,23 +30,24 @@
             <div class="col-12 col-md-4 mt-5" >
               <span class="p-float-label w-100">
                 <p-dropdown
-                  
+                  #is_timed1="ngModel"
                   inputId="is_timed"
                   [autoDisplayFirst]="false"
                   [options]="is_timed"
                   [style]="{ minWidth: '100%' }"
                   [(ngModel)]="examForm.is_timed"
                   (onChange)="timedChange($event)"
-                  
+                  required
+                  [ngClass]="{'ng-dirty': (is_timed1.invalid && submitted) || (is_timed1.dirty && is_timed1.invalid)}"
                 ></p-dropdown>
 
                 <label for="is_timed">Is this exam timed</label>
-                <small *ngIf="(is_timed.invalid && submitted) || (is_timed.dirty && is_timed.invalid)" class="p-error">Is this exam timed is required.</small>
+                <small *ngIf="(is_timed1.invalid && submitted) || (is_timed1.dirty && is_timed1.invalid)" class="p-error">Is this exam timed is required.</small>
 
               </span>
             </div>
     
-            <div class="col-12 col-md-4 mt-5" *ngIf="examForm.is_timed == 'Yes'">
+            <div class="col-12 col-md-4 mt-5" *ngIf="examForm.is_timed && examForm.is_timed == 'Yes'">
                 <span class="p-float-label w-100">
             
                   <input

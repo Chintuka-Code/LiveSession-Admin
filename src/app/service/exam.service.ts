@@ -12,25 +12,13 @@ export class ExamService {
   constructor(private http: HttpClient) { }
 
   examDetails = {
-    examForm: {
-        exam_name: '',
-        is_timed: 'Yes',
-        exam_duration: ''
-    },
+    examForm: {},
     instruction: '',
     access_setting: {},
-    browser_settings: {
-      right_click:'',
-      auto_complete:'',
-      spell_check:'',
-      printing:'',
-      tab_switching:'',
-      window_minimize:'',
-      live_screen_monitoring:'',
-    },
+    browser_settings: {},
     questions:[],
     publish:{},
-    selected_question:{question:[],question_bank:[]}
+    selected_question:[]
   };
 
   // private paymentComplete = new Subject<any>();
@@ -59,6 +47,18 @@ export class ExamService {
   get_students_by_batch(ids:[]) {
     return this.http.post(
       `${environment.BASE_SERVER_URL}/batch/get-student-batch-exam`, {ids}
+    );
+  }
+
+  get_all_question_bank() {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/question-bank/get-all-question-bank-exam`
+    );
+  }
+
+  get_question_by_qb(ids:[]) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/question-bank/get-question-by-bankId`,{ids}
     );
   }
 

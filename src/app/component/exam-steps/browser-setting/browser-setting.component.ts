@@ -13,17 +13,10 @@ import { Router } from '@angular/router';
 export class BrowserSettingComponent implements OnInit {
 
   create_exam_form: FormGroup;
-  // selectedValues: string[] = ['val1','val2'];
+
   selectedCities: string[] = [];
-  browser_settings = {
-    right_click:'',
-    auto_complete:'',
-    spell_check:'',
-    printing:'',
-    tab_switching:'',
-    window_minimize:'',
-    live_screen_monitoring:'',
-  }
+  browser_settings = {}
+
   constructor(
     private fb: FormBuilder,
     private examService: ExamService,
