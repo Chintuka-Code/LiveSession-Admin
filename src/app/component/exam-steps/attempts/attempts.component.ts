@@ -57,14 +57,16 @@ export class AttemptsComponent implements OnInit {
 
 
 
-  timedChange(event){
-console.log(event.value);
+  accessControlChange(event){
 
+    delete this.access_setting['batch']
+    delete this.access_setting['student']
+  
     if(event.value == 'align with batch'){
       this.get_batch();
     }
-   
-      // this.is_access_control =!this.is_access_control; 
+    
+  // this.is_access_control =!this.is_access_control; 
   }
 
   batchChange(event){
@@ -74,7 +76,9 @@ console.log(event.value);
 
   nextPage() {
     this.examService.examDetails.access_setting = this.access_setting;
-    
+    if(this.access_setting['access_control'] == 'manual enter email'){
+      this.access_setting['student'] =  this.access_setting['menual_student'].split("\n").filter(item => item!="");
+    }
     if(this.access_setting['max_attempt'] && this.access_setting['access_control']){
 
       // if(this.access_setting['access_control'] == 'Any one with link'){
@@ -89,8 +93,9 @@ console.log(event.value);
 
       //   }
       // }
-      this.router.navigate(['main/create-exam/settings']);
 
+      this.router.navigate(['main/create-exam/settings']);
+      console.log(this.access_setting);
       
     }
     

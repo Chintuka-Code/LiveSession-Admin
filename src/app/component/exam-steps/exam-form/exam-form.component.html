@@ -18,7 +18,7 @@
                   class="form-control"
                   pInputText
                   required
-                  [(ngModel)]="examForm.exam_name"
+                  [(ngModel)]="exam_form.exam_name"
                   [ngClass]="{'ng-dirty': (exam_name.invalid && submitted) || (exam_name.dirty && exam_name.invalid)}"
                 />
                 <label for="exam_name">Exam Name</label>
@@ -35,7 +35,7 @@
                   [autoDisplayFirst]="false"
                   [options]="is_timed"
                   [style]="{ minWidth: '100%' }"
-                  [(ngModel)]="examForm.is_timed"
+                  [(ngModel)]="exam_form.is_timed"
                   (onChange)="timedChange($event)"
                   required
                   [ngClass]="{'ng-dirty': (is_timed1.invalid && submitted) || (is_timed1.dirty && is_timed1.invalid)}"
@@ -47,7 +47,7 @@
               </span>
             </div>
     
-            <div class="col-12 col-md-4 mt-5" *ngIf="examForm.is_timed && examForm.is_timed == 'Yes'">
+            <div class="col-12 col-md-4 mt-5" *ngIf="exam_form.is_timed && exam_form.is_timed == 'Yes'">
                 <span class="p-float-label w-100">
             
                   <input
@@ -57,10 +57,10 @@
                   class="form-control"
                   pInputText
                   required
-                  [(ngModel)]="examForm.exam_duration"
+                  [(ngModel)]="exam_form.exam_duration"
                   [ngClass]="{'ng-dirty': (exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)}"
                 />
-                <label for="exam_duration">Exam Duration</label>
+                <label for="exam_duration">Exam Duration in seconds</label>
                 <small *ngIf="(exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)" class="p-error">Exam Duration is required.</small>
               </span>
 
@@ -72,15 +72,15 @@
             <div class="col-12 mt-3 mt-md-4">
              
               <div class="p-field-checkbox">
-                <p-checkbox  [(ngModel)]="examForm.score"  [binary]="true" inputId="score"></p-checkbox>
+                <p-checkbox  [(ngModel)]="exam_form.score"  [binary]="true" inputId="score"></p-checkbox>
                 <label for="score">Dispaly score</label>
               </div>
               <div class="p-field-checkbox">
-                  <p-checkbox [(ngModel)]="examForm.show_correct_answer"  [binary]="true" inputId="show_correct_answer"></p-checkbox>
+                  <p-checkbox [(ngModel)]="exam_form.show_correct_answer"  [binary]="true" inputId="show_correct_answer"></p-checkbox>
                   <label for="show_correct_answer">Display correct answer</label>
               </div>
               <div class="p-field-checkbox">
-                  <p-checkbox [(ngModel)]="examForm.certificate_issue"  [binary]="true" inputId="certificate_issue"></p-checkbox>
+                  <p-checkbox [(ngModel)]="exam_form.certificate_issue"  [binary]="true" inputId="certificate_issue"></p-checkbox>
                   <label for="certificate_issue">Dispaly certificate issue</label>
               </div>
             </div>

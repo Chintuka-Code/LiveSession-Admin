@@ -15,7 +15,7 @@ export class BrowserSettingComponent implements OnInit {
   create_exam_form: FormGroup;
 
   selectedCities: string[] = [];
-  browser_settings = {}
+  security_settings = {}
 
   constructor(
     private fb: FormBuilder,
@@ -25,7 +25,7 @@ export class BrowserSettingComponent implements OnInit {
 
   ngOnInit(): void {
     // this.validation()
-    this.browser_settings = this.examService.examDetails.browser_settings;
+    this.security_settings = this.examService.examDetails.security_settings;
   }
 
   validation() {
@@ -50,7 +50,7 @@ export class BrowserSettingComponent implements OnInit {
 
 
   nextPage() {
-    this.examService.examDetails.browser_settings = this.browser_settings;
+    this.examService.examDetails.security_settings = this.security_settings;
     this.router.navigate(['main/create-exam/exam_question']);
     
 }

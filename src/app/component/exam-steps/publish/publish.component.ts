@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExamService } from '../../../service/exam.service'
 import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-publish',
@@ -11,6 +12,8 @@ import { Router } from '@angular/router';
 export class PublishComponent implements OnInit {
   batch_start_date
   publish:{}
+  spinner: boolean = false;
+  is_exam_id: boolean =false;
   constructor(
     private examService: ExamService,
     private router: Router
@@ -18,6 +21,9 @@ export class PublishComponent implements OnInit {
 
   ngOnInit(): void {
     this.publish = this.examService.examDetails.publish;
+    if(this.examService.examDetails['_id']){
+      this.is_exam_id = true;
+    }
   }
 
   prevPage() {
@@ -27,8 +33,79 @@ export class PublishComponent implements OnInit {
   examPublish() {
 
     console.log(this.examService.examDetails);
+   
     
-    // this.router.navigate(['main/create-exam/publish']);
+    const formData = Object.assign({}, this.examService.examDetails);
+    delete formData.selected_question;
+
+    if(formData.access_setting['access_control'] == 'manual enter email'){
+    
+      delete formData.access_setting['menual_student']
+    }
+
+    this.spinner = true;
+  console.log(formData);
+
+  if(this.is_exam_id){
+    delete formData['createdAt']
+    delete formData['updatedAt']
+    delete formData['__v']
+    console.log(formData);
+
+    this.examService.update_exam(formData['_id'] , formData).subscribe(
+      (res: any) => {
+          console.log(res);
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'Yeah...',
+            text: 'Exam updated successfully',
+          }).then(() =>  this.router.navigate(['main/view-exam']));
+          this.spinner = false;
+
+          // this.spinner = false;
+        
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.errorMessage,
+          }).then(() => {
+            this.spinner = false;
+          
+          });
+        }
+      );
+
+    
+  }else{
+    this.examService.create_exam(formData).subscribe(
+      (res: any) => {
+          console.log(res);
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'Yeah...',
+            text: 'Exam created successfully',
+          }).then(() =>  this.router.navigate(['main/view-exam']));
+          this.spinner = false;
+
+          // this.spinner = false;
+        
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.errorMessage,
+          }).then(() => {
+            this.spinner = false;
+          
+          });
+        }
+      );
+    }
   }
 
 }

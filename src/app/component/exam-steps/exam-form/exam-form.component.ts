@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ExamFormComponent implements OnInit {
 
-  examForm: any;
+  exam_form: any;
 
   submitted: boolean = false;
 
@@ -24,7 +24,9 @@ export class ExamFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.examForm = this.examService.examDetails.examForm;
+    this.exam_form = this.examService.examDetails.exam_form;
+    console.log(this.examService.examDetails);
+    
   }
 
 
@@ -38,17 +40,16 @@ export class ExamFormComponent implements OnInit {
 
 
   nextPage() {
-    this.examService.examDetails.examForm = this.examForm;
-    if (this.examForm.exam_name && this.examForm.is_timed ) {
+    this.examService.examDetails.exam_form = this.exam_form;
+    if (this.exam_form.exam_name && this.exam_form.is_timed ) {
         
-        if(this.examForm.is_timed == 'Yes' && !this.examForm.exam_duration)
+        if(this.exam_form.is_timed == 'Yes' && !this.exam_form.exam_duration)
           return;
         else
           this.router.navigate(['main/create-exam/instruction']);
         
         return;
     }
-    console.log(this.examForm);
     
     this.submitted = true;
 }

@@ -12,10 +12,10 @@ export class ExamService {
   constructor(private http: HttpClient) { }
 
   examDetails = {
-    examForm: {},
+    exam_form: {},
     instruction: '',
     access_setting: {},
-    browser_settings: {},
+    security_settings: {},
     questions:[],
     publish:{},
     selected_question:[]
@@ -34,7 +34,7 @@ export class ExamService {
   // }
 
   // complete() {
-  //     this.paymentComplete.next(this.examDetails.examForm);
+  //     this.paymentComplete.next(this.examDetails.exam_form);
   // }
 
 
@@ -62,4 +62,22 @@ export class ExamService {
     );
   }
 
+  create_exam(data:{}) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/exam/create`, {data}
+    );
+  }
+
+  get_all_exam(){
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/exam/get-all`
+    );
+  }
+
+  update_exam(id, data){
+    delete data._id;
+    return this.http.put(
+      `${environment.BASE_SERVER_URL}/exam/update/${id}`, {data}
+    );
+  }
 }
