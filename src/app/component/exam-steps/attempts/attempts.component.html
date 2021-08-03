@@ -39,7 +39,7 @@
                 optionValue="code"
                 [optionGroupChildren]="['restrict_opt']" 
                 [style]="{'minWidth': '100%'}" 
-                (onChange)="timedChange($event)"  
+                (onChange)="accessControlChange($event)"  
                 placeholder="Who can attempt this exam"
                 required
                 [ngClass]="{'ng-dirty': (access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)}"

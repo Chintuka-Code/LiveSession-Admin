@@ -16,7 +16,101 @@
           </div>
         </div>
   
-        <div></div>
+        <div>
+          <p-table
+            #question_bank_table
+            [value]="exam_list"
+            dataKey="id"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="p-datatable-customers"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'exam_name',
+              'chapter_name',
+              'difficulty',
+              'number_of_question'
+            ]"
+          >
+            <ng-template pTemplate="caption" class="w-100">
+              <div class="p-d-flex w-100">
+                <span class="p-input-icon-left p-ml-auto w-100">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      question_bank_table.filterGlobal(
+                        $event.target.value,
+                        'contains'
+                      )
+                    "
+                    placeholder="Search keyword"
+                    class="w-100"
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Name</th>
+                <!-- <th>Chapter Name</th>
+                <th>Difficulty</th>
+                <th>Number of Question</th>
+                <th>CreatedAt</th> -->
+                <th>Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-exam>
+              <tr>
+                <td>
+                  {{ exam.exam_form.exam_name }}
+                </td>
+                <!-- <td>{{ question_bank.chapter_name }}</td>
+                <td>{{ question_bank.difficulty }}</td>
+                <td>{{ question_bank.number_of_question }}</td>
+                <td>{{ question_bank.createdAt | date: "medium" }}</td> -->
+                <td class="position-relative">
+                  <ng-container *ngIf="!question_bank_type_disabled; else enable">
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-ellipsis-h"
+                      class="p-button-rounded p-button-text"
+                      (click)="menu.toggle($event)"
+                    ></button>
+  
+                    <p-menu
+                      #menu
+                      [popup]="true"
+                      [model]="items"
+                      (click)="exam_action(exam)"
+                    ></p-menu>
+                  </ng-container>
+  
+                  <ng-template #enable>
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-pencil"
+                      class="p-button-rounded p-button-text"
+                      (click)="enable_question_bank(question_bank)"
+                    ></button>
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5">No User found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
       </div>
     </div>
   </section>
