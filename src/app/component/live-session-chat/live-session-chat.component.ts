@@ -66,8 +66,21 @@ export class LiveSessionChatComponent implements OnInit {
       }
 
       if (this.selected_student_chat_message) {
-        this.selected_student_chat_message.push(res.message);
+        const index = this.selected_student_chat_message.findIndex(
+          (ch) => ch.date == res.message.created_at.split('T')[0]
+        );
+
+        if (index > -1) {
+          this.selected_student_chat_message[index].message.push(res.message);
+        } else {
+          this.selected_student_chat_message.push({
+            date: res.message.created_at.split('T')[0],
+            message: res.message,
+          });
+        }
+
         this.message_sending = false;
+        console.log(res.message);
       }
 
       // update admin read counter
@@ -78,7 +91,6 @@ export class LiveSessionChatComponent implements OnInit {
       });
 
       this.sorting(this.active_student_list);
-
       setTimeout(() => {
         this.scroll_chat_container();
       }, 50);
@@ -148,6 +160,27 @@ export class LiveSessionChatComponent implements OnInit {
 
   sorting(data) {
     this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
+  }
+
+  group_by_date(data) {
+    const groups = data.reduce((groups, game) => {
+      const date = game.created_at.split('T')[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(game);
+      return groups;
+    }, {});
+
+    // Edit: to add it in the array format instead
+    const groupArrays = Object.keys(groups).map((date) => {
+      return {
+        date,
+        message: groups[date],
+      };
+    });
+    this.selected_student_chat_message = groupArrays;
+    this.spinner = false;
   }
 
   textarea_auto_increment(event) {
@@ -222,14 +255,6 @@ export class LiveSessionChatComponent implements OnInit {
     this.selected_student = '';
     this.selected_student = student;
 
-    if (this.slots.length <= 1) {
-      this.slots.push(student);
-      // console.log(this.slots);
-    } else {
-      // console.log('Do you want to replace chat');
-      // console.log(this.slots);
-    }
-
     if (this.selected_student.sme_id === localStorage.getItem('uid')) {
       this.live_session_chat_service.join_room({
         room_id:
@@ -244,7 +269,7 @@ export class LiveSessionChatComponent implements OnInit {
           const response = res.data;
           this.selected_student_chat_message = response.message;
           this.scroll_chat_container();
-          this.spinner = false;
+          this.group_by_date(this.selected_student_chat_message);
         },
         (error) => this.error_handler(error)
       );
