@@ -60,6 +60,7 @@ export class LiveSessionMultiComponent implements OnInit {
       // if chat is in slots then push message
       if (index > -1) {
         this.slots[index].message.push(res.message);
+        this.slots[index].message_sending = false;
         setTimeout(() => {
           this.scroll_chat_container(index);
         }, 20);
@@ -295,12 +296,13 @@ export class LiveSessionMultiComponent implements OnInit {
       attachment: [],
       created_at: new Date(),
     };
-    const chat_data = {
-      room_id:
-        this.slots[index].chat.student_id + this.slots[index].chat.batch_id,
-      chat_id: this.slots[index].chat._id,
-    };
+
     try {
+      const data = {
+        room_id:
+          this.slots[index].chat.student_id + this.slots[index].chat.batch_id,
+        chat_id: this.slots[index].chat._id,
+      };
       if (this.slots[index].files.length > 0) {
         this.slots[index].message_sending = true;
         const files: any = await this.attachment_service.upload_files(
@@ -310,15 +312,14 @@ export class LiveSessionMultiComponent implements OnInit {
           files.files_paths
         );
       }
-      this.slots[index].message.push(message_obj);
+      // this.slots[index].message.push(message_obj);
       textarea.value = '';
 
       setTimeout(() => {
         this.scroll_chat_container(index);
       }, 50);
-      this.live_session_chat_service.send_message(message_obj, chat_data);
+      this.live_session_chat_service.send_message(message_obj, data);
       this.slots[index].files = [];
-      this.slots[index].message_sending = false;
     } catch (error) {
       // console.log(error);
     }
