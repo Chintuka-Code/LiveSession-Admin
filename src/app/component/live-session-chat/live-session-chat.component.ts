@@ -218,7 +218,7 @@ export class LiveSessionChatComponent implements OnInit {
           this.selected_student.student_id + this.selected_student.batch_id,
       });
     }
-
+    this.selected_student = '';
     this.selected_student = student;
 
     if (this.slots.length <= 1) {
@@ -370,7 +370,6 @@ export class LiveSessionChatComponent implements OnInit {
   // for transfer
   get_all_admin() {
     this.spinner = true;
-
     this.user_service.get_all_admin().subscribe(
       (res: any) => {
         this.transfer_admin = res.data;
