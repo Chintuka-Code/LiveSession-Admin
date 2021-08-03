@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 import { QUILL_TOOLBAR_SETTING } from 'src/app/utilities/quill_setting';
 import 'quill-emoji/dist/quill-emoji.js';
+import { Detect_URL } from 'src/app/utilities/detect_url';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -275,7 +276,7 @@ export class LiveSessionChatComponent implements OnInit {
   async send_message() {
     this.message_sending = true;
     const message_obj = {
-      text_message: this.text,
+      text_message: Detect_URL(this.text),
       sme_id: localStorage.getItem('uid'),
       sender_name: this.user.name,
       sender_type: 'admin',

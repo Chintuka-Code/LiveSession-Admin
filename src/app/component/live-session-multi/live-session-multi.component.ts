@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
+import { Detect_URL } from 'src/app/utilities/detect_url';
 
 @Component({
   selector: 'app-live-session-multi',
@@ -288,8 +289,10 @@ export class LiveSessionMultiComponent implements OnInit {
   }
 
   async send_message(textarea, index) {
+    const html = Detect_URL(textarea.value);
+
     const message_obj = {
-      text_message: textarea.value,
+      text_message: html,
       sme_id: localStorage.getItem('uid'),
       sender_name: this.user.name,
       sender_type: 'admin',

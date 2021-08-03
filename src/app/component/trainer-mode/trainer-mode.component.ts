@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 import { AttachmentService } from 'src/app/service/attachment.service';
+import { Detect_URL } from 'src/app/utilities/detect_url';
 
 @Component({
   selector: 'app-trainer-mode',
@@ -37,10 +38,11 @@ export class TrainerModeComponent implements OnInit {
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
+      console.log(res);
       if (res.sender_type !== 'admin') {
-        this.all_chats.push(res);
+        this.all_chats.push(res.message);
       }
-
+      this.message_sending = false;
       setTimeout(() => {
         this.scroll_chat_container();
       }, 50);
@@ -243,7 +245,7 @@ export class TrainerModeComponent implements OnInit {
     this.message_sending = true;
 
     const message_obj = {
-      text_message: message.value,
+      text_message: Detect_URL(message.value),
       sme_id: localStorage.getItem('uid'),
       sender_name: this.user.name,
       sender_type: 'super admin',
@@ -262,7 +264,7 @@ export class TrainerModeComponent implements OnInit {
         );
       }
 
-      this.all_chats.push(message_obj);
+      // this.all_chats.push(message_obj);
       this.scroll_chat_container();
 
       this.student_id.forEach((id) => {
@@ -274,7 +276,6 @@ export class TrainerModeComponent implements OnInit {
       });
 
       this.files = [];
-      this.message_sending = false;
     } catch (error) {
       this.error_handler(error);
     }
