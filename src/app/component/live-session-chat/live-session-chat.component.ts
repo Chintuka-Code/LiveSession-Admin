@@ -75,7 +75,7 @@ export class LiveSessionChatComponent implements OnInit {
         } else {
           this.selected_student_chat_message.push({
             date: res.message.created_at.split('T')[0],
-            message: res.message,
+            message: [res.message],
           });
         }
 

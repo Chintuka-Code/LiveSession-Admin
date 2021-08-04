@@ -71,7 +71,7 @@ export class LiveSessionMultiComponent implements OnInit {
         } else {
           this.slots[index].message.push({
             date: res.message.created_at.split('T')[0],
-            message: res.message,
+            message: [res.message],
           });
         }
 
