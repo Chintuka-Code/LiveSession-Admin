@@ -92,6 +92,12 @@
           >
         </li>
 
+        <li routerLinkActive="active-page">
+          <a [routerLink]="['manager-view']" (click)="updateAside()"
+            ><i class="fas fa-user-shield px-3"></i> Manager View</a
+          >
+        </li>
+
         <li
           routerLinkActive="active-page"
           *ngIf="user.permissions.includes('TM11')"

@@ -313,6 +313,13 @@ const routes: Routes = [
             (m) => m.LiveSessionMultiModule
           ),
       },
+      {
+        path: 'manager-view',
+        loadChildren: () =>
+          import('../manager-view/manager-view.module').then(
+            (m) => m.ManagerViewModule
+          ),
+      },
     ],
   },
 ];
