@@ -78,7 +78,6 @@ export class ViewExamComponent implements OnInit {
         
         this.examService.examDetails['selected_question']['question_bank'] = question_bank;
         this.examService.examDetails['selected_question']['question'] = merged;
-        // this.examService.examDetails['exam_id'] = ;
         let publish = this.examService.examDetails['publish'];
         if(publish['start_date']){
           publish['start_date'] = new Date(publish['start_date'])
@@ -103,13 +102,15 @@ export class ViewExamComponent implements OnInit {
         this.router.navigate(['/main/create-exam/form']);
         break;
       case 'disabled':
-        this.disabled_exam();
+        this.disabled_exam(exam._id);
+        break;
+      case 'publish':
+        this.publish_exam(exam);
         break;
       default:
         console.log('');
     }
 
-    console.log('kllkj');
     
   }
 
@@ -127,8 +128,6 @@ export class ViewExamComponent implements OnInit {
       this.router.navigate(['/main']);
       return;
     }
-
-    // this.get_all_question_bank(this.question_bank_type_disabled);
 
     this.items[0].items.push({
       label: 'View',
@@ -165,14 +164,43 @@ export class ViewExamComponent implements OnInit {
 
 
   view_exam_details(){
-    console.log('lkjlkjl');
+    console.log('view exam');
     
   }
-  disabled_exam(){
-    console.log('desable exam');
-    
+  disabled_exam(id){
+    this.updateExam(id, {disabled:true}, "Exam desabled successfully")
   }
 
+  publish_exam(exam){
+
+    exam.publish['is_publish'] = true;
+    this.updateExam(exam._id, {publish:exam.publish}, "Exam published successfully")
+  }
+
+
+  updateExam(id, data, message){
+    this.examService.update_exam(id, data).subscribe(
+      (res: any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: message,
+          }).then(() =>  this.router.navigate(['main/view-exam']));
+          this.spinner = false;
+        
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.errorMessage,
+          }).then(() => {
+            this.spinner = false;
+          
+          });
+        }
+    );
+  }
 
   createExam(){
     this.examService.examDetails = {

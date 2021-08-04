@@ -60,7 +60,7 @@
                   [(ngModel)]="exam_form.exam_duration"
                   [ngClass]="{'ng-dirty': (exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)}"
                 />
-                <label for="exam_duration">Exam Duration in seconds</label>
+                <label for="exam_duration">Exam Duration in minutes</label>
                 <small *ngIf="(exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)" class="p-error">Exam Duration is required.</small>
               </span>
 
