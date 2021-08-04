@@ -11,10 +11,12 @@ import Swal from 'sweetalert2';
 })
 export class AddQuestionComponent implements OnInit {
   spinner: boolean = false;
-
+  show_question_count_max = 1;
+  show_question_count_min = 1;
   selected_question = []
   question_banks = [];
   QB_questions = [];
+  exam_form;
 
   constructor(
     private examService: ExamService,
@@ -23,6 +25,7 @@ export class AddQuestionComponent implements OnInit {
 
   ngOnInit(): void {
     this.selected_question = this.examService.examDetails.selected_question;
+    this.exam_form = this.examService.examDetails.exam_form;
     this.get_question_banks()
     if(this.selected_question['question_bank']){
       this.get_question_by_qb(this.selected_question['question_bank']);
@@ -37,7 +40,9 @@ export class AddQuestionComponent implements OnInit {
   }
   questionChange(event){
     console.log(event.value);
-
+    let max = event.value.length
+    this.show_question_count_max = max;
+    this.exam_form['show_question_count'] = max;
 
     var group = event.value.reduce((r, a) => {
      

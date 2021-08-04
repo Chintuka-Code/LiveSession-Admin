@@ -14,6 +14,8 @@ export class PublishComponent implements OnInit {
   publish:{}
   spinner: boolean = false;
   is_exam_id: boolean =false;
+  sloat_end_time: Date;
+  minDateValue: Date = new Date();
   constructor(
     private examService: ExamService,
     private router: Router
@@ -106,6 +108,22 @@ export class PublishComponent implements OnInit {
         }
       );
     }
+  }
+
+  onStartTimeSelect(value:Date){
+
+    if(this.examService.examDetails.exam_form['exam_duration']){
+      let duration = this.examService.examDetails.exam_form['exam_duration'];
+      let addedTime = this.addMinutes(value, duration); 
+      this.publish['slot_end_time'] = addedTime;
+     
+    }
+    
+  }
+
+
+  addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
   }
 
 }

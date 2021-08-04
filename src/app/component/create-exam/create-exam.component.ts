@@ -16,7 +16,7 @@ export class CreateExamComponent implements OnInit {
 
     this.items = [
       {
-        label: 'Form',
+        label: 'General',
         routerLink: 'form'
       },
       {

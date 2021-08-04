@@ -52,6 +52,10 @@ export class AttemptsComponent implements OnInit {
       this.get_batch()
       if(this.access_setting['batch'])
         this.get_students_by_batch(this.access_setting['batch'])
+    if(this.access_setting['student']){
+      this.access_setting['menual_student'] = this.access_setting['student'].join("\n");
+    }
+    
   }
 
 
@@ -76,8 +80,11 @@ export class AttemptsComponent implements OnInit {
 
   nextPage() {
     this.examService.examDetails.access_setting = this.access_setting;
+    // console.log(this.examService.examDetails.access_setting);
     if(this.access_setting['access_control'] == 'manual enter email'){
-      this.access_setting['student'] =  this.access_setting['menual_student'].split("\n").filter(item => item!="");
+      
+        this.access_setting['student'] =  this.access_setting['menual_student'].split("\n").filter(item => item!="");
+      
     }
     if(this.access_setting['max_attempt'] && this.access_setting['access_control']){
 

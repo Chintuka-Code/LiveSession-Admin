@@ -60,7 +60,7 @@
                   [(ngModel)]="exam_form.exam_duration"
                   [ngClass]="{'ng-dirty': (exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)}"
                 />
-                <label for="exam_duration">Exam Duration in seconds</label>
+                <label for="exam_duration">Exam Duration in minutes</label>
                 <small *ngIf="(exam_duration.invalid && submitted) || (exam_duration.dirty && exam_duration.invalid)" class="p-error">Exam Duration is required.</small>
               </span>
 
@@ -78,6 +78,10 @@
               <div class="p-field-checkbox">
                   <p-checkbox [(ngModel)]="exam_form.show_correct_answer"  [binary]="true" inputId="show_correct_answer"></p-checkbox>
                   <label for="show_correct_answer">Display correct answer</label>
+              </div>
+              <div class="p-field-checkbox">
+                  <p-checkbox [(ngModel)]="exam_form.question_random"  [binary]="true" inputId="question_random"></p-checkbox>
+                  <label for="question_random">Is question random</label>
               </div>
               <div class="p-field-checkbox">
                   <p-checkbox [(ngModel)]="exam_form.certificate_issue"  [binary]="true" inputId="certificate_issue"></p-checkbox>

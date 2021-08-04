@@ -21,6 +21,7 @@
                     [style]="{ minWidth: '100%' }"
                     [(ngModel)]="publish.start_date"
                     dateFormat="dd.mm.yy"
+                    [minDate]="minDateValue"
                   ></p-calendar>
                   <label for="exam_start">Exam Start Date</label>
                   </span>
@@ -97,6 +98,7 @@
                         [style]="{ minWidth: '100%' }"
                         hourFormat="12"
                         [(ngModel)]="publish.slot_start_time"
+                        (onSelect) = "onStartTimeSelect($event)"
                     ></p-calendar>
                     <label for="slot_start_time">Slot start Time</label> 
                   </span>
@@ -108,6 +110,7 @@
                   
                     <p-calendar
                         [timeOnly]="true"
+                        [disabled]="true"
                         inputId="slot_end_time"
                         [style]="{ minWidth: '100%' }"
                         hourFormat="12"
@@ -124,8 +127,8 @@
         <ng-template pTemplate="footer">
             <div class="p-grid p-nogutter p-justify-between">
                 <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
-                <p-button *ngIf="!is_exam_id" label="Publish" (onClick)="examPublish()"  iconPos="right" ></p-button>
-                <p-button *ngIf="is_exam_id" label="Update & Publish" (onClick)="examPublish()"  iconPos="right" ></p-button>
+                <p-button *ngIf="!is_exam_id" label="Create" (onClick)="examPublish()"  iconPos="right" [style]="{'margin-left': '0.5rem'}"></p-button>
+                <p-button *ngIf="is_exam_id" label="Update" (onClick)="examPublish()"  iconPos="right" [style]="{'margin-left': '0.5rem'}"></p-button>
                 
             </div>
         </ng-template>

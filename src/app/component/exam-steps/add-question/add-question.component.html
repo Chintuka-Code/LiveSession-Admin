@@ -49,13 +49,38 @@
                       <!-- <small *ngIf="(question.invalid && submitted) || (question.dirty && question.invalid)" class="p-error">Question is required.</small> -->
                   </span>
                 </div>
+
+                <div class="col-12 col-md-4 mt-5" >
+                  <span class="p-float-label w-100">
+              
+                    <input
+                    #show_question_count="ngModel"
+                    type="number"
+                    id="show_question_count"
+                    class="form-control"
+                    pInputText
+                    required
+                    [max] = "show_question_count_max"
+                    [min] = "show_question_count_min"
+                    [(ngModel)]="exam_form.show_question_count"
+                    [ngClass]="{'ng-dirty': (show_question_count.invalid && submitted) || (show_question_count.dirty && show_question_count.invalid)}"
+                  />
+                  <label for="show_question_count">Show no of question</label>
+                  <small *ngIf="(show_question_count.invalid && submitted) || (show_question_count.dirty && show_question_count.invalid)" class="p-error">Show no of question is required.</small>
+                </span>
+
               </div>
+
+
+              
+
+            </div>
           
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="p-grid p-nogutter p-justify-between">
                 <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
-                <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right" ></p-button>
+                <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right" [style]="{'margin-left': '0.5rem'}" ></p-button>
             </div>
         </ng-template>
     </p-card>
