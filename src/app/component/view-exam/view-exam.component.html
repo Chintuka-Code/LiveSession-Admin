@@ -6,10 +6,8 @@
           <h3 class="">Exam List</h3>
   
           <div class="d-flex align-items-center">
-            <button class="btn btn-primary">
-              <a
-                [routerLink]="['../create-exam']"
-              >
+            <button class="btn btn-primary" (click)="createExam()">
+              <a>
                 Create Exam <i class="fas fa-plus"></i>
               </a>
             </button>
@@ -28,10 +26,7 @@
             [paginator]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [globalFilterFields]="[
-              'exam_name',
-              'chapter_name',
-              'difficulty',
-              'number_of_question'
+              'exam_form.exam_name'
             ]"
           >
             <ng-template pTemplate="caption" class="w-100">
@@ -56,10 +51,10 @@
             <ng-template pTemplate="header">
               <tr>
                 <th>Name</th>
-                <!-- <th>Chapter Name</th>
-                <th>Difficulty</th>
-                <th>Number of Question</th>
-                <th>CreatedAt</th> -->
+                <th>Exam Start Date</th>
+                <th>Exam End Date</th>
+                <th>Exam Start Time</th>
+                <th>Exam End Time</th>
                 <th>Action</th>
               </tr>
             </ng-template>
@@ -68,10 +63,11 @@
                 <td>
                   {{ exam.exam_form.exam_name }}
                 </td>
-                <!-- <td>{{ question_bank.chapter_name }}</td>
-                <td>{{ question_bank.difficulty }}</td>
-                <td>{{ question_bank.number_of_question }}</td>
-                <td>{{ question_bank.createdAt | date: "medium" }}</td> -->
+                <td>{{ exam.publish.start_date | date }}</td>
+                <td>{{ exam.publish.end_date | date }}</td>
+                <td>{{ exam.publish.start_time | date:'h:mm a z' }}</td>
+                <td>{{ exam.publish.end_time | date:'h:mm a z' }}</td>
+             
                 <td class="position-relative">
                   <ng-container *ngIf="!question_bank_type_disabled; else enable">
                     <button

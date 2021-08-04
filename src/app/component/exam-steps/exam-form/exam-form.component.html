@@ -80,6 +80,10 @@
                   <label for="show_correct_answer">Display correct answer</label>
               </div>
               <div class="p-field-checkbox">
+                  <p-checkbox [(ngModel)]="exam_form.question_random"  [binary]="true" inputId="question_random"></p-checkbox>
+                  <label for="question_random">Is question random</label>
+              </div>
+              <div class="p-field-checkbox">
                   <p-checkbox [(ngModel)]="exam_form.certificate_issue"  [binary]="true" inputId="certificate_issue"></p-checkbox>
                   <label for="certificate_issue">Dispaly certificate issue</label>
               </div>

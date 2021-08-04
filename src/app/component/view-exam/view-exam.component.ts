@@ -105,14 +105,6 @@ export class ViewExamComponent implements OnInit {
       case 'disabled':
         this.disabled_exam();
         break;
-      case 'add-question':
-        // this.router.navigate(['/main/create-question'], {
-        //   queryParams: {
-        //     question_bank_id: question_bank._id,
-        //     question_bank_name: question_bank.question_bank_name,
-        //   },
-        // });
-        break;
       default:
         console.log('');
     }
@@ -162,12 +154,13 @@ export class ViewExamComponent implements OnInit {
     });
 
     this.items[0].items.push({
-      label: 'Add Question',
-      icon: 'pi pi-user-plus',
+      label: 'Publish',
+      icon: 'pi pi-globe',
       command: () => {
-        this.menu_type = 'add-question';
+        this.menu_type = 'publish';
       },
     });
+
   }
 
 
@@ -178,6 +171,20 @@ export class ViewExamComponent implements OnInit {
   disabled_exam(){
     console.log('desable exam');
     
+  }
+
+
+  createExam(){
+    this.examService.examDetails = {
+      exam_form: {},
+      instruction: '',
+      access_setting: {},
+      security_settings: {},
+      questions:[],
+      publish:{},
+      selected_question:[]
+    };
+    this.router.navigate(['/main/create-exam']);
   }
 
 }

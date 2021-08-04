@@ -14,6 +14,7 @@ export class PublishComponent implements OnInit {
   publish:{}
   spinner: boolean = false;
   is_exam_id: boolean =false;
+  sloat_end_time: Date;
   constructor(
     private examService: ExamService,
     private router: Router
@@ -106,6 +107,37 @@ export class PublishComponent implements OnInit {
         }
       );
     }
+  }
+
+  onStartTimeSelect(value){
+
+    // console.log(this.examService.examDetails.exam_form['exam_duration']);
+
+    // let hour = new Date(value).getHours();
+    // let min = new Date(value).getMinutes();
+
+    // if(this.examService.examDetails.exam_form['exam_duration']){
+    //   let duration = this.examService.examDetails.exam_form['exam_duration'];
+    //   console.log(duration);
+    //   console.log(typeof value);
+
+     
+    // }
+    
+    let duration = 30;
+    console.log(value);
+    
+    this.sloat_end_time = value;
+    console.log(this.sloat_end_time);
+
+    let addTime = this.sloat_end_time.getMinutes() + 30;
+
+    // this.sloat_end_time.setMinutes(addTime);
+    // this.publish['slot_end_time'] = this.sloat_end_time.setMinutes(this.sloat_end_time.getMinutes()+2);
+    // console.log(this.publish['slot_end_time']);
+
+    this.publish['slot_end_time'] = value 
+    
   }
 
 }
