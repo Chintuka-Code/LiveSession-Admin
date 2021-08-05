@@ -17,6 +17,7 @@
                 id="max_attempt"
                 class="form-control"
                 pInputText
+                [min] = "1"
                 required
                 [(ngModel)]="access_setting.max_attempt"
                 [ngClass]="{'ng-dirty': (max_attempt.invalid && submitted) || (max_attempt.dirty && max_attempt.invalid)}"

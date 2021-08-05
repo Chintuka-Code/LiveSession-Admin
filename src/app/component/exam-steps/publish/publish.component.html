@@ -110,11 +110,11 @@
                   
                     <p-calendar
                         [timeOnly]="true"
-                        [disabled]="true"
                         inputId="slot_end_time"
                         [style]="{ minWidth: '100%' }"
                         hourFormat="12"
                         [(ngModel)]="publish.slot_end_time"
+                        [minDate]="addedTime"
                     ></p-calendar>
                     <label for="slot_end_time">Slot end Time</label> 
                   </span>
