@@ -54,10 +54,10 @@ export class LiveSessionMultiComponent implements OnInit {
       );
       this.sound.nativeElement.pause();
       this.sound.nativeElement.currentTime = 0;
-      if (res.sender_type !== 'admin' && index > -1) {
+      if (res.message.sender_type !== 'admin' && index > -1) {
         this.sound.nativeElement.play();
       }
-      console.log(this.slots[index]);
+
       // if chat is in slots then push message
       if (index > -1) {
         const check = this.slots[index].message.findIndex(
