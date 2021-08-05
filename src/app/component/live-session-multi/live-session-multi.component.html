@@ -153,73 +153,81 @@
 
                   <div class="post-comments d-flex flex-column">
                     <ng-container *ngIf="stu.message">
-                      <div
-                        class="post-comm"
-                        *ngFor="let message of stu.message"
-                        [ngClass]="
-                          message.sender_type === 'student'
-                            ? 'align-self-start'
-                            : 'align-self-end'
-                        "
-                      >
-                        <img
-                          src="../../assets/images/avatars/profile-image-2.png"
-                          class="comment-img"
-                          alt=""
-                        />
-                        <div class="comment-container pb-2">
-                          <span class="comment-author">
-                            {{ message.sender_name }}
-                            <small
-                              class="comment-date"
-                              *ngIf="message.created_at"
-                            >
-                              {{
-                                message.created_at | amDateFormat: "hh:mmA"
-                              }}</small
-                            >
-                          </span>
-                        </div>
-
-                        <ng-container *ngIf="message.text_message">
-                          <p-divider></p-divider>
-                          <span
-                            class="comment-text"
-                            [innerHTML]="message.text_message"
-                          >
-                          </span>
-                        </ng-container>
-
+                      <ng-container *ngFor="let ch of stu.message">
+                        <p-divider align="center">
+                          <div class="p-d-inline-flex p-ai-center">
+                            <i class="pi pi-calendar p-mr-2"></i>
+                            <b> {{ ch.date | amDateFormat: "LL" }}</b>
+                          </div>
+                        </p-divider>
                         <div
-                          class="attachment"
-                          *ngIf="message.attachment?.length > 0"
+                          class="post-comm"
+                          *ngFor="let message of ch.message"
+                          [ngClass]="
+                            message.sender_type === 'student'
+                              ? 'align-self-start'
+                              : 'align-self-end'
+                          "
                         >
-                          <p-divider></p-divider>
-                          <small>Attachments</small>
-                          <ul
-                            class="d-flex flex-wrap"
-                            style="list-style: none; margin: 0; padding: 0"
-                          >
-                            <li
-                              class="mr-2"
-                              *ngFor="
-                                let file of message.attachment;
-                                index as j
-                              "
-                            >
-                              <a
-                                [href]="file"
-                                target="_blank"
-                                [ngClass]="{
-                                  'text-white':
-                                    message.sender_type === 'student'
-                                }"
-                                >file{{ j }}</a
+                          <img
+                            src="../../assets/images/avatars/profile-image-2.png"
+                            class="comment-img"
+                            alt=""
+                          />
+                          <div class="comment-container pb-2">
+                            <span class="comment-author">
+                              {{ message.sender_name }}
+                              <small
+                                class="comment-date"
+                                *ngIf="message.created_at"
                               >
-                            </li>
-                          </ul>
+                                {{
+                                  message.created_at | amDateFormat: "hh:mmA"
+                                }}</small
+                              >
+                            </span>
+                          </div>
+
+                          <ng-container *ngIf="message.text_message">
+                            <p-divider></p-divider>
+                            <span
+                              class="comment-text"
+                              [innerHTML]="message.text_message"
+                            >
+                            </span>
+                          </ng-container>
+
+                          <div
+                            class="attachment"
+                            *ngIf="message.attachment?.length > 0"
+                          >
+                            <p-divider></p-divider>
+                            <small>Attachments</small>
+                            <ul
+                              class="d-flex flex-wrap"
+                              style="list-style: none; margin: 0; padding: 0"
+                            >
+                              <li
+                                class="mr-2"
+                                *ngFor="
+                                  let file of message.attachment;
+                                  index as j
+                                "
+                              >
+                                <a
+                                  [href]="file"
+                                  target="_blank"
+                                  [ngClass]="{
+                                    'text-white':
+                                      message.sender_type === 'student'
+                                  }"
+                                  >file{{ j }}</a
+                                >
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
+                      </ng-container>
                     </ng-container>
                   </div>
                 </div>

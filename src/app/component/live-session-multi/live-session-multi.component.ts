@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
+import { Detect_URL } from 'src/app/utilities/detect_url';
 
 @Component({
   selector: 'app-live-session-multi',
@@ -56,11 +57,24 @@ export class LiveSessionMultiComponent implements OnInit {
       if (res.sender_type !== 'admin' && index > -1) {
         this.sound.nativeElement.play();
       }
-
+      console.log(this.slots[index]);
       // if chat is in slots then push message
       if (index > -1) {
-        this.slots[index].message.push(res.message);
-        this.slots[index].message_sending = false;
+        const check = this.slots[index].message.findIndex(
+          (ch) => ch.date == res.message.created_at.split('T')[0]
+        );
+
+        if (check > -1) {
+          this.slots[index].message[check].message.push(res.message);
+
+          this.slots[index].message_sending = false;
+        } else {
+          this.slots[index].message.push({
+            date: res.message.created_at.split('T')[0],
+            message: [res.message],
+          });
+        }
+
         setTimeout(() => {
           this.scroll_chat_container(index);
         }, 20);
@@ -205,6 +219,26 @@ export class LiveSessionMultiComponent implements OnInit {
     }
   }
 
+  group_by_date(data) {
+    const groups = data.reduce((groups, game) => {
+      const date = game.created_at.split('T')[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(game);
+      return groups;
+    }, {});
+
+    // Edit: to add it in the array format instead
+    const groupArrays = Object.keys(groups).map((date) => {
+      return {
+        date,
+        message: groups[date],
+      };
+    });
+    return groupArrays;
+  }
+
   // get selected students chats
   get_selected_student_chat(student) {
     this.spinner = true;
@@ -217,9 +251,10 @@ export class LiveSessionMultiComponent implements OnInit {
     this.chat_service.get_selected_studentChat(student._id).subscribe(
       (res: any) => {
         const response = res.data;
+
         this.slots.push({
           chat: student,
-          message: response.message,
+          message: this.group_by_date(response.message),
           files: [],
           message_sending: false,
         });
@@ -288,8 +323,10 @@ export class LiveSessionMultiComponent implements OnInit {
   }
 
   async send_message(textarea, index) {
+    const html = Detect_URL(textarea.value);
+
     const message_obj = {
-      text_message: textarea.value,
+      text_message: html,
       sme_id: localStorage.getItem('uid'),
       sender_name: this.user.name,
       sender_type: 'admin',
