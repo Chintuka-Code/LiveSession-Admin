@@ -65,7 +65,9 @@
     <li
       routerLinkActive="active-page"
       *ngIf="
-        user.permissions.includes('LS00') || user.permissions.includes('TM11')
+        user.permissions.includes('LS00') ||
+        user.permissions.includes('TM11') ||
+        user.permissions.includes('LSMV11')
       "
     >
       <a href="javascript:void(0)" (click)="accordion_list($event)"
@@ -92,7 +94,10 @@
           >
         </li>
 
-        <li routerLinkActive="active-page">
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('LSMV11')"
+        >
           <a [routerLink]="['manager-view']" (click)="updateAside()"
             ><i class="fas fa-user-shield px-3"></i> Manager View</a
           >

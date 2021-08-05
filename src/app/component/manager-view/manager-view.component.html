@@ -6,20 +6,21 @@
         <div class="card-body p-0 p-2">
           <div class="row align-items-center">
             <!-- batch area -->
-            <div class="col-7">
+            <div class="col-12">
               <p-dropdown
-                [options]="batch"
+                [options]="batches"
                 placeholder="Select a Batch"
                 optionLabel="batch_name"
+                optionValue="_id"
                 [style]="{ minWidth: '100%', 'border-radius': '10px' }"
-                [(ngModel)]="selected_batch"
                 display="chip"
+                [(ngModel)]="selected_batch"
                 (onChange)="get_all_student_chat()"
               >
               </p-dropdown>
             </div>
 
-            <div class="col-5">
+            <!-- <div class="col-5">
               <button
                 type="button"
                 class="btn btn-danger"
@@ -28,7 +29,7 @@
               >
                 End All Chat
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -46,14 +47,29 @@
                 >
                   <a class="javascript:void(0)">
                     <div class="email-list-item">
-                      <div class="email-author">
-                        <img
-                          src="../../assets/images/avatars/profile-image-1.png"
-                          alt=""
-                        />
-                        <span class="author-name">
-                          {{ student.student_name }}
-                        </span>
+                      <div
+                        class="email-author"
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                        "
+                      >
+                        <div class="name">
+                          <img
+                            src="../../assets/images/avatars/profile-image-1.png"
+                            alt=""
+                          />
+                          <span class="author-name">
+                            {{ student.student_name }}
+                            <small
+                              class="text-danger time"
+                              *ngIf="student.last_message"
+                            >
+                              {{ last_message | amTimeAgo }}
+                            </small>
+                          </span>
+                        </div>
                         <span
                           class="email-date"
                           *ngIf="student.admin_unread_count > 0"
@@ -95,58 +111,12 @@
               <h3 class="h3" *ngIf="selected_student">
                 {{ selected_student.student_name }}
               </h3>
-              <div
-                class="control d-flex"
-                *ngIf="selected_student && selected_student.sme_id == admin_id"
-              >
-                <div class="batch_list">
-                  <p-dropdown
-                    #transfer_admin_id
-                    [options]="transfer_admin"
-                    placeholder="Transfer Chat"
-                    (onChange)="transfer_chat(transfer_admin_id)"
-                    optionLabel="name"
-                    optionValue="_id"
-                    [style]="{ minWidth: '100%', 'border-radius': '10px' }"
-                  >
-                    <ng-template let-group pTemplate="group">
-                      <div class="p-d-flex p-ai-center">
-                        <span>{{ group.label }}</span>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
-                </div>
-                <div class="control">
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    (click)="end_chat()"
-                  >
-                    End Chat
-                  </button>
-                </div>
-              </div>
             </div>
 
             <div class="chat-body px-2" id="chat-body">
-              <div class="d-flex">
-                <button
-                  pButton
-                  pRipple
-                  pTooltip="Load more"
-                  type="button"
-                  icon="pi pi-cloud-download"
-                  class="p-button-rounded p-button-outlined m-auto"
-                  [disabled]="!selected_student_chat_message"
-                  (click)="load_more()"
-                ></button>
-              </div>
-
               <div class="post-comments d-flex flex-column">
-                <ng-container *ngIf="selected_student_chat_message">
-                  <ng-container
-                    *ngFor="let ch of selected_student_chat_message"
-                  >
+                <ng-container *ngIf="student_message">
+                  <ng-container *ngFor="let ch of student_message">
                     <p-divider align="center">
                       <div class="p-d-inline-flex p-ai-center">
                         <i class="pi pi-calendar p-mr-2"></i>
@@ -218,74 +188,6 @@
                     </div>
                   </ng-container>
                 </ng-container>
-              </div>
-            </div>
-
-            <!-- chat form -->
-            <div class="">
-              <ng-container *ngIf="selected_student.sme_id; else startchat">
-                <div class="col-12 mt-3 mt-md-4">
-                  <div>
-                    <quill-editor
-                      [styles]="{ 'min-height': '100px' }"
-                      [modules]="modules"
-                      [(ngModel)]="text"
-                    >
-                    </quill-editor>
-                  </div>
-                </div>
-
-                <div class="d-flex align-items-center mt-3">
-                  <div class="file">
-                    <p class="p-0 m-0">Attachment</p>
-                    <input
-                      type="file"
-                      multiple
-                      (change)="attchment($event)"
-                      name="file"
-                      id="file"
-                    />
-                    <label for="file" title="select files">
-                      <span><i class="fas fa-paperclip"></i></span>
-                      <span *ngIf="files.length > 0"> {{ files.length }} </span>
-                    </label>
-                  </div>
-
-                  <div class="button ml-3" style="margin: 2rem 0 0rem 3rem">
-                    <button
-                      *ngIf="!message_sending; else wait"
-                      class="btn btn-primary"
-                      [disabled]="!text && files.length == 0"
-                      (click)="send_message(textarea)"
-                    >
-                      Send
-                    </button>
-                    <ng-template #wait>
-                      <button
-                        pButton
-                        pRipple
-                        type="button"
-                        icon="pi pi-spin pi-spinner"
-                        class="p-button-rounded"
-                        disabled="true"
-                      ></button>
-                    </ng-template>
-                  </div>
-                </div>
-              </ng-container>
-
-              <div class="row p-0">
-                <ng-template #startchat>
-                  <div class="col-12">
-                    <button
-                      class="btn btn-success w-100"
-                      [disabled]="!selected_student"
-                      (click)="assign_chat_to_admin()"
-                    >
-                      Start Chat
-                    </button>
-                  </div>
-                </ng-template>
               </div>
             </div>
           </ng-container>
