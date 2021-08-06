@@ -3,20 +3,53 @@
     <div class="header">
       <h3 class="">Create Question</h3>
 
-      <div class="d-flex align-items-center">
-        <button
-          class="btn btn-primary mr-3"
-          (click)="new_created = !new_created"
-        >
-          <a>
-            <span *ngIf="new_created; else new_create"
-              >Use Existing Question <i class="fas fa-plus"></i
-            ></span>
-            <ng-template #new_create>
-              Create New <i class="fas fa-plus"></i>
-            </ng-template>
-          </a>
-        </button>
+      <div class="d-flex align-items-center" [ngSwitch]="creation_type">
+        <ng-container *ngSwitchCase="'new_created'">
+          <button
+            class="btn btn-primary mr-3"
+            (click)="creation_type = 'from_old_question'"
+          >
+            <a> Use Existing Question </a>
+          </button>
+          <button
+            class="btn btn-primary mr-3"
+            (click)="creation_type = 'import_csv'"
+          >
+            <a> Import from CSV </a>
+          </button>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'import_csv'">
+          <button
+            class="btn btn-primary mr-3"
+            (click)="creation_type = 'from_old_question'"
+          >
+            <a> Use Existing Question </a>
+          </button>
+
+          <button
+            class="btn btn-primary mr-3"
+            (click)="creation_type = 'new_created'"
+          >
+            <a> New Created </a>
+          </button>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'from_old_question'">
+          <button
+            class="btn btn-primary mr-3"
+            (click)="creation_type = 'new_created'"
+          >
+            <a> New Created </a>
+          </button>
+
+          <button
+            class="btn btn-primary mr-3"
+            (click)="creation_type = 'import_csv'"
+          >
+            <a> Import from CSV </a>
+          </button>
+        </ng-container>
 
         <button class="btn btn-primary">
           <a [routerLink]="['../view-question-bank']">
@@ -26,240 +59,253 @@
       </div>
     </div>
     <div class="container-fluid">
-      <div *ngIf="new_created; else existing">
-        <div class="container-fluid mt-3">
-          <form [formGroup]="myForm" (ngSubmit)="create_company_fun()">
-            <ng-container formArrayName="questions">
-              <div
-                class="row"
-                *ngFor="let comp of questionFormArr.controls; let i = index"
-              >
-                <p-divider align="center" class="mt-3">
-                  <div class="p-d-inline-flex p-ai-center">
-                    <i class="pi pi-question p-mr-2"></i>
-                    <b>Question {{ i + 1 }} </b>
-                  </div>
-                </p-divider>
-                <ng-container [formGroupName]="i">
-                  <div class="col-12 col-md-9 mt-5">
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="question_name"
-                      />
-                      <label for="inputtext">Question Name</label>
-                    </span>
-                  </div>
-                  <div class="col-12 col-md-3 mt-5 d-flex">
-                    <div>
-                      <button
-                        pButton
-                        pRipple
-                        type="button"
-                        icon="pi pi-plus"
-                        (click)="addNewQuestion()"
-                        class="p-button-rounded p-button-success"
-                      ></button>
+      <div [ngSwitch]="creation_type">
+        <ng-container *ngSwitchCase="'new_created'">
+          <div class="container-fluid mt-3">
+            <form [formGroup]="myForm" (ngSubmit)="create_company_fun()">
+              <ng-container formArrayName="questions">
+                <div
+                  class="row"
+                  *ngFor="let comp of questionFormArr.controls; let i = index"
+                >
+                  <p-divider align="center" class="mt-3">
+                    <div class="p-d-inline-flex p-ai-center">
+                      <i class="pi pi-question p-mr-2"></i>
+                      <b>Question {{ i + 1 }} </b>
+                    </div>
+                  </p-divider>
+                  <ng-container [formGroupName]="i">
+                    <div class="col-12 col-md-9 mt-5">
+                      <span class="p-float-label w-100">
+                        <input
+                          type="text"
+                          id="inputtext"
+                          class="form-control"
+                          pInputText
+                          formControlName="question_name"
+                        />
+                        <label for="inputtext">Question Name</label>
+                      </span>
+                    </div>
+                    <div class="col-12 col-md-3 mt-5 d-flex">
+                      <div>
+                        <button
+                          pButton
+                          pRipple
+                          type="button"
+                          icon="pi pi-plus"
+                          (click)="addNewQuestion()"
+                          class="p-button-rounded p-button-success"
+                        ></button>
+                      </div>
+
+                      <div style="margin-left: 1rem">
+                        <button
+                          pButton
+                          pRipple
+                          type="button"
+                          icon="pi pi-minus"
+                          (click)="deleteQuestion(i)"
+                          class="p-button-rounded p-button-danger"
+                        ></button>
+                      </div>
                     </div>
 
-                    <div style="margin-left: 1rem">
-                      <button
-                        pButton
-                        pRipple
-                        type="button"
-                        icon="pi pi-minus"
-                        (click)="deleteQuestion(i)"
-                        class="p-button-rounded p-button-danger"
-                      ></button>
+                    <div class="col-12 col-md-4 mt-5">
+                      <span class="p-float-label w-100">
+                        <input
+                          type="text"
+                          id="inputtext"
+                          class="form-control"
+                          pInputText
+                          formControlName="point"
+                        />
+                        <label for="inputtext">Points</label>
+                      </span>
                     </div>
-                  </div>
+                    <div class="col-12 col-md-4 mt-5">
+                      <span class="p-float-label w-100">
+                        <p-dropdown
+                          inputId="dropdown"
+                          [autoDisplayFirst]="false"
+                          [options]="type"
+                          [style]="{ minWidth: '100%' }"
+                          optionLabel="name"
+                          optionValue="type"
+                          formControlName="type"
+                          (onChange)="type_selected(comp, i)"
+                        ></p-dropdown>
+                        <label for="dropdown">Type</label>
+                      </span>
+                    </div>
+                    <div
+                      class="col-12 col-md-4 mt-5"
+                      *ngIf="comp.get('type').value == 'multipleInput'"
+                    >
+                      <span class="p-float-label w-100">
+                        <input
+                          type="text"
+                          id="inputtext"
+                          class="form-control"
+                          pInputText
+                          formControlName="no_of_answer"
+                        />
+                        <label for="inputtext">Number of Answer</label>
+                      </span>
+                    </div>
 
-                  <div class="col-12 col-md-4 mt-5">
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="point"
-                      />
-                      <label for="inputtext">Points</label>
-                    </span>
-                  </div>
-                  <div class="col-12 col-md-4 mt-5">
-                    <span class="p-float-label w-100">
-                      <p-dropdown
-                        inputId="dropdown"
-                        [autoDisplayFirst]="false"
-                        [options]="type"
-                        [style]="{ minWidth: '100%' }"
-                        optionLabel="name"
-                        optionValue="type"
-                        formControlName="type"
-                        (onChange)="type_selected(comp, i)"
-                      ></p-dropdown>
-                      <label for="dropdown">Type</label>
-                    </span>
-                  </div>
-                  <div
-                    class="col-12 col-md-4 mt-5"
-                    *ngIf="comp.get('type').value == 'multipleInput'"
-                  >
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="no_of_answer"
-                      />
-                      <label for="inputtext">Number of Answer</label>
-                    </span>
-                  </div>
-
-                  <ng-container
-                    *ngIf="
-                      comp.get('type').value == 'radio' ||
-                      comp.get('type').value == 'checkbox'
-                    "
-                  >
-                    <div class="col-12" formArrayName="option">
-                      <div
-                        class="row"
-                        *ngFor="
-                          let project of comp.get('option')['controls'];
-                          let j = index
-                        "
-                      >
-                        <div class="col-12 col-md-9 mt-5">
-                          <span class="p-float-label w-100">
-                            <input
-                              type="text"
-                              id="inputtext"
-                              class="form-control"
-                              pInputText
-                              [formControlName]="j"
-                            />
-                            <label for="inputtext">Option {{ j + 1 }} </label>
-                          </span>
-                        </div>
-                        <div class="col-12 col-md-3 mt-5 d-flex">
-                          <div>
-                            <button
-                              pButton
-                              pRipple
-                              type="button"
-                              icon="pi pi-plus"
-                              (click)="addNewOption(comp.get('option'))"
-                              class="p-button-rounded p-button-success"
-                            ></button>
+                    <ng-container
+                      *ngIf="
+                        comp.get('type').value == 'radio' ||
+                        comp.get('type').value == 'checkbox'
+                      "
+                    >
+                      <div class="col-12" formArrayName="option">
+                        <div
+                          class="row"
+                          *ngFor="
+                            let project of comp.get('option')['controls'];
+                            let j = index
+                          "
+                        >
+                          <div class="col-12 col-md-9 mt-5">
+                            <span class="p-float-label w-100">
+                              <input
+                                type="text"
+                                id="inputtext"
+                                class="form-control"
+                                pInputText
+                                [formControlName]="j"
+                              />
+                              <label for="inputtext">Option {{ j + 1 }} </label>
+                            </span>
                           </div>
+                          <div class="col-12 col-md-3 mt-5 d-flex">
+                            <div>
+                              <button
+                                pButton
+                                pRipple
+                                type="button"
+                                icon="pi pi-plus"
+                                (click)="addNewOption(comp.get('option'))"
+                                class="p-button-rounded p-button-success"
+                              ></button>
+                            </div>
 
-                          <div style="margin-left: 1rem">
-                            <button
-                              pButton
-                              pRipple
-                              type="button"
-                              icon="pi pi-minus"
-                              (click)="deleteOption(comp.get('option'), j)"
-                              class="p-button-rounded p-button-danger"
-                            ></button>
+                            <div style="margin-left: 1rem">
+                              <button
+                                pButton
+                                pRipple
+                                type="button"
+                                icon="pi pi-minus"
+                                (click)="deleteOption(comp.get('option'), j)"
+                                class="p-button-rounded p-button-danger"
+                              ></button>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </ng-container>
+
+                    <div
+                      class="col-12 col-md-9 mt-5"
+                      *ngIf="comp.get('type').value !== 'multipleInput'"
+                    >
+                      <span class="p-float-label w-100">
+                        <input
+                          type="text"
+                          id="inputtext"
+                          class="form-control"
+                          pInputText
+                          formControlName="right_answer"
+                        />
+                        <label for="inputtext">Right Answer</label>
+                      </span>
                     </div>
-                  </ng-container>
 
-                  <div
-                    class="col-12 col-md-9 mt-5"
-                    *ngIf="comp.get('type').value !== 'multipleInput'"
-                  >
-                    <span class="p-float-label w-100">
-                      <input
-                        type="text"
-                        id="inputtext"
-                        class="form-control"
-                        pInputText
-                        formControlName="right_answer"
-                      />
-                      <label for="inputtext">Right Answer</label>
-                    </span>
-                  </div>
-
-                  <ng-container
-                    *ngIf="comp.get('type').value == 'multipleInput'"
-                  >
-                    <div class="col-12" formArrayName="multiple_answer">
-                      <div
-                        class="row"
-                        *ngFor="
-                          let project of comp.get('multiple_answer')[
-                            'controls'
-                          ];
-                          let j = index
-                        "
-                      >
-                        <div class="col-12 col-md-9 mt-5">
-                          <span class="p-float-label w-100">
-                            <input
-                              type="text"
-                              id="inputtext"
-                              class="form-control"
-                              pInputText
-                              [formControlName]="j"
-                            />
-                            <label for="inputtext">Answer {{ j + 1 }} </label>
-                          </span>
-                        </div>
-                        <div class="col-12 col-md-3 mt-5 d-flex">
-                          <div>
-                            <button
-                              pButton
-                              pRipple
-                              type="button"
-                              icon="pi pi-plus"
-                              (click)="
-                                addNewAnswer(comp.get('multiple_answer'))
-                              "
-                              class="p-button-rounded p-button-success"
-                            ></button>
+                    <ng-container
+                      *ngIf="comp.get('type').value == 'multipleInput'"
+                    >
+                      <div class="col-12" formArrayName="multiple_answer">
+                        <div
+                          class="row"
+                          *ngFor="
+                            let project of comp.get('multiple_answer')[
+                              'controls'
+                            ];
+                            let j = index
+                          "
+                        >
+                          <div class="col-12 col-md-9 mt-5">
+                            <span class="p-float-label w-100">
+                              <input
+                                type="text"
+                                id="inputtext"
+                                class="form-control"
+                                pInputText
+                                [formControlName]="j"
+                              />
+                              <label for="inputtext">Answer {{ j + 1 }} </label>
+                            </span>
                           </div>
+                          <div class="col-12 col-md-3 mt-5 d-flex">
+                            <div>
+                              <button
+                                pButton
+                                pRipple
+                                type="button"
+                                icon="pi pi-plus"
+                                (click)="
+                                  addNewAnswer(comp.get('multiple_answer'))
+                                "
+                                class="p-button-rounded p-button-success"
+                              ></button>
+                            </div>
 
-                          <div style="margin-left: 1rem">
-                            <button
-                              pButton
-                              pRipple
-                              type="button"
-                              icon="pi pi-minus"
-                              (click)="
-                                deleteAnswer(comp.get('multiple_answer'), j)
-                              "
-                              class="p-button-rounded p-button-danger"
-                            ></button>
+                            <div style="margin-left: 1rem">
+                              <button
+                                pButton
+                                pRipple
+                                type="button"
+                                icon="pi pi-minus"
+                                (click)="
+                                  deleteAnswer(comp.get('multiple_answer'), j)
+                                "
+                                class="p-button-rounded p-button-danger"
+                              ></button>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </ng-container>
+
+                    <div class="col-12 col-md-3 mt-5">
+                      <button
+                        class="btn btn-primary"
+                        [disabled]="myForm.invalid"
+                      >
+                        Create
+                      </button>
                     </div>
                   </ng-container>
+                </div>
+              </ng-container>
+            </form>
+          </div>
+        </ng-container>
 
-                  <div class="col-12 col-md-3 mt-5">
-                    <button class="btn btn-primary" [disabled]="myForm.invalid">
-                      Create
-                    </button>
-                  </div>
-                </ng-container>
-              </div>
-            </ng-container>
-          </form>
+        <div *ngSwitchCase="'from_old_question'">
+          <app-add-from-existing-question></app-add-from-existing-question>
         </div>
+
+        <div *ngSwitchCase="'import_csv'">
+          <app-create-question-from-csv></app-create-question-from-csv>
+        </div>
+
+        <div *ngSwitchDefault>*</div>
       </div>
 
-      <ng-template #existing>
-        <app-add-from-existing-question></app-add-from-existing-question>
-      </ng-template>
+      <ng-template #existing> </ng-template>
     </div>
   </div>
 </div>
