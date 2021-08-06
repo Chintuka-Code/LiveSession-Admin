@@ -399,6 +399,10 @@ export class LiveSessionMultiComponent implements OnInit {
     this.live_session_chat_service.assign_chat_to_admin(data);
   }
 
+  close_chat(i) {
+    this.slots.splice(i, 1);
+  }
+
   ngOnInit(): void {
     this.get_admin_batch();
     this.get_all_admin();

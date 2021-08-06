@@ -123,7 +123,7 @@
                       </p-dropdown>
                     </div> -->
 
-                    <div class="control">
+                    <div class="control d-flex">
                       <button
                         pButton
                         pRipple
@@ -135,6 +135,19 @@
                         pTooltip="End Chat"
                         (click)="end_chat(stu, i)"
                       ></button>
+
+                      <div class="px-2">
+                        <button
+                          pButton
+                          pRipple
+                          type="button"
+                          icon="pi pi-times"
+                          class="p-button-rounded p-button-danger p-button-text"
+                          pTooltip="Close Chat"
+                          tooltipPosition="top"
+                          (click)="close_chat(i)"
+                        ></button>
+                      </div>
                     </div>
                   </div>
                 </div>
