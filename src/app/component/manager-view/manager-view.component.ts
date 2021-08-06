@@ -79,7 +79,7 @@ export class ManagerViewComponent implements OnInit {
           return stu;
         });
 
-        console.log(this.active_student_list);
+        // console.log(this.active_student_list);
         this.sorting(this.active_student_list);
       });
   }
@@ -187,5 +187,16 @@ export class ManagerViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_all_batch();
+  }
+
+  ngOnDestroy(): void {
+    this.live_session_chat_service.remove_listen();
+
+    if (this.selected_student) {
+      this.live_session_chat_service.leave({
+        room_id:
+          this.selected_student.student_id + this.selected_student.batch_id,
+      });
+    }
   }
 }
