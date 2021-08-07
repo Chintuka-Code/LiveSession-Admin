@@ -45,7 +45,19 @@
                   (click)="get_selected_student_chat(student)"
                   style="cursor: pointer"
                 >
-                  <a class="javascript:void(0)">
+                  <a
+                    class="javascript:void(0)"
+                    [ngClass]="[
+                      student.last_message
+                        ? student.notification >= 30 &&
+                          student.notification < 60
+                          ? 'bg-warning'
+                          : student.notification > 60
+                          ? 'chat'
+                          : ''
+                        : ''
+                    ]"
+                  >
                     <div class="email-list-item">
                       <div
                         class="email-author"

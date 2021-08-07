@@ -139,8 +139,6 @@ export class LiveSessionMultiComponent implements OnInit {
     this.interval = timer.subscribe(() => {
       this.active_student_list = Calculate_time(this.active_student_list);
     });
-
-    console.log(this.active_student_list);
   }
 
   filter_data() {
