@@ -108,14 +108,16 @@ export class ManagerViewComponent implements OnInit {
     this.spinner = true;
     this.selected_student = '';
     this.student_message = [];
-    this.chat_service.get_batch_chat(this.selected_batch).subscribe(
-      (res: any) => {
-        this.active_student_list = res.data;
-        this.sorting(this.active_student_list);
-        this.spinner = false;
-      },
-      (error) => this.error_handler(error)
-    );
+    this.chat_service
+      .get_batch_chat_manager_view(this.selected_batch)
+      .subscribe(
+        (res: any) => {
+          this.active_student_list = res.data;
+          this.sorting(this.active_student_list);
+          this.spinner = false;
+        },
+        (error) => this.error_handler(error)
+      );
   }
 
   get_selected_student_chat(student) {
