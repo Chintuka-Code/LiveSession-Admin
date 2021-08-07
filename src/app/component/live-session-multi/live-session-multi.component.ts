@@ -7,6 +7,9 @@ import { AttachmentService } from 'src/app/service/attachment.service';
 import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 import { Detect_URL } from 'src/app/utilities/detect_url';
+import { Subscription } from 'rxjs';
+import { Calculate_time } from 'src/app/utilities/calculate_color';
+import { interval } from 'rxjs/internal/observable/interval';
 
 @Component({
   selector: 'app-live-session-multi',
@@ -29,6 +32,7 @@ export class LiveSessionMultiComponent implements OnInit {
   temp_student: any;
   last_index: number;
   admin_id: string = localStorage.getItem('uid');
+  interval: Subscription;
 
   constructor(
     private chat_service: ChatService,
@@ -90,6 +94,7 @@ export class LiveSessionMultiComponent implements OnInit {
           if (stu._id === res.chat_id) {
             stu.admin_unread_count = res.admin_unread_count + 1;
             stu.updatedAt = new Date();
+            stu.last_message = res.last_message;
           } else {
             stu.admin_unread_count = stu.admin_unread_count;
           }
@@ -127,6 +132,15 @@ export class LiveSessionMultiComponent implements OnInit {
 
   sorting(data) {
     this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
+    this.active_student_list = Calculate_time(this.active_student_list);
+
+    const timer = interval(2000);
+
+    this.interval = timer.subscribe(() => {
+      this.active_student_list = Calculate_time(this.active_student_list);
+    });
+
+    console.log(this.active_student_list);
   }
 
   filter_data() {
@@ -410,5 +424,6 @@ export class LiveSessionMultiComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.live_session_chat_service.remove_listen();
+    this.interval ? this.interval.unsubscribe() : '';
   }
 }

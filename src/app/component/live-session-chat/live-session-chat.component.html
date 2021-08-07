@@ -42,17 +42,41 @@
                   *ngFor="let student of active_student_list"
                   (click)="get_selected_student_chat(student)"
                   style="cursor: pointer"
+                  [ngClass]="[
+                    student.last_message
+                      ? student.notification >= 30 && student.notification < 60
+                        ? 'bg-warning'
+                        : student.notification > 60
+                        ? 'bg-danger'
+                        : ''
+                      : ''
+                  ]"
                 >
                   <a class="javascript:void(0)">
                     <div class="email-list-item">
-                      <div class="email-author">
-                        <img
-                          src="../../assets/images/avatars/profile-image-1.png"
-                          alt=""
-                        />
-                        <span class="author-name">
-                          {{ student.student_name }}
-                        </span>
+                      <div
+                        class="email-author"
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                        "
+                      >
+                        <div class="name">
+                          <img
+                            src="../../assets/images/avatars/profile-image-1.png"
+                            alt=""
+                          />
+                          <span class="author-name">
+                            {{ student.student_name }}
+                            <small
+                              class="text-danger time"
+                              *ngIf="student.last_message"
+                            >
+                              {{ student.last_message | amTimeAgo }}
+                            </small>
+                          </span>
+                        </div>
                         <span
                           class="email-date"
                           *ngIf="student.admin_unread_count > 0"
