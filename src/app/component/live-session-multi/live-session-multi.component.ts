@@ -95,6 +95,7 @@ export class LiveSessionMultiComponent implements OnInit {
             stu.admin_unread_count = res.admin_unread_count + 1;
             stu.updatedAt = new Date();
             stu.last_message = res.last_message;
+            stu.is_todays_first = res.is_todays_first;
           } else {
             stu.admin_unread_count = stu.admin_unread_count;
           }
@@ -351,6 +352,7 @@ export class LiveSessionMultiComponent implements OnInit {
         room_id:
           this.slots[index].chat.student_id + this.slots[index].chat.batch_id,
         chat_id: this.slots[index].chat._id,
+        chat: this.slots[index].chat,
       };
       if (this.slots[index].files.length > 0) {
         this.slots[index].message_sending = true;

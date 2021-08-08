@@ -50,11 +50,10 @@
                       class="javascript:void(0)"
                       [ngClass]="[
                         student.last_message
-                          ? student.notification >= 30 &&
-                            student.notification < 60
+                          ? student.today_first && student.notification > 30
+                            ? 'bg-danger'
+                            : !student.today_first && student.notification > 60
                             ? 'bg-warning'
-                            : student.notification > 60
-                            ? 'chat'
                             : ''
                           : ''
                       ]"

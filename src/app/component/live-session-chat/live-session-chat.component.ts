@@ -107,6 +107,7 @@ export class LiveSessionChatComponent implements OnInit {
             stu.admin_unread_count = res.admin_unread_count + 1;
             stu.updatedAt = new Date();
             stu.last_message = res.last_message;
+            stu.is_todays_first = res.is_todays_first;
           } else {
             stu.admin_unread_count = stu.admin_unread_count;
           }
@@ -169,9 +170,8 @@ export class LiveSessionChatComponent implements OnInit {
 
     this.interval = timer.subscribe(() => {
       this.active_student_list = Calculate_time(this.active_student_list);
+      // console.log(this.active_student_list);
     });
-
-    console.log(this.active_student_list);
   }
 
   group_by_date(data) {
@@ -322,6 +322,7 @@ export class LiveSessionChatComponent implements OnInit {
       room_id:
         this.selected_student.student_id + this.selected_student.batch_id,
       chat_id: this.selected_student._id,
+      chat: this.selected_student,
     };
     this.text = '';
     try {
