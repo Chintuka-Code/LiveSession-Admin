@@ -1,9 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { BatchService } from 'src/app/service/batch.service';
 import { ChatService } from 'src/app/service/chat.service';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
+import { Calculate_time } from 'src/app/utilities/calculate_color';
 import Swal from 'sweetalert2';
+import { interval } from 'rxjs/internal/observable/interval';
 
 @Component({
   selector: 'app-manager-view',
@@ -18,6 +21,7 @@ export class ManagerViewComponent implements OnInit {
   selected_student: any;
   student_message: any[] = [];
   @ViewChild('sound') sound: ElementRef;
+  interval: Subscription;
 
   constructor(
     private batch_service: BatchService,
@@ -79,7 +83,7 @@ export class ManagerViewComponent implements OnInit {
           return stu;
         });
 
-        console.log(this.active_student_list);
+        // console.log(this.active_student_list);
         this.sorting(this.active_student_list);
       });
   }
@@ -108,14 +112,16 @@ export class ManagerViewComponent implements OnInit {
     this.spinner = true;
     this.selected_student = '';
     this.student_message = [];
-    this.chat_service.get_batch_chat(this.selected_batch).subscribe(
-      (res: any) => {
-        this.active_student_list = res.data;
-        this.sorting(this.active_student_list);
-        this.spinner = false;
-      },
-      (error) => this.error_handler(error)
-    );
+    this.chat_service
+      .get_batch_chat_manager_view(this.selected_batch)
+      .subscribe(
+        (res: any) => {
+          this.active_student_list = res.data;
+          this.sorting(this.active_student_list);
+          this.spinner = false;
+        },
+        (error) => this.error_handler(error)
+      );
   }
 
   get_selected_student_chat(student) {
@@ -183,9 +189,29 @@ export class ManagerViewComponent implements OnInit {
 
   sorting(data) {
     this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
+    this.active_student_list = Calculate_time(this.active_student_list);
+
+    const timer = interval(2000);
+
+    this.interval = timer.subscribe(() => {
+      this.active_student_list = Calculate_time(this.active_student_list);
+    });
   }
 
   ngOnInit(): void {
     this.get_all_batch();
+  }
+
+  ngOnDestroy(): void {
+    this.live_session_chat_service.remove_listen();
+
+    if (this.selected_student) {
+      this.live_session_chat_service.leave({
+        room_id:
+          this.selected_student.student_id + this.selected_student.batch_id,
+      });
+    }
+
+    this.interval ? this.interval.unsubscribe() : '';
   }
 }

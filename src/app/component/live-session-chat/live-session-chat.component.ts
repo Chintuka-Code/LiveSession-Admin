@@ -10,6 +10,8 @@ import { LiveSessionChatService } from 'src/app/service/live-session-chat.servic
 import { QUILL_TOOLBAR_SETTING } from 'src/app/utilities/quill_setting';
 import 'quill-emoji/dist/quill-emoji.js';
 import { Detect_URL } from 'src/app/utilities/detect_url';
+import { Calculate_time } from 'src/app/utilities/calculate_color';
+import { interval, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -35,7 +37,7 @@ export class LiveSessionChatComponent implements OnInit {
   @ViewChild('sound') sound: ElementRef;
   modules = {};
   text: any;
-
+  interval: Subscription;
   slots: any[] = [];
 
   constructor(
@@ -104,6 +106,8 @@ export class LiveSessionChatComponent implements OnInit {
           if (stu._id === res.chat_id) {
             stu.admin_unread_count = res.admin_unread_count + 1;
             stu.updatedAt = new Date();
+            stu.last_message = res.last_message;
+            stu.is_todays_first = res.is_todays_first;
           } else {
             stu.admin_unread_count = stu.admin_unread_count;
           }
@@ -160,6 +164,14 @@ export class LiveSessionChatComponent implements OnInit {
 
   sorting(data) {
     this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
+    this.active_student_list = Calculate_time(this.active_student_list);
+
+    const timer = interval(2000);
+
+    this.interval = timer.subscribe(() => {
+      this.active_student_list = Calculate_time(this.active_student_list);
+      // console.log(this.active_student_list);
+    });
   }
 
   group_by_date(data) {
@@ -232,9 +244,6 @@ export class LiveSessionChatComponent implements OnInit {
     this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
       (res: any) => {
         this.active_student_list = res.data;
-
-        // console.log(this.active_student_list);
-
         this.sorting(this.active_student_list);
         this.spinner = false;
       },
@@ -313,6 +322,7 @@ export class LiveSessionChatComponent implements OnInit {
       room_id:
         this.selected_student.student_id + this.selected_student.batch_id,
       chat_id: this.selected_student._id,
+      chat: this.selected_student,
     };
     this.text = '';
     try {
@@ -425,12 +435,12 @@ export class LiveSessionChatComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.live_session_chat_service.remove_listen();
-
     if (this.selected_student) {
       this.live_session_chat_service.leave({
         room_id:
           this.selected_student.student_id + this.selected_student.batch_id,
       });
     }
+    this.interval ? this.interval.unsubscribe() : '';
   }
 }
