@@ -23,7 +23,7 @@
               <button
                 type="button"
                 class="btn btn-danger"
-                [disabled]="!end_all_chat_button"
+                [disabled]="!(active_student_list.length > 0)"
                 (click)="end_all_chat()"
               >
                 End All Chat

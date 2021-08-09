@@ -48,6 +48,7 @@ export class LiveSessionMultiComponent implements OnInit {
           stu.sme_id = res.sme_id;
         }
       });
+
       this.filter_data();
     });
 
@@ -328,9 +329,7 @@ export class LiveSessionMultiComponent implements OnInit {
 
   open_files(ch) {
     const files: NodeListOf<Element> = document.querySelectorAll('.files');
-
     this.last_index = ch;
-
     // @ts-ignore
     files[0].click();
   }
@@ -415,6 +414,39 @@ export class LiveSessionMultiComponent implements OnInit {
 
   close_chat(i) {
     this.slots.splice(i, 1);
+  }
+
+  end_all_chat() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to end all chats',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.spinner = true;
+
+        const data = this.active_student_list.filter(
+          (chat) => chat.sme_id === localStorage.getItem('uid')
+        );
+
+        if (data.length > 0) {
+          data.forEach((chat) => {
+            this.live_session_chat_service.leave({
+              room_id: chat.student_id + chat.batch_id,
+            });
+          });
+
+          this.live_session_chat_service.end_all_chat(data);
+        }
+
+        this.slots = [];
+        this.spinner = false;
+      }
+    });
   }
 
   ngOnInit(): void {
