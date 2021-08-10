@@ -82,7 +82,7 @@ export class LiveSessionChatComponent implements OnInit {
         }
 
         this.message_sending = false;
-        console.log(res.message);
+        // console.log(res.message);
       }
 
       // update admin read counter

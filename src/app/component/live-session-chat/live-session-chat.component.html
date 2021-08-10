@@ -49,7 +49,7 @@
                     [ngClass]="[
                       student.last_message
                         ? student.today_first && student.notification > 30
-                          ? 'bg-danger'
+                          ? 'bg-warning'
                           : !student.today_first && student.notification > 60
                           ? 'bg-warning'
                           : ''
