@@ -152,6 +152,7 @@ export class LiveSessionChatComponent implements OnInit {
     this.active_student_list = this.active_student_list.filter(
       (stu) => stu.sme_id === localStorage.getItem('uid') || stu.sme_id == null
     );
+
     if (this.selected_student.sme_id !== localStorage.getItem('uid')) {
       this.selected_student = '';
     }
@@ -426,7 +427,39 @@ export class LiveSessionChatComponent implements OnInit {
 
   load_more() {}
 
-  end_all_chat() {}
+  end_all_chat() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to end all chats',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.spinner = true;
+        this.selected_student_chat_message = [];
+
+        const data = this.active_student_list.filter(
+          (chat) => chat.sme_id === localStorage.getItem('uid')
+        );
+
+        if (data.length > 0) {
+          data.forEach((chat) => {
+            this.live_session_chat_service.leave({
+              room_id: chat.student_id + chat.batch_id,
+            });
+          });
+
+          this.live_session_chat_service.end_all_chat(data);
+        }
+
+        this.selected_student = '';
+        this.spinner = false;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.get_admin_batch();
