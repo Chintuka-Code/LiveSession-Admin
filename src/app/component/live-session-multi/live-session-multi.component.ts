@@ -7,6 +7,9 @@ import { AttachmentService } from 'src/app/service/attachment.service';
 import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 import { Detect_URL } from 'src/app/utilities/detect_url';
+import { Subscription } from 'rxjs';
+import { Calculate_time } from 'src/app/utilities/calculate_color';
+import { interval } from 'rxjs/internal/observable/interval';
 
 @Component({
   selector: 'app-live-session-multi',
@@ -29,6 +32,7 @@ export class LiveSessionMultiComponent implements OnInit {
   temp_student: any;
   last_index: number;
   admin_id: string = localStorage.getItem('uid');
+  interval: Subscription;
 
   constructor(
     private chat_service: ChatService,
@@ -44,6 +48,7 @@ export class LiveSessionMultiComponent implements OnInit {
           stu.sme_id = res.sme_id;
         }
       });
+
       this.filter_data();
     });
 
@@ -90,6 +95,8 @@ export class LiveSessionMultiComponent implements OnInit {
           if (stu._id === res.chat_id) {
             stu.admin_unread_count = res.admin_unread_count + 1;
             stu.updatedAt = new Date();
+            stu.last_message = res.last_message;
+            stu.is_todays_first = res.is_todays_first;
           } else {
             stu.admin_unread_count = stu.admin_unread_count;
           }
@@ -127,6 +134,13 @@ export class LiveSessionMultiComponent implements OnInit {
 
   sorting(data) {
     this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
+    this.active_student_list = Calculate_time(this.active_student_list);
+
+    const timer = interval(2000);
+
+    this.interval = timer.subscribe(() => {
+      this.active_student_list = Calculate_time(this.active_student_list);
+    });
   }
 
   filter_data() {
@@ -315,9 +329,7 @@ export class LiveSessionMultiComponent implements OnInit {
 
   open_files(ch) {
     const files: NodeListOf<Element> = document.querySelectorAll('.files');
-
     this.last_index = ch;
-
     // @ts-ignore
     files[0].click();
   }
@@ -339,6 +351,7 @@ export class LiveSessionMultiComponent implements OnInit {
         room_id:
           this.slots[index].chat.student_id + this.slots[index].chat.batch_id,
         chat_id: this.slots[index].chat._id,
+        chat: this.slots[index].chat,
       };
       if (this.slots[index].files.length > 0) {
         this.slots[index].message_sending = true;
@@ -403,6 +416,39 @@ export class LiveSessionMultiComponent implements OnInit {
     this.slots.splice(i, 1);
   }
 
+  end_all_chat() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to end all chats',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.spinner = true;
+
+        const data = this.active_student_list.filter(
+          (chat) => chat.sme_id === localStorage.getItem('uid')
+        );
+
+        if (data.length > 0) {
+          data.forEach((chat) => {
+            this.live_session_chat_service.leave({
+              room_id: chat.student_id + chat.batch_id,
+            });
+          });
+
+          this.live_session_chat_service.end_all_chat(data);
+        }
+
+        this.slots = [];
+        this.spinner = false;
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.get_admin_batch();
     this.get_all_admin();
@@ -410,5 +456,6 @@ export class LiveSessionMultiComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.live_session_chat_service.remove_listen();
+    this.interval ? this.interval.unsubscribe() : '';
   }
 }

@@ -15,6 +15,12 @@ export class ChatService {
     );
   }
 
+  get_batch_chat_manager_view(batch_id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/chat/get-chat-by-batchID/manager-view/${batch_id}`
+    );
+  }
+
   get_selected_studentChat(chat_id) {
     return this.http.get(
       `${environment.BASE_SERVER_URL}/chat/get-chat-by-id/${chat_id}`

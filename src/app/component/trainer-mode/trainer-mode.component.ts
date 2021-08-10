@@ -39,7 +39,7 @@ export class TrainerModeComponent implements OnInit {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
       console.log(res);
-      if (res.sender_type !== 'admin') {
+      if (res.message.sender_type !== 'admin') {
         this.all_chats.push(res.message);
       }
       this.message_sending = false;

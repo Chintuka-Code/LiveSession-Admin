@@ -22,7 +22,7 @@ export class CreateQuestionComponent implements OnInit {
   type: { name: String; type: String }[] = [];
   questionBank_name: String;
   questionBank_Id: String;
-  new_created: boolean = true;
+  creation_type: String = 'new_created';
 
   constructor(
     private activated_route: ActivatedRoute,

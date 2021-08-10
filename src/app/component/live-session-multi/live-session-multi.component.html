@@ -23,7 +23,7 @@
               <button
                 type="button"
                 class="btn btn-danger"
-                [disabled]="!end_all_chat_button"
+                [disabled]="!(active_student_list.length > 0)"
                 (click)="end_all_chat()"
               >
                 End All Chat
@@ -44,17 +44,44 @@
                     *ngIf="selected_batch._id === student.batch_id"
                     (click)="check_slot(student)"
                     style="cursor: pointer"
+                    class="mt-2"
                   >
-                    <a class="javascript:void(0)">
+                    <a
+                      class="javascript:void(0)"
+                      [ngClass]="[
+                        student.last_message
+                          ? student.today_first && student.notification > 30
+                            ? 'bg-danger'
+                            : !student.today_first && student.notification > 60
+                            ? 'bg-warning'
+                            : ''
+                          : ''
+                      ]"
+                    >
                       <div class="email-list-item">
-                        <div class="email-author">
-                          <img
-                            src="../../assets/images/avatars/profile-image-1.png"
-                            alt=""
-                          />
-                          <span class="author-name">
-                            {{ student.student_name }}
-                          </span>
+                        <div
+                          class="email-author"
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                          "
+                        >
+                          <div class="name">
+                            <img
+                              src="../../assets/images/avatars/profile-image-1.png"
+                              alt=""
+                            />
+                            <span class="author-name">
+                              {{ student.student_name }}
+                              <small
+                                class="text-danger time"
+                                *ngIf="student.last_message"
+                              >
+                                {{ student.last_message | amTimeAgo }}
+                              </small>
+                            </span>
+                          </div>
                           <span
                             class="email-date"
                             *ngIf="student.admin_unread_count > 0"
@@ -103,7 +130,7 @@
                   </h3>
                   <div
                     class="control d-flex"
-                    *ngIf="stu.chat.sme_id == admin_id"
+                    *ngIf="stu.chat.sme_id == admin_id; else close"
                   >
                     <!-- <div class="batch_list">
                       <p-dropdown
@@ -150,6 +177,19 @@
                       </div>
                     </div>
                   </div>
+
+                  <ng-template #close>
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-times"
+                      class="p-button-rounded p-button-danger p-button-text"
+                      pTooltip="Close Chat"
+                      tooltipPosition="top"
+                      (click)="close_chat(i)"
+                    ></button>
+                  </ng-template>
                 </div>
 
                 <div class="chat-body px-2">
