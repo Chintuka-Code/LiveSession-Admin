@@ -40,6 +40,8 @@ export class LiveSessionChatComponent implements OnInit {
   interval: Subscription;
   slots: any[] = [];
 
+  manual_check_available_chat: Subscription;
+
   constructor(
     private chat_service: ChatService,
     private router: Router,
@@ -242,6 +244,22 @@ export class LiveSessionChatComponent implements OnInit {
     this.spinner = true;
     this.selected_student = '';
     this.selected_student_chat_message = [];
+    this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
+      (res: any) => {
+        this.active_student_list = res.data;
+        this.sorting(this.active_student_list);
+        this.spinner = false;
+        const timer = interval(120000);
+
+        this.manual_check_available_chat = timer.subscribe(() =>
+          this.check_available_chat()
+        );
+      },
+      (error) => this.error_handler(error)
+    );
+  }
+
+  check_available_chat() {
     this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
       (res: any) => {
         this.active_student_list = res.data;
@@ -475,5 +493,8 @@ export class LiveSessionChatComponent implements OnInit {
       });
     }
     this.interval ? this.interval.unsubscribe() : '';
+    this.manual_check_available_chat
+      ? this.manual_check_available_chat.unsubscribe()
+      : '';
   }
 }

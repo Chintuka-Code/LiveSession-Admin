@@ -189,7 +189,9 @@ export class ManagerViewComponent implements OnInit {
   }
 
   sorting(data) {
-    this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
+    this.active_student_list.sort(
+      (a, b) => b.admin_unread_count - a.admin_unread_count
+    );
     this.active_student_list = Calculate_time(this.active_student_list);
 
     const timer = interval(2000);

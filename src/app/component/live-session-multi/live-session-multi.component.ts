@@ -33,6 +33,7 @@ export class LiveSessionMultiComponent implements OnInit {
   last_index: number;
   admin_id: string = localStorage.getItem('uid');
   interval: Subscription;
+  manual_check_available_chat: Subscription;
 
   constructor(
     private chat_service: ChatService,
@@ -198,6 +199,23 @@ export class LiveSessionMultiComponent implements OnInit {
     this.spinner = true;
 
     this.slots = [];
+    this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
+      (res: any) => {
+        this.active_student_list = res.data;
+        this.sorting(this.active_student_list);
+
+        const timer = interval(120000);
+
+        this.manual_check_available_chat = timer.subscribe(() =>
+          this.check_available_chat()
+        );
+        this.spinner = false;
+      },
+      (error) => this.error_handler(error)
+    );
+  }
+
+  check_available_chat() {
     this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
       (res: any) => {
         this.active_student_list = res.data;
@@ -441,6 +459,7 @@ export class LiveSessionMultiComponent implements OnInit {
           });
 
           this.live_session_chat_service.end_all_chat(data);
+          this.scroll_chat_container();
         }
 
         this.slots = [];

@@ -1,1 +1,16 @@
 <router-outlet></router-outlet>
+
+<div class="message" *ngIf="status === 'OFFLINE'">
+  <p-messages severity="info">
+    <ng-template pTemplate>
+      <!-- <img src="assets/showcase/images/primeng.svg" width="32" /> -->
+      <div class="p-ml-2">
+        Please check your internet connection or try again later
+      </div>
+    </ng-template>
+  </p-messages>
+
+  <div>
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</div>
