@@ -46,9 +46,7 @@
                 [ngClass]="{'ng-dirty': (access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)}"
                 >
               </p-cascadeSelect>
-
-              <!-- <label for="access_control">Who can attempt this exam</label> -->
-              <small *ngIf="(access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)" class="p-error">Is this exam timed is required.</small>
+              <small *ngIf="(access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)" class="p-error">This field is required.</small>
 
             </span>
           </div>
@@ -56,9 +54,20 @@
           <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'manual enter email'">
               <span class="p-float-label w-100">
           
-                <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" [(ngModel)]="access_setting.menual_student"></textarea>
+                <textarea 
+                #menual_student_arr="ngModel"
+                  [rows]="5" 
+                  [cols]="30" 
+                  pInputTextarea 
+                  autoResize="autoResize" 
+                  [(ngModel)]="access_setting.menual_student"
+                  required
+                  [ngClass]="{'ng-dirty': (menual_student_arr.invalid && submitted) || (menual_student_arr.dirty && menual_student_arr.invalid)}"
+                  >
+                </textarea>
 
-                <label for="access_control">Enter email</label>
+                <label for="access_control">Enter email</label><br>
+                <small *ngIf="(menual_student_arr.invalid && submitted) || (menual_student_arr.dirty && menual_student_arr.invalid)" class="p-error">Enter email is required.</small>
             </span>
 
           </div>
@@ -66,6 +75,7 @@
               <span class="p-float-label w-100">
                  
                   <p-multiSelect 
+                  #batchArr="ngModel"
                      display="chip"
                      inputId="batch"
                       [autoDisplayFirst]="false"
@@ -75,10 +85,12 @@
                       [style]="{ minWidth: '100%' }"
                       [(ngModel)]="access_setting.batch"
                       (onChange)="batchChange($event)"
+                      required
+                      [ngClass]="{'ng-dirty': (batchArr.invalid && submitted) || (batchArr.dirty && batchArr.invalid)}"
                      >
                     </p-multiSelect>
                     <label for="batch">Select batch</label>
-                    <!-- <small *ngIf="(batch.invalid && submitted) || (batch.dirty && batch.invalid)" class="p-error">Batch is required.</small> -->
+                    <small *ngIf="(batchArr.invalid && submitted) || (batchArr.dirty && batchArr.invalid)" class="p-error">Select batch is required.</small>
             </span>
 
           </div>
@@ -88,20 +100,26 @@
           <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'align with batch'">
             <span class="p-float-label w-100">
                 <p-multiSelect 
+                #studentArr="ngModel"
                 [options]="batchStudents" 
                 [group]="true" 
                 optionLabel="email"
                 optionValue="email"
                 [(ngModel)]="access_setting.student" 
-                defaultLabel="Select student" 
                 scrollHeight="250px" 
-                display="chip">
+                [autoDisplayFirst]="false"
+                display="chip"
+                required
+                      [ngClass]="{'ng-dirty': (studentArr.invalid && submitted) || (studentArr.dirty && studentArr.invalid)}"
+                >
                     <ng-template let-group pTemplate="group">
                         <div class="p-d-flex p-ai-center">
                             <span>{{group.batch.batch_name}}</span>
                         </div>
                     </ng-template>
                 </p-multiSelect>
+                <label for="batch">Select student</label>
+                <small *ngIf="(studentArr.invalid && submitted) || (studentArr.dirty && studentArr.invalid)" class="p-error">Select student is required.</small>
                
           </span>
 

@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class PublishComponent implements OnInit {
   batch_start_date
-  publish:{}
+  publish:any = {}
   spinner: boolean = false;
   is_exam_id: boolean =false;
   sloat_end_time: Date;
@@ -27,6 +27,13 @@ export class PublishComponent implements OnInit {
     this.publish = this.examService.examDetails.publish;
     if(this.examService.examDetails['_id']){
       this.is_exam_id = true;
+    }else{
+      let today:Date = new Date();
+       today.setHours(0,0,0,0);
+      this.publish.start_date = today;
+      this.publish.start_time = today;
+      this.publish.is_time_slot = "No";
+
     }
   }
 
@@ -48,8 +55,12 @@ export class PublishComponent implements OnInit {
     }
 
     this.spinner = true;
-  console.log(formData);
-
+    if(formData.publish['is_time_slot'] == "No"){
+      formData.publish['slot_start_time'] = null;
+      formData.publish['slot_end_time'] = null;
+    }
+    console.log(formData);
+ 
   if(this.is_exam_id){
     delete formData['createdAt']
     delete formData['updatedAt']

@@ -28,6 +28,7 @@ export class ExamFormComponent implements OnInit {
   }
 
   nextPage() {
+    this.submitted = true;
     this.examService.examDetails.exam_form = this.exam_form;
     if (this.exam_form.exam_name && this.exam_form.is_timed) {
       if (this.exam_form.is_timed == 'Yes' && !this.exam_form.exam_duration)
@@ -37,6 +38,6 @@ export class ExamFormComponent implements OnInit {
       return;
     }
 
-    this.submitted = true;
+    
   }
 }
