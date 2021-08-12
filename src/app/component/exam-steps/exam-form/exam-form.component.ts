@@ -25,6 +25,8 @@ export class ExamFormComponent implements OnInit {
 
   timedChange(event) {
     this.is_timed_show = !this.is_timed_show;
+    this.exam_form.exam_duration = null;
+    this.examService.examDetails.exam_form['exam_duration'] = null;
   }
 
   nextPage() {
