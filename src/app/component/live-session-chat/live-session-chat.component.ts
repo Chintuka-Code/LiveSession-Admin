@@ -326,10 +326,10 @@ export class LiveSessionChatComponent implements OnInit {
   }
 
   // send message
-  async send_message() {
+  async send_message(text) {
     this.message_sending = true;
     const message_obj = {
-      text_message: Detect_URL(this.text),
+      text_message: Detect_URL(text.value),
       sme_id: localStorage.getItem('uid'),
       sender_name: this.user.name,
       sender_type: 'admin',
@@ -360,6 +360,7 @@ export class LiveSessionChatComponent implements OnInit {
       this.live_session_chat_service.send_message(message_obj, data);
 
       this.files = [];
+      this.textarea.nativeElement.value = '';
     } catch (error) {
       // console.log(error);
     }

@@ -252,12 +252,14 @@
               <ng-container *ngIf="selected_student.sme_id; else startchat">
                 <div class="col-12 mt-3 mt-md-4">
                   <div>
-                    <quill-editor
-                      [styles]="{ 'min-height': '100px' }"
-                      [modules]="modules"
-                      [(ngModel)]="text"
-                    >
-                    </quill-editor>
+                    <textarea
+                      name=""
+                      id=""
+                      cols="30"
+                      rows="2"
+                      #textarea
+                      class="form-control"
+                    ></textarea>
                   </div>
                 </div>
 
@@ -281,7 +283,7 @@
                     <button
                       *ngIf="!message_sending; else wait"
                       class="btn btn-primary"
-                      [disabled]="!text && files.length == 0"
+                      [disabled]="!textarea.value && files.length == 0"
                       (click)="send_message(textarea)"
                     >
                       Send
