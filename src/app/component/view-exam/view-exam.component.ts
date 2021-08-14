@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { ExamService } from '../../service/exam.service'
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class ViewExamComponent implements OnInit {
   menu_type: string;
   items: any = [{ label: 'Actions', items: [] }];
   question_bank_type_disabled: boolean = false;
+  publish_url:string = null;
 
   constructor(
     private router: Router,
@@ -174,8 +176,31 @@ export class ViewExamComponent implements OnInit {
   publish_exam(exam){
 
     exam.publish['is_publish'] = true;
+    
+
+      this.publish_url = `${environment.STUDENT_BASE_SERVER_URL}/exam/${exam._id}`;
+      exam.publish['publish_url'] = this.publish_url;
+    
+   
+    
     this.updateExam(exam._id, {publish:exam.publish}, "Exam published successfully")
   }
+
+  copyExamUrl(event){
+    console.log(event.target.innerText);
+    
+  }
+
+  copy_password() {
+    var copyText = document.getElementById("pwd_spn");
+    var textArea = document.createElement("textarea");
+    textArea.value = copyText.textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+
+}
 
 
   updateExam(id, data, message){

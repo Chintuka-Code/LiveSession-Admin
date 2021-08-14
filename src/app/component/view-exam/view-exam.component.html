@@ -53,7 +53,7 @@
                 <th>Name</th>
                 <th>Exam Start Date Time</th>
                 <th>Exam End Date Time</th>
-                <!-- <th>Time Slot</th> -->
+                <th>Exam URL</th>
                 <th>Action</th>
               </tr>
             </ng-template>
@@ -65,8 +65,7 @@
                 <td>{{ exam.publish.start_date | date }} {{ exam.publish.start_time | date:'h:mm a z' }}</td>
                 <td *ngIf="exam.publish.end_date">{{ exam.publish.end_date | date }} {{ exam.publish.end_time | date:'h:mm a z' }}</td>
                 <td *ngIf="!exam.publish.end_date">Not Applicable</td>
-                <!-- <td *ngIf="exam.publish.slot_start_time">{{ exam.publish.slot_start_time | date:'h:mm a z' }} To {{ exam.publish.slot_end_time | date:'h:mm a z' }}</td>
-                <td *ngIf="!exam.publish.slot_start_time">Not Applicable</td> -->
+                <td><span id="pwd_spn">{{ exam.publish.publish_url }} <a *ngIf="exam.publish.publish_url" href="javascript:void(0)" (click)="copy_password()"><i class="pi pi-copy" ></i></a> </span> </td>
                 <td class="position-relative">
                   <ng-container *ngIf="!question_bank_type_disabled; else enable">
                     <button
