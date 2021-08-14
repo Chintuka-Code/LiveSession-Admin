@@ -61,6 +61,17 @@ export class LiveSessionChatComponent implements OnInit {
       this.filter_data();
     });
 
+    // new chat
+    this.live_session_chat_service.new_chat().subscribe((res) => {
+      console.log(this.selected_batch);
+      if (this.selected_batch && res.batch_id === this.selected_batch._id) {
+        this.sound.nativeElement.pause();
+        this.sound.nativeElement.currentTime = 0;
+        this.sound.nativeElement.play();
+        this.active_student_list.push(res);
+      }
+    });
+
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
       this.sound.nativeElement.pause();
@@ -119,21 +130,21 @@ export class LiveSessionChatComponent implements OnInit {
       });
 
     // end chat
-    this.live_session_chat_service.end_chat().subscribe((res) => {
-      res.forEach((element) => {
-        const dest = this.active_student_list.find(
-          (chats) => chats._id === element._id
-        );
-        if (dest) {
-          dest.sme_id = null;
-        } else {
-          element.sme_id = null;
-          this.active_student_list.push(element);
-        }
-      });
-      this.spinner = false;
-      this.sorting(this.active_student_list);
-    });
+    // this.live_session_chat_service.end_chat().subscribe((res) => {
+    //   res.forEach((element) => {
+    //     const dest = this.active_student_list.find(
+    //       (chats) => chats._id === element._id
+    //     );
+    //     if (dest) {
+    //       dest.sme_id = null;
+    //     } else {
+    //       element.sme_id = null;
+    //       this.active_student_list.push(element);
+    //     }
+    //   });
+    //   this.spinner = false;
+    //   this.sorting(this.active_student_list);
+    // });
 
     // transfer chat
     this.live_session_chat_service.transfer_chat().subscribe((res) => {
@@ -384,7 +395,13 @@ export class LiveSessionChatComponent implements OnInit {
             this.selected_student.student_id + this.selected_student.batch_id,
         });
         this.live_session_chat_service.end_all_chat([this.selected_student]);
+        const index = this.active_student_list.findIndex(
+          (chat) => chat._id === this.selected_student._id
+        );
+        this.active_student_list.splice(index, 1);
+        console.log(this.active_student_list);
         this.selected_student = '';
+        this.spinner = false;
       }
     });
   }
@@ -470,10 +487,10 @@ export class LiveSessionChatComponent implements OnInit {
               room_id: chat.student_id + chat.batch_id,
             });
           });
-
           this.live_session_chat_service.end_all_chat(data);
         }
 
+        this.active_student_list = [];
         this.selected_student = '';
         this.spinner = false;
       }
