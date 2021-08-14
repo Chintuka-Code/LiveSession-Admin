@@ -220,28 +220,28 @@ export class CreateQuestionComponent implements OnInit {
     // this.spinner = true;
     console.log(data);
 
-    // if (this.questionBank_Id) {
-    //   this.question_service
-    //     .create_question_add_into_question_bank({
-    //       question: data.questions,
-    //       questionBank_id: this.questionBank_Id,
-    //     })
-    //     .subscribe(
-    //       (res) => {
-    //         Swal.fire({
-    //           icon: 'success',
-    //           title: 'Yeah...',
-    //           text: 'Question Added',
-    //         }).then(() => {
-    //           this.myForm.reset();
-    //           this.spinner = false;
-    //         });
-    //       },
-    //       (error) => this.error_handler(error)
-    //     );
-    // } else {
-    //   console.log('create');
-    // }
+    if (this.questionBank_Id) {
+      this.question_service
+        .create_question_add_into_question_bank({
+          question: data.questions,
+          questionBank_id: this.questionBank_Id,
+        })
+        .subscribe(
+          (res) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Yeah...',
+              text: 'Question Added',
+            }).then(() => {
+              this.myForm.reset();
+              this.spinner = false;
+            });
+          },
+          (error) => this.error_handler(error)
+        );
+    } else {
+      console.log('create');
+    }
   }
 
   ngOnInit(): void {
