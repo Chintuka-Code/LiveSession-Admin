@@ -72,7 +72,6 @@ export class CreateQuestionComponent implements OnInit {
         question_name: ['', Validators.required],
         type: ['', Validators.required],
         point: ['', Validators.required],
-        no_of_answer: ['', Validators.required],
         option: this.fb.array([]),
         multiple_answer: this.fb.array([]),
         right_answer: ['', Validators.required],
@@ -99,6 +98,14 @@ export class CreateQuestionComponent implements OnInit {
     control.push(this.fb.control('', Validators.required));
   }
 
+  addNewRightAnswer(control) {
+    control.push(this.fb.control('', Validators.required));
+  }
+
+  deleteRightAnswer(control, index) {
+    control.removeAt(index);
+  }
+
   deleteOption(control, index) {
     control.removeAt(index);
   }
@@ -114,6 +121,14 @@ export class CreateQuestionComponent implements OnInit {
   reset_option(i) {
     const controls = this.questionFormArr.controls[i].get(
       'option'
+    ) as FormArray;
+    controls.clear();
+    controls.updateValueAndValidity();
+  }
+
+  reset_MultipleRightAnswer(i) {
+    const controls = this.questionFormArr.controls[i].get(
+      'multiple_answer'
     ) as FormArray;
     controls.clear();
     controls.updateValueAndValidity();
@@ -135,21 +150,21 @@ export class CreateQuestionComponent implements OnInit {
     controls.updateValueAndValidity();
   }
 
-  set_number_of_answer(i) {
-    const controls = this.questionFormArr.controls[i].get(
-      'no_of_answer'
-    ) as FormControl;
-    controls.setValidators(Validators.required);
-    controls.updateValueAndValidity();
-  }
+  // set_number_of_answer(i) {
+  //   const controls = this.questionFormArr.controls[i].get(
+  //     'no_of_answer'
+  //   ) as FormControl;
+  //   controls.setValidators(Validators.required);
+  //   controls.updateValueAndValidity();
+  // }
 
-  reset_number_of_answer(i) {
-    const controls = this.questionFormArr.controls[i].get(
-      'no_of_answer'
-    ) as FormControl;
-    controls.clearValidators();
-    controls.updateValueAndValidity();
-  }
+  // reset_number_of_answer(i) {
+  //   const controls = this.questionFormArr.controls[i].get(
+  //     'no_of_answer'
+  //   ) as FormControl;
+  //   controls.clearValidators();
+  //   controls.updateValueAndValidity();
+  // }
 
   // when question type is selected
   type_selected(comp, i) {
@@ -158,22 +173,31 @@ export class CreateQuestionComponent implements OnInit {
       case 'radio':
         this.addNewOption(this.questionFormArr.controls[i].get('option'));
         this.set_right_answer(i);
-        this.reset_number_of_answer(i);
+        // this.reset_number_of_answer(i);
+        this.reset_MultipleRightAnswer(i);
         break;
       case 'checkbox':
-        console.log('option required');
+        this.addNewOption(this.questionFormArr.controls[i].get('option'));
+        this.reset_right_answer(i);
+        this.addNewRightAnswer(
+          this.questionFormArr.controls[i].get('multiple_answer')
+        );
         break;
       case 'singleInput':
         this.reset_option(i);
         this.set_right_answer(i);
-        this.reset_number_of_answer(i);
-        console.log('Answer Required');
+        // this.reset_number_of_answer(i);
+        this.reset_MultipleRightAnswer(i);
+        // console.log('Answer Required');
         break;
       case 'multipleInput':
         this.reset_right_answer(i);
         this.reset_option(i);
-        this.set_number_of_answer(i);
-        console.log('Multiple Answer Required');
+        // this.set_number_of_answer(i);
+        this.addNewAnswer(
+          this.questionFormArr.controls[i].get('multiple_answer')
+        );
+        // console.log('Multiple Answer Required');
         break;
       default:
         console.log('');
@@ -193,31 +217,31 @@ export class CreateQuestionComponent implements OnInit {
 
   create_company_fun() {
     const data = this.myForm.getRawValue();
-    this.spinner = true;
+    // this.spinner = true;
     console.log(data);
 
-    if (this.questionBank_Id) {
-      this.question_service
-        .create_question_add_into_question_bank({
-          question: data.questions,
-          questionBank_id: this.questionBank_Id,
-        })
-        .subscribe(
-          (res) => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Yeah...',
-              text: 'Priority Created',
-            }).then(() => {
-              this.myForm.reset();
-              this.spinner = false;
-            });
-          },
-          (error) => this.error_handler(error)
-        );
-    } else {
-      console.log('create');
-    }
+    // if (this.questionBank_Id) {
+    //   this.question_service
+    //     .create_question_add_into_question_bank({
+    //       question: data.questions,
+    //       questionBank_id: this.questionBank_Id,
+    //     })
+    //     .subscribe(
+    //       (res) => {
+    //         Swal.fire({
+    //           icon: 'success',
+    //           title: 'Yeah...',
+    //           text: 'Question Added',
+    //         }).then(() => {
+    //           this.myForm.reset();
+    //           this.spinner = false;
+    //         });
+    //       },
+    //       (error) => this.error_handler(error)
+    //     );
+    // } else {
+    //   console.log('create');
+    // }
   }
 
   ngOnInit(): void {

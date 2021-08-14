@@ -115,6 +115,13 @@ export class LiveSessionChatService {
     });
   }
 
+  new_chat() {
+    return new Observable<any>((observer) => {
+      this.socket.on('new-chat-assign', (data) => observer.next(data));
+      return () => this.socket.disconnect();
+    });
+  }
+
   ticket_reply(message, room, uid) {
     this.socket.emit('ticket-reply', message, room, uid);
   }

@@ -138,9 +138,12 @@
                         <label for="dropdown">Type</label>
                       </span>
                     </div>
-                    <div
+                    <!-- <div
                       class="col-12 col-md-4 mt-5"
-                      *ngIf="comp.get('type').value == 'multipleInput'"
+                      *ngIf="
+                        comp.get('type').value == 'multipleInput' ||
+                        comp.get('type').value == 'checkbox'
+                      "
                     >
                       <span class="p-float-label w-100">
                         <input
@@ -152,12 +155,12 @@
                         />
                         <label for="inputtext">Number of Answer</label>
                       </span>
-                    </div>
+                    </div> -->
 
                     <ng-container
                       *ngIf="
-                        comp.get('type').value == 'radio' ||
-                        comp.get('type').value == 'checkbox'
+                        comp.get('type').value === 'radio' ||
+                        comp.get('type').value === 'checkbox'
                       "
                     >
                       <div class="col-12" formArrayName="option">
@@ -209,7 +212,10 @@
 
                     <div
                       class="col-12 col-md-9 mt-5"
-                      *ngIf="comp.get('type').value !== 'multipleInput'"
+                      *ngIf="
+                        comp.get('type').value !== 'multipleInput' &&
+                        comp.get('type').value !== 'checkbox'
+                      "
                     >
                       <span class="p-float-label w-100">
                         <input
@@ -224,7 +230,10 @@
                     </div>
 
                     <ng-container
-                      *ngIf="comp.get('type').value == 'multipleInput'"
+                      *ngIf="
+                        comp.get('type').value == 'multipleInput' ||
+                        comp.get('type').value == 'checkbox'
+                      "
                     >
                       <div class="col-12" formArrayName="multiple_answer">
                         <div

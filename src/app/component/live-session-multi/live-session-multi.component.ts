@@ -88,6 +88,16 @@ export class LiveSessionMultiComponent implements OnInit {
       this.sorting(this.active_student_list);
     });
 
+    // new chat
+    this.live_session_chat_service.new_chat().subscribe((res) => {
+      if (this.selected_batch && res.batch_id === this.selected_batch._id) {
+        this.sound.nativeElement.pause();
+        this.sound.nativeElement.currentTime = 0;
+        this.sound.nativeElement.play();
+        this.active_student_list.push(res);
+      }
+    });
+
     // increment counter
     this.live_session_chat_service
       .increment_admin_counter()
@@ -107,21 +117,21 @@ export class LiveSessionMultiComponent implements OnInit {
       });
 
     // end chat
-    this.live_session_chat_service.end_chat().subscribe((res) => {
-      res.forEach((element) => {
-        const dest = this.active_student_list.find(
-          (chats) => chats._id === element._id
-        );
-        if (dest) {
-          dest.sme_id = null;
-        } else {
-          element.sme_id = null;
-          this.active_student_list.push(element);
-        }
-      });
-      this.spinner = false;
-      this.sorting(this.active_student_list);
-    });
+    // this.live_session_chat_service.end_chat().subscribe((res) => {
+    //   res.forEach((element) => {
+    //     const dest = this.active_student_list.find(
+    //       (chats) => chats._id === element._id
+    //     );
+    //     if (dest) {
+    //       dest.sme_id = null;
+    //     } else {
+    //       element.sme_id = null;
+    //       this.active_student_list.push(element);
+    //     }
+    //   });
+    //   this.spinner = false;
+    //   this.sorting(this.active_student_list);
+    // });
 
     // transfer chat
     this.live_session_chat_service.transfer_chat().subscribe((res) => {
@@ -410,6 +420,8 @@ export class LiveSessionMultiComponent implements OnInit {
         });
         this.live_session_chat_service.end_all_chat([stu.chat]);
         this.slots.splice(index, 1);
+        this.active_student_list.splice(index, 1);
+        this.spinner = false;
         setTimeout(() => {
           this.scroll_chat_container();
         }, 40);
@@ -459,6 +471,7 @@ export class LiveSessionMultiComponent implements OnInit {
           });
 
           this.live_session_chat_service.end_all_chat(data);
+          this.active_student_list = [];
           this.scroll_chat_container();
         }
 
