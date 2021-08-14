@@ -25,9 +25,12 @@ export class ExamFormComponent implements OnInit {
 
   timedChange(event) {
     this.is_timed_show = !this.is_timed_show;
+    this.exam_form.exam_duration = null;
+    this.examService.examDetails.exam_form['exam_duration'] = null;
   }
 
   nextPage() {
+    this.submitted = true;
     this.examService.examDetails.exam_form = this.exam_form;
     if (this.exam_form.exam_name && this.exam_form.is_timed) {
       if (this.exam_form.is_timed == 'Yes' && !this.exam_form.exam_duration)
@@ -37,6 +40,6 @@ export class ExamFormComponent implements OnInit {
       return;
     }
 
-    this.submitted = true;
+    
   }
 }

@@ -17,7 +17,7 @@ export class AddQuestionComponent implements OnInit {
   question_banks = [];
   QB_questions = [];
   exam_form;
-
+  submitted:boolean = false;
   constructor(
     private examService: ExamService,
     private router: Router
@@ -68,9 +68,18 @@ export class AddQuestionComponent implements OnInit {
   }
 
   nextPage() {
-    // this.examService.examDetails.attempts = this.attempts;
-    // this.submitted = true;
-    // console.log(this.examService.examDetails.questions);
+   
+    this.submitted = true;
+
+    if(!this.selected_question.length){
+
+      if(!this.selected_question['question'] || !this.selected_question['question'].length){
+        return;
+      }
+  
+    }
+    
+    console.log(this.examService.examDetails.questions);
     this.router.navigate(['main/create-exam/publish']);
   }
 

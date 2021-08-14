@@ -11,14 +11,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./attempts.component.scss']
 })
 export class AttemptsComponent implements OnInit {
-  // create_exam_form: FormGroup;
+
   spinner: boolean = false;
-  // access_control: string[] = ['Any one with link', 'restrict with email'];
-  // is_access_control = true;
-  // selectedCities4:any;
+
   access_setting = {}
   submitted: boolean = false;
-  // question = ['q1','q2','q3'];
+
   batchList = [];
 
   batchStudents = [];
@@ -45,8 +43,9 @@ export class AttemptsComponent implements OnInit {
   ngOnInit(): void {
  
     this.access_setting = this.examService.examDetails.access_setting;
-    
-    
+    if(!this.examService.examDetails['_id']){
+      this.access_setting['max_attempt'] = 1;
+    }
 
     if(this.access_setting['access_control'] == 'align with batch')
       this.get_batch()
@@ -63,14 +62,19 @@ export class AttemptsComponent implements OnInit {
 
   accessControlChange(event){
 
-    delete this.access_setting['batch']
-    delete this.access_setting['student']
-  
+    this.access_setting['batch'] = [];
+    this.access_setting['student'] = []
+    this.access_setting['menual_student'] = []
+    this.examService.examDetails.access_setting['batch'] = []
+    this.examService.examDetails.access_setting['student'] = []
+    this.examService.examDetails.access_setting['menual_student'] = []
+
     if(event.value == 'align with batch'){
       this.get_batch();
     }
     
-  // this.is_access_control =!this.is_access_control; 
+    console.log('kjjk');
+    
   }
 
   batchChange(event){
@@ -79,35 +83,33 @@ export class AttemptsComponent implements OnInit {
   }
 
   nextPage() {
-    this.examService.examDetails.access_setting = this.access_setting;
-    // console.log(this.examService.examDetails.access_setting);
-    if(this.access_setting['access_control'] == 'manual enter email'){
-      
-        this.access_setting['student'] =  this.access_setting['menual_student'].split("\n").filter(item => item!="");
-      
-    }
-    if(this.access_setting['max_attempt'] && this.access_setting['access_control']){
-
-      // if(this.access_setting['access_control'] == 'Any one with link'){
-
-      //   this.router.navigate(['main/create-exam/settings']);
-      // }else{
-      //   if(this.access_setting['access_control'] == 'align with batch' && this.access_setting['batch'] && this.access_setting['student']){
-      //     this.router.navigate(['main/create-exam/settings']);
-      //   }
-
-      //   if(this.access_setting['access_control'] == 'manual enter email' && this.access_setting['student']){
-
-      //   }
-      // }
-
-      this.router.navigate(['main/create-exam/settings']);
-      console.log(this.access_setting);
-      
-    }
-    
     this.submitted = true;
+    this.examService.examDetails.access_setting = this.access_setting;
+   
+    if(this.access_setting['max_attempt'] && this.access_setting['access_control']){
+      if(this.access_setting['access_control'] != 'Any one with link'){
+     
+        if(this.access_setting['access_control'] == 'align with batch'){
+          if(!this.access_setting['batch'] || !this.access_setting['batch'].length || !this.access_setting['student'] || !this.access_setting['student'].length){
+            return;
+          }
+        }else{
+          if(!this.access_setting['menual_student'] || !this.access_setting['menual_student'].length){
+            return;
+          }
+        }
+      }      
 
+      if(this.access_setting['access_control'] == 'manual enter email'){
+        this.access_setting['student'] =  this.access_setting['menual_student'].split("\n").filter(item => item!="");
+      }
+  
+      console.log(this.access_setting);
+      this.router.navigate(['main/create-exam/settings']);
+    }
+
+
+   
   }
 
   prevPage() {

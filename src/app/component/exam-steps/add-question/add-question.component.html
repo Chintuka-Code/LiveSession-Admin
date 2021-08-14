@@ -12,6 +12,7 @@
                 <div class="col-12 col-md-4 mt-5" >
                   <span class="p-float-label w-100">
                     <p-multiSelect 
+                    #question_bank_arr="ngModel"
                       display="chip"
                       inputId="question_bank"
                       [autoDisplayFirst]="false"
@@ -21,32 +22,39 @@
                       [style]="{ minWidth: '100%' }"
                       [(ngModel)]="selected_question.question_bank"
                       (onChange)="questionBankChange($event)"
+                      required
+                      [ngClass]="{'ng-dirty': (question_bank_arr.invalid && submitted) || (question_bank_arr.dirty && question_bank_arr.invalid)}"
                      >
 
                     </p-multiSelect>
                     <label for="question_bank">Select question bank</label>
-                    <!-- <small *ngIf="(question_bank.invalid && submitted) || (question_bank.dirty && question_bank.invalid)" class="p-error">Question bank is required.</small> -->
+                    <small *ngIf="(question_bank_arr.invalid && submitted) || (question_bank_arr.dirty && question_bank_arr.invalid)" class="p-error">Question bank is required.</small>
                   </span>
                 </div>
         
                 <div class="col-12 col-md-4 mt-5" >
                     <span class="p-float-label w-100">
                       <p-multiSelect 
+                      #question_arr="ngModel"
                       [options]="QB_questions" 
                       [group]="true" 
                       optionLabel="question_name"
+                      [autoDisplayFirst]="false"
                       [(ngModel)]="selected_question.question" 
-                      defaultLabel="Select questions" 
                       scrollHeight="250px" 
                       (onChange)="questionChange($event)"
-                      display="chip">
+                      display="chip"
+                      required
+                      [ngClass]="{'ng-dirty': (question_arr.invalid && submitted) || (question_arr.dirty && question_arr.invalid)}"
+                      >
                         <ng-template let-group pTemplate="group">
                             <div class="p-d-flex p-ai-center">
                                 <span>{{group.question_bank_name}}</span>
                             </div>
                         </ng-template>
                     </p-multiSelect>
-                      <!-- <small *ngIf="(question.invalid && submitted) || (question.dirty && question.invalid)" class="p-error">Question is required.</small> -->
+                    <label for="question_bank">Select question</label>
+                    <small *ngIf="(question_arr.invalid && submitted) || (question_arr.dirty && question_arr.invalid)" class="p-error">Question is required.</small>
                   </span>
                 </div>
 
