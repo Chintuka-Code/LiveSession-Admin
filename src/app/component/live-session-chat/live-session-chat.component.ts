@@ -63,7 +63,7 @@ export class LiveSessionChatComponent implements OnInit {
 
     // new chat
     this.live_session_chat_service.new_chat().subscribe((res) => {
-      console.log(this.selected_batch);
+      // console.log(this.selected_batch);
       if (this.selected_batch && res.batch_id === this.selected_batch._id) {
         this.sound.nativeElement.pause();
         this.sound.nativeElement.currentTime = 0;
