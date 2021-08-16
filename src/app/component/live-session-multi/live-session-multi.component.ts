@@ -404,6 +404,7 @@ export class LiveSessionMultiComponent implements OnInit {
   }
 
   end_chat(stu, index) {
+    console.log(this.slots);
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to end this chat',
@@ -420,6 +421,9 @@ export class LiveSessionMultiComponent implements OnInit {
         });
         this.live_session_chat_service.end_all_chat([stu.chat]);
         this.slots.splice(index, 1);
+        const i = this.active_student_list.findIndex(
+          (chat) => chat._id === this.slots[index].chat._id
+        );
         this.active_student_list.splice(index, 1);
         this.spinner = false;
         setTimeout(() => {
