@@ -44,7 +44,7 @@ export class AttemptsComponent implements OnInit {
  
     this.access_setting = this.examService.examDetails.access_setting;
     if(!this.examService.examDetails['_id']){
-      this.access_setting['max_attempt'] = 1;
+      this.access_setting['max_attempt'] = 0;
     }
 
     if(this.access_setting['access_control'] == 'align with batch')
@@ -86,7 +86,7 @@ export class AttemptsComponent implements OnInit {
     this.submitted = true;
     this.examService.examDetails.access_setting = this.access_setting;
    
-    if(this.access_setting['max_attempt'] && this.access_setting['access_control']){
+    if(this.access_setting['max_attempt'] >= 0 && this.access_setting['access_control']){
       if(this.access_setting['access_control'] != 'Any one with link'){
      
         if(this.access_setting['access_control'] == 'align with batch'){
