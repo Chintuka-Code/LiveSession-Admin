@@ -1,0 +1,48 @@
+<div *ngIf="!spinner; else showspinner">
+  <section *ngIf="user.permissions.includes('ENDCHATS'); else showfool">
+    <h3 class="h3">Select Batch</h3>
+    <div class="container-fluid">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body p-0 p-2">
+            <div class="row align-items-center">
+              <!-- batch area -->
+              <div [ngClass]="[selected_batch ? 'col-10' : 'col-12']">
+                <p-dropdown
+                  [options]="batch_list"
+                  placeholder="Select a Batch"
+                  optionLabel="batch_name"
+                  [style]="{ minWidth: '100%', 'border-radius': '10px' }"
+                  optionValue="_id"
+                  [(ngModel)]="selected_batch"
+                >
+                </p-dropdown>
+              </div>
+
+              <div
+                [ngClass]="[selected_batch ? 'col-2' : '']"
+                *ngIf="selected_batch"
+              >
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="end_all_chat()"
+                >
+                  End All Chat
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ng-template #showfool>
+    <h3 class="h3">Access Denied</h3>
+  </ng-template>
+</div>
+
+<ng-template #showspinner>
+  <app-spinner></app-spinner>
+</ng-template>

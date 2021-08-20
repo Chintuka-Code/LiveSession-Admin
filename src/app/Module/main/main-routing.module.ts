@@ -320,6 +320,13 @@ const routes: Routes = [
             (m) => m.ManagerViewModule
           ),
       },
+      {
+        path: 'end-all-chats',
+        loadChildren: () =>
+          import('../end-all-chats/end-all-chats.module').then(
+            (m) => m.EndAllChatsModule
+          ),
+      },
     ],
   },
 ];
