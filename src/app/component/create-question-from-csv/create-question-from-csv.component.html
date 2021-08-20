@@ -1,1 +1,20 @@
-<p>create-question-from-csv works!</p>
+<div class="row">
+  <div class="col-12">
+    <label for="formFile" class="form-label">Import CSV</label>
+    <input
+      class="form-control"
+      (change)="fileChangeListener($event)"
+      type="file"
+      id="formFile"
+    />
+  </div>
+  <div class="col-12 mt-3">
+    <button
+      class="btn btn-primary"
+      [disabled]="questions.length > 0"
+      (click)="create_question()"
+    >
+      Create
+    </button>
+  </div>
+</div>

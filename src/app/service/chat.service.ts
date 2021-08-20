@@ -32,4 +32,10 @@ export class ChatService {
       `${environment.BASE_SERVER_URL}/chat/get-chat-trainer-mode/${batch_id}`
     );
   }
+
+  get_chat_batch_admin(batch_id) {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/chat/end-chats-admin/${batch_id}`
+    );
+  }
 }

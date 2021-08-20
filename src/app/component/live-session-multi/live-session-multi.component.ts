@@ -420,11 +420,12 @@ export class LiveSessionMultiComponent implements OnInit {
           room_id: stu.chat.student_id + stu.chat.batch_id,
         });
         this.live_session_chat_service.end_all_chat([stu.chat]);
-        this.slots.splice(index, 1);
+
         const i = this.active_student_list.findIndex(
           (chat) => chat._id === this.slots[index].chat._id
         );
-        this.active_student_list.splice(index, 1);
+        this.slots.splice(index, 1);
+        this.active_student_list.splice(i, 1);
         this.spinner = false;
         setTimeout(() => {
           this.scroll_chat_container();
