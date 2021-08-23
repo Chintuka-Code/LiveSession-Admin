@@ -11,7 +11,7 @@
   <div class="col-12 mt-3">
     <button
       class="btn btn-primary"
-      [disabled]="questions.length > 0"
+      [disabled]="!(questions.length > 0)"
       (click)="create_question()"
     >
       Create

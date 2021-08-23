@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
+import { Filter_Code } from 'src/app/utilities/filter_data';
 
 @Component({
   selector: 'app-create-question-from-csv',
@@ -12,7 +13,7 @@ export class CreateQuestionFromCsvComponent implements OnInit {
   questionBank_name: String;
   questionBank_Id: String;
   header: boolean = true;
-  questions: any;
+  questions: any[] = [];
   constructor(
     private activated_route: ActivatedRoute,
     private ngxCsvParser: NgxCsvParser
@@ -25,7 +26,6 @@ export class CreateQuestionFromCsvComponent implements OnInit {
       .subscribe(
         (result: Array<any>) => {
           this.questions = result;
-          console.log(this.questions);
         },
         (error: NgxCSVParserError) => {
           // console.log('Error', error);
@@ -34,7 +34,7 @@ export class CreateQuestionFromCsvComponent implements OnInit {
   }
 
   create_question() {
-    console.log(this.questions);
+    const data = Filter_Code(this.questions);
   }
 
   ngOnInit(): void {
