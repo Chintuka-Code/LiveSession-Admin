@@ -1,41 +1,123 @@
 export const Filter_Code = (data: any[]) => {
-  let questions = [];
+  try {
+    let questions = [];
+    data.forEach((question) => {
+      switch (question.type) {
+        case '0':
+          if (radioValidation(question)) {
+            questions.push({
+              question_name: question.question_name,
+              type: 'radio',
+              point: question.point,
+              option: question.option.split(','),
+              multiple_answer: [],
+              right_answer: question.right_answer,
+            });
+          } else {
+            throw new Error(
+              `All Fields Are Required "${question.question_name}"`
+            );
+          }
+          break;
+        case '1':
+          if (checkboxValidation(question)) {
+            questions.push({
+              question_name: question.question_name,
+              type: 'checkbox',
+              point: question.point,
+              option: question.option.split(','),
+              multiple_answer: question.multiple_answer.split(','),
+              right_answer: '',
+            });
+          } else {
+            throw new Error(
+              `All Fields Are Required "${question.question_name}"`
+            );
+          }
+          break;
+        case '2':
+          if (inputValidation(question)) {
+            questions.push({
+              question_name: question.question_name,
+              type: 'singleInput',
+              point: question.point,
+              option: [],
+              multiple_answer: [],
+              right_answer: question.right_answer,
+            });
+          } else {
+            throw new Error(
+              `All Fields Are Required "${question.question_name}"`
+            );
+          }
+          break;
+        case '3':
+          if (multipleInputValidation(question)) {
+            questions.push({
+              question_name: question.question_name,
+              type: 'multipleInput',
+              point: question.point,
+              option: [],
+              multiple_answer: question.multiple_answer.split(','),
+              right_answer: '',
+            });
+          } else {
+            throw new Error(
+              `All Fields Are Required "${question.question_name}"`
+            );
+          }
+          break;
+        default:
+          console.log('');
+      }
+    });
 
-  data.forEach((question) => {
-    switch (question.type) {
-      case 'Multiple choice choose one( radio)':
-        console.log('Multiple choice choose one( radio)');
-        break;
-      case 'Multiple choice choose many':
-        console.log('Multiple choice choose many');
-        break;
-      case 'True / False(radio)':
-        console.log('True / False(radio)');
-        break;
-      case 'Fill in the blank single input':
-        console.log('Fill in the blank single input');
-        break;
-      case 'Fill in the blank multiple choice':
-        console.log('Fill in the blank multiple choice');
-        break;
-      default:
-        console.log('');
-    }
-  });
+    return questions;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const radio = (data) => {
-  console.log('radio');
+const radioValidation = (data) => {
+  if (
+    data.question_name &&
+    data.type &&
+    data.point &&
+    data.option &&
+    data.right_answer
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
-const checkbox = (data) => {
-  console.log('checkbox');
+const checkboxValidation = (data) => {
+  if (
+    data.question_name &&
+    data.type &&
+    data.point &&
+    data.option &&
+    data.multiple_answer
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
-const input = (data) => {
-  console.log('input');
+const inputValidation = (data) => {
+  if (data.question_name && data.type && data.point && data.right_answer) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
-const input_with_multiple_answer = (data) => {
-  console.log('multiple answer');
+const multipleInputValidation = (data) => {
+  if (data.question_name && data.type && data.point && data.multiple_answer) {
+    return true;
+  } else {
+    return false;
+  }
 };

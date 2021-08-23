@@ -76,7 +76,7 @@ export class ViewQuestionBankComponent implements OnInit {
         this.view_question_bank_details(question_bank);
         break;
       case 'edit':
-        this.router.navigate(['/main/edit-course', question_bank._id]);
+        // this.router.navigate(['/main/edit-course', question_bank._id]);
         break;
       case 'disabled':
         this.disabled_question_bank(question_bank);

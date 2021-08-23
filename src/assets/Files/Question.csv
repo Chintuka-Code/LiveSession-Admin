@@ -1,0 +1,5 @@
+﻿question_name,type,point,option,multiple_answer,right_answer
+Which is true about life,0,1,"love,hate,happy,sad",,hate
+How many skills do you have,1,1,"angular,react,js,html","angular,react,js",
+What is your name,2,1,,,Sabban
+Address,3,1,,"Noida,Bijnor,Gopeshwar",

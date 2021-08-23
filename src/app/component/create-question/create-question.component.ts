@@ -52,7 +52,7 @@ export class CreateQuestionComponent implements OnInit {
           question_name: ['', Validators.required],
           type: ['', Validators.required],
           point: ['', Validators.required],
-          no_of_answer: [''],
+          // no_of_answer: [''],
           option: this.fb.array([]),
           multiple_answer: this.fb.array([]),
           right_answer: ['', Validators.required],

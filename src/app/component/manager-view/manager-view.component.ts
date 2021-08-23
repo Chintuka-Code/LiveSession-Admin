@@ -7,6 +7,7 @@ import { LiveSessionChatService } from 'src/app/service/live-session-chat.servic
 import { Calculate_time } from 'src/app/utilities/calculate_color';
 import Swal from 'sweetalert2';
 import { interval } from 'rxjs/internal/observable/interval';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-manager-view',
@@ -22,12 +23,14 @@ export class ManagerViewComponent implements OnInit {
   student_message: any[] = [];
   @ViewChild('sound') sound: ElementRef;
   interval: Subscription;
+  admins_list: any[] = [];
 
   constructor(
     private batch_service: BatchService,
     private router: Router,
     private chat_service: ChatService,
-    private live_session_chat_service: LiveSessionChatService
+    private live_session_chat_service: LiveSessionChatService,
+    private user_service: UserService
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
@@ -90,9 +93,11 @@ export class ManagerViewComponent implements OnInit {
   }
 
   get_all_batch() {
+    this.spinner = true;
     this.batch_service.get_all_batch_chat().subscribe(
       (res: any) => {
         this.batches = res.data;
+        this.get_all_admin();
       },
       (error) => this.error_handler(error)
     );
@@ -166,7 +171,7 @@ export class ManagerViewComponent implements OnInit {
       return groups;
     }, {});
 
-    // Edit: to add it in the array format instead
+    // Edit: group data by date
     const groupArrays = Object.keys(groups).map((date) => {
       return {
         date,
@@ -193,12 +198,66 @@ export class ManagerViewComponent implements OnInit {
       (a, b) => b.admin_unread_count - a.admin_unread_count
     );
     this.active_student_list = Calculate_time(this.active_student_list);
-
     const timer = interval(2000);
-
     this.interval = timer.subscribe(() => {
       this.active_student_list = Calculate_time(this.active_student_list);
     });
+  }
+
+  transfer_chat(doc) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to transfer this chat',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.spinner = true;
+        this.student_message = [];
+        this.selected_student.sme_id = doc.value;
+
+        this.active_student_list = this.active_student_list.filter(
+          (stu) =>
+            !(
+              stu.student_id === this.selected_student.student_id &&
+              stu.batch_id === this.selected_student.batch_id
+            )
+        );
+        // console.log(this.selected_student);
+        this.live_session_chat_service.transfer(this.selected_student);
+        this.live_session_chat_service.leave({
+          room_id:
+            this.selected_student.student_id + this.selected_student.batch_id,
+        });
+
+        this.selected_student = '';
+      }
+    });
+  }
+
+  // for transfer
+  get_all_admin() {
+    this.spinner = true;
+    this.user_service.get_all_admin().subscribe(
+      (res: any) => {
+        this.admins_list = res.data;
+        console.log(this.admins_list);
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+          this.router.navigate(['/main']);
+        });
+      }
+    );
   }
 
   ngOnInit(): void {
