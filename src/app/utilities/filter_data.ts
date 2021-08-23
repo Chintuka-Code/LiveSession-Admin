@@ -1,7 +1,6 @@
 export const Filter_Code = (data: any[]) => {
   try {
     let questions = [];
-
     data.forEach((question) => {
       switch (question.type) {
         case '0':
@@ -73,7 +72,7 @@ export const Filter_Code = (data: any[]) => {
       }
     });
 
-    console.log(questions);
+    return questions;
   } catch (error) {
     console.log(error);
   }

@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="!spinner; else showspinner">
   <div class="col-12">
     <label for="formFile" class="form-label">Import CSV</label>
     <input
@@ -23,3 +23,9 @@
     <a href="../../../assets/Files/Type-rules.csv" download>Types Rules</a>
   </div>
 </div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>
