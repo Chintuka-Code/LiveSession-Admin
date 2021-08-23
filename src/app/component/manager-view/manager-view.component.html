@@ -1,7 +1,7 @@
 <section *ngIf="!spinner; else showspinner">
   <!-- chat module -->
   <div class="row">
-    <div class="col-sm-12 col-md-4 m-b-md">
+    <div class="col-sm-12 col-md-3 m-b-md">
       <div class="card">
         <div class="card-body p-0 p-2">
           <div class="row align-items-center">
@@ -19,17 +19,6 @@
               >
               </p-dropdown>
             </div>
-
-            <!-- <div class="col-5">
-              <button
-                type="button"
-                class="btn btn-danger"
-                [disabled]="!end_all_chat_button"
-                (click)="end_all_chat()"
-              >
-                End All Chat
-              </button>
-            </div> -->
           </div>
         </div>
       </div>
@@ -108,7 +97,7 @@
     </div>
 
     <!-- chat container -->
-    <div class="col-sm-12 col-md-8" *ngIf="selected_batch">
+    <div class="col-sm-12 col-md-6" *ngIf="selected_batch">
       <div class="card">
         <div class="card-body">
           <ng-container *ngIf="selected_student; else warning">
@@ -123,6 +112,49 @@
               <h3 class="h3" *ngIf="selected_student">
                 {{ selected_student.student_name }}
               </h3>
+
+              <div>
+                <div class="control d-flex">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-sign-out"
+                    class="
+                      p-button-rounded p-button-danger p-button-outlined
+                      my-2
+                    "
+                    pTooltip="End Chat"
+                  ></button>
+                  <div class="my-2">
+                    <p-dropdown
+                      #transfer_admin_id
+                      [options]="admins_list"
+                      placeholder="Transfer Chat"
+                      optionLabel="name"
+                      optionValue="_id"
+                      [style]="{ minWidth: '100%', 'border-radius': '10px' }"
+                    >
+                      <ng-template let-group pTemplate="group">
+                        <div class="p-d-flex p-ai-center">
+                          <span>{{ group.label }}</span>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-share-alt"
+                    class="
+                      p-button-rounded p-button-danger p-button-outlined
+                      my-2
+                    "
+                    pTooltip="Transfer Chat"
+                  ></button>
+                </div>
+              </div>
             </div>
 
             <div class="chat-body px-2" id="chat-body">
@@ -207,6 +239,16 @@
           <ng-template #warning>
             <h4 class="h4 warnning">Please Select A student to start Chat</h4>
           </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Status -->
+    <div class="col-sm-12 col-md-3 m-b-md">
+      <!-- student list -->
+      <div class="card">
+        <div class="card-body">
+          <h4 class="h4">Admins</h4>
         </div>
       </div>
     </div>
