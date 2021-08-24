@@ -90,6 +90,17 @@ export class ManagerViewComponent implements OnInit {
         // console.log(this.active_student_list);
         this.sorting(this.active_student_list);
       });
+
+    // transfer chat
+    this.live_session_chat_service.transfer_chat().subscribe((res) => {
+      const index = this.active_student_list.findIndex(
+        (chat) => chat._id === res._id
+      );
+      if (index) {
+        this.active_student_list[index].sme_id = res.sme_id;
+      }
+      this.spinner = false;
+    });
   }
 
   get_all_batch() {
@@ -124,6 +135,7 @@ export class ManagerViewComponent implements OnInit {
         (res: any) => {
           this.active_student_list = res.data;
           this.sorting(this.active_student_list);
+          console.log(this.active_student_list);
           this.spinner = false;
         },
         (error) => this.error_handler(error)
@@ -218,15 +230,6 @@ export class ManagerViewComponent implements OnInit {
         this.spinner = true;
         this.student_message = [];
         this.selected_student.sme_id = doc.value;
-
-        this.active_student_list = this.active_student_list.filter(
-          (stu) =>
-            !(
-              stu.student_id === this.selected_student.student_id &&
-              stu.batch_id === this.selected_student.batch_id
-            )
-        );
-        // console.log(this.selected_student);
         this.live_session_chat_service.transfer(this.selected_student);
         this.live_session_chat_service.leave({
           room_id:
@@ -244,7 +247,7 @@ export class ManagerViewComponent implements OnInit {
     this.user_service.get_all_admin().subscribe(
       (res: any) => {
         this.admins_list = res.data;
-        console.log(this.admins_list);
+
         this.spinner = false;
       },
       (error) => {
@@ -258,6 +261,34 @@ export class ManagerViewComponent implements OnInit {
         });
       }
     );
+  }
+
+  end_chat() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to end this chat',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.spinner = true;
+        this.student_message = [];
+        this.live_session_chat_service.leave({
+          room_id:
+            this.selected_student.student_id + this.selected_student.batch_id,
+        });
+        this.live_session_chat_service.end_all_chat([this.selected_student]);
+        const index = this.active_student_list.findIndex(
+          (chat) => chat._id === this.selected_student._id
+        );
+        this.active_student_list[index].sme_id = null;
+        this.selected_student = '';
+        this.spinner = false;
+      }
+    });
   }
 
   ngOnInit(): void {

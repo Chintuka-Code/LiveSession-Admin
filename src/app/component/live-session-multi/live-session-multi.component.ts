@@ -116,8 +116,9 @@ export class LiveSessionMultiComponent implements OnInit {
         this.sorting(this.active_student_list);
       });
 
-    // end chat
+    // // end chat
     // this.live_session_chat_service.end_chat().subscribe((res) => {
+
     //   res.forEach((element) => {
     //     const dest = this.active_student_list.find(
     //       (chats) => chats._id === element._id
@@ -133,11 +134,32 @@ export class LiveSessionMultiComponent implements OnInit {
     //   this.sorting(this.active_student_list);
     // });
 
+    // End Chat
+    this.live_session_chat_service.end_chat().subscribe((res) => {
+      console.log(res);
+      res.forEach((element) => {
+        const index = this.active_student_list.findIndex(
+          (chat) => chat._id === element._id
+        );
+        console.log(index);
+        if (index > -1) {
+          this.active_student_list.splice(index, 1);
+        }
+      });
+      this.spinner = false;
+      this.sorting(this.active_student_list);
+    });
+
     // transfer chat
     this.live_session_chat_service.transfer_chat().subscribe((res) => {
-      if (res.sme_id === localStorage.getItem('uid')) {
+      if (this.selected_batch && res.sme_id === localStorage.getItem('uid')) {
         this.active_student_list.push(res);
         this.sorting(this.active_student_list);
+      } else {
+        const index = this.active_student_list.findIndex(
+          (chat) => chat._id === res._id
+        );
+        this.active_student_list.splice(index, 1);
       }
       this.spinner = false;
     });

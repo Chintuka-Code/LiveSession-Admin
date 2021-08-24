@@ -124,6 +124,7 @@
                       p-button-rounded p-button-danger p-button-outlined
                       my-2
                     "
+                    (click)="end_chat()"
                     pTooltip="End Chat"
                   ></button>
                   <div class="my-2">
@@ -142,17 +143,22 @@
                       </ng-template>
                     </p-dropdown>
                   </div>
-                  <button
-                    pButton
-                    pRipple
-                    type="button"
-                    icon="pi pi-share-alt"
-                    class="
-                      p-button-rounded p-button-danger p-button-outlined
-                      my-2
-                    "
-                    pTooltip="Transfer Chat"
-                  ></button>
+
+                  <ng-container *ngIf="transfer_admin_id.value">
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-arrow-right"
+                      class="
+                        p-button-rounded p-button-danger p-button-outlined
+                        my-2
+                      "
+                      (click)="transfer_chat(transfer_admin_id)"
+                      pTooltip="Transfer Chat"
+                      [disabled]="!transfer_admin_id.value"
+                    ></button>
+                  </ng-container>
                 </div>
               </div>
             </div>
