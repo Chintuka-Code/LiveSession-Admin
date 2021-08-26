@@ -28,6 +28,7 @@ export class AddQuestionComponent implements OnInit {
     this.exam_form = this.examService.examDetails.exam_form;
     this.get_question_banks()
     if(this.selected_question['question_bank']){
+      this.show_question_count_max = this.selected_question['question'].length;
       this.get_question_by_qb(this.selected_question['question_bank']);
     }
   }
