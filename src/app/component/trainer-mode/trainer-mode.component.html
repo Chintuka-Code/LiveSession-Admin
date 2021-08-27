@@ -80,46 +80,59 @@
                 class="post-comments d-flex flex-column"
                 *ngIf="all_chats.length != 0; else nochat"
               >
-                <div class="post-comm" *ngFor="let chat of all_chats">
-                  <img
-                    src="../../assets/images/avatars/user.svg"
-                    class="comment-img"
-                    alt=""
-                  />
-                  <div class="comment-container pb-2">
-                    <span class="comment-author">
-                      <span *ngIf="enable_student_name">
-                        {{ chat.sender_name }}</span
-                      >
-                      <span *ngIf="!enable_student_name">Student</span>
-                      <small class="comment-date" *ngIf="chat.created_at">
-                        {{ chat.created_at | amDateFormat: "hh:mmA" }}</small
-                      >
-                    </span>
-                  </div>
+                <ng-container *ngFor="let ch of all_chats">
+                  <p-divider align="center">
+                    <div class="p-d-inline-flex p-ai-center">
+                      <i class="pi pi-calendar p-mr-2"></i>
+                      <b> {{ ch.date | amDateFormat: "LL" }}</b>
+                    </div>
+                  </p-divider>
+                  <div class="post-comm" *ngFor="let chat of ch.message">
+                    <img
+                      src="../../assets/images/avatars/user.svg"
+                      class="comment-img"
+                      alt=""
+                    />
+                    <div class="comment-container pb-2">
+                      <span class="comment-author">
+                        <span *ngIf="enable_student_name">
+                          {{ chat.sender_name }}</span
+                        >
+                        <span *ngIf="!enable_student_name">Student</span>
+                        <small class="comment-date" *ngIf="chat.created_at">
+                          {{ chat.created_at | amDateFormat: "hh:mmA" }}</small
+                        >
+                      </span>
+                    </div>
 
-                  <ng-container *ngIf="chat.text_message">
-                    <p-divider></p-divider>
-                    <span class="comment-text" [innerHTML]="chat.text_message">
-                    </span>
-                  </ng-container>
-
-                  <div class="attachment" *ngIf="chat.attachment.length > 0">
-                    <p-divider></p-divider>
-                    <small>Attachments</small>
-                    <ul
-                      class="d-flex flex-wrap"
-                      style="list-style: none; margin: 0; padding: 0"
-                    >
-                      <li
-                        class="mr-2"
-                        *ngFor="let attachment of chat.attachment; index as i"
+                    <ng-container *ngIf="chat.text_message">
+                      <p-divider></p-divider>
+                      <span
+                        class="comment-text"
+                        [innerHTML]="chat.text_message"
                       >
-                        <a [href]="attachment" target="_blank">Files{{ i }} </a>
-                      </li>
-                    </ul>
+                      </span>
+                    </ng-container>
+
+                    <div class="attachment" *ngIf="chat.attachment.length > 0">
+                      <p-divider></p-divider>
+                      <small>Attachments</small>
+                      <ul
+                        class="d-flex flex-wrap"
+                        style="list-style: none; margin: 0; padding: 0"
+                      >
+                        <li
+                          class="mr-2"
+                          *ngFor="let attachment of chat.attachment; index as i"
+                        >
+                          <a [href]="attachment" target="_blank"
+                            >Files{{ i }}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
+                </ng-container>
               </div>
               <ng-template #nochat>
                 <h3 class="text-center text-danger center">
