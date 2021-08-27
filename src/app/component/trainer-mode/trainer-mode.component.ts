@@ -38,9 +38,22 @@ export class TrainerModeComponent implements OnInit {
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
-      // console.log(res);
+      console.log(res);
       if (res.message.sender_type !== 'admin') {
-        this.all_chats.push(res.message);
+        if (this.all_chats) {
+          const index = this.all_chats.findIndex(
+            (ch) => ch.date == res.message.created_at.split('T')[0]
+          );
+
+          if (index > -1) {
+            this.all_chats[index].message.push(res.message);
+          } else {
+            this.all_chats.push({
+              date: res.message.created_at.split('T')[0],
+              message: [res.message],
+            });
+          }
+        }
       }
       this.message_sending = false;
       setTimeout(() => {
@@ -155,7 +168,8 @@ export class TrainerModeComponent implements OnInit {
         (res: any) => {
           this.all_chats = res.data;
           this.all_chats.sort((a, b) => a.created_at - b.created_at);
-          this.spinner = false;
+          this.group_by_date(this.all_chats);
+
           this.join_room();
           setTimeout(() => {
             this.scroll_chat_container();
@@ -194,14 +208,17 @@ export class TrainerModeComponent implements OnInit {
     this.student_id = [];
 
     this.all_chats.forEach((message) => {
-      if (
-        !this.student_id.find((out) => out.student_id == message.student_id)
-      ) {
-        this.student_id.push({
-          student_id: message.student_id,
-          chat_id: message.chat_id,
-        });
-      }
+      message.message.forEach((element) => {
+        if (
+          !this.student_id.find((out) => out.student_id == element.student_id)
+        ) {
+          this.student_id.push({
+            student_id: element.student_id,
+            chat_id: element.chat_id,
+            chat: { is_todays_first: new Date() },
+          });
+        }
+      });
     });
 
     this.student_id.forEach((student) => {
@@ -271,7 +288,9 @@ export class TrainerModeComponent implements OnInit {
         const data = {
           room_id: id.student_id + this.selected_batch._id,
           chat_id: id.chat_id,
+          chat: id.chat,
         };
+
         this.live_session_chat_service.send_message(message_obj, data);
       });
 
@@ -279,6 +298,27 @@ export class TrainerModeComponent implements OnInit {
     } catch (error) {
       this.error_handler(error);
     }
+  }
+
+  group_by_date(data) {
+    const groups = data.reduce((groups, game) => {
+      const date = game.created_at.split('T')[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(game);
+      return groups;
+    }, {});
+
+    // Edit: to add it in the array format instead
+    const groupArrays = Object.keys(groups).map((date) => {
+      return {
+        date,
+        message: groups[date],
+      };
+    });
+    this.all_chats = groupArrays;
+    this.spinner = false;
   }
 
   ngOnInit(): void {
