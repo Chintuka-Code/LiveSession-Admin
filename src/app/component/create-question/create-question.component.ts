@@ -229,7 +229,7 @@ export class CreateQuestionComponent implements OnInit {
   create_company_fun() {
     const data = this.myForm.getRawValue();
     // this.spinner = true;
-    console.log(data);
+    // console.log(data);
 
     if (this.questionBank_Id) {
       this.question_service
@@ -251,7 +251,7 @@ export class CreateQuestionComponent implements OnInit {
           (error) => this.error_handler(error)
         );
     } else {
-      console.log('create');
+      // console.log('create');
     }
   }
 

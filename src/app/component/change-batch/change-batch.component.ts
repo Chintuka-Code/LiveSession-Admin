@@ -34,7 +34,7 @@ export class ChangeBatchComponent implements OnInit {
 
     this.batch_service.get_batch_change().subscribe((res: any) => {
       this.all_batch = res.data;
-      console.log(this.all_batch);
+      // console.log(this.all_batch);
       this.get_all_subject();
     });
   }

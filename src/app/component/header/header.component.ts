@@ -76,11 +76,17 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    localStorage.clear();
     Swal.fire({
       icon: 'success',
       title: 'Logout',
-    }).then(() => this.router.navigate(['']));
+    }).then(() => {
+      this.router.navigate(['']);
+      this.live_session_service.user_status({
+        user_id: localStorage.getItem('uid'),
+        status: 'Offline',
+      });
+      localStorage.clear();
+    });
   }
 
   onScroll() {

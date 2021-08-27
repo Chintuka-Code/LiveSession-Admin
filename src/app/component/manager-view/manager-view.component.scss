@@ -19,3 +19,16 @@
 .my-2 {
   margin: 0 0.5em;
 }
+
+.admin-status-list {
+  list-style: none;
+  li {
+    width: 100%;
+    .info {
+      padding-left: 0.5em;
+      h6 {
+        margin: 0;
+      }
+    }
+  }
+}

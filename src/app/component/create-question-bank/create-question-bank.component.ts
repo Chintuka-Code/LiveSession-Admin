@@ -41,7 +41,7 @@ export class CreateQuestionBankComponent implements OnInit {
     this.subject_service.get_subject(false).subscribe(
       (res: any) => {
         this.subject = res.data;
-        console.log(this.subject);
+        // console.log(this.subject);
         this.spinner = false;
       },
       (error) => {

@@ -20,7 +20,7 @@ export class ExamFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.exam_form = this.examService.examDetails.exam_form;
-    console.log(this.examService.examDetails);
+    // console.log(this.examService.examDetails);
   }
 
   timedChange(event) {
@@ -39,7 +39,5 @@ export class ExamFormComponent implements OnInit {
 
       return;
     }
-
-    
   }
 }
