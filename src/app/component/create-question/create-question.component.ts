@@ -42,6 +42,10 @@ export class CreateQuestionComponent implements OnInit {
         name: 'Fill in the blank multiple choice',
         type: 'multipleInput',
       },
+      {
+        name: 'Computer language code',
+        type: 'code',
+      },
     ];
   }
 
@@ -196,6 +200,13 @@ export class CreateQuestionComponent implements OnInit {
         // this.set_number_of_answer(i);
         this.addNewAnswer(
           this.questionFormArr.controls[i].get('multiple_answer')
+        );
+      case 'code':
+        this.reset_right_answer(i);
+        this.reset_option(i);
+        // this.set_number_of_answer(i);
+        this.addNewAnswer(
+          this.questionFormArr.controls[i].get('code')
         );
         // console.log('Multiple Answer Required');
         break;
