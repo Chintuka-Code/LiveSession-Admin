@@ -61,4 +61,8 @@ export class UserService {
   get_all_admin() {
     return this.http.get(`${environment.BASE_SERVER_URL}/user/get-admin-list`);
   }
+
+  admins_chats() {
+    return this.http.get(`${environment.BASE_SERVER_URL}/user/admins/status`);
+  }
 }

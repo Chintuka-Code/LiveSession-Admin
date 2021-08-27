@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit {
       });
       this.total_student_count();
       this.batch = batch;
-      console.log(this.batch);
+      // console.log(this.batch);
     } catch (error) {
       this.spinner = false;
       // console.log(error);

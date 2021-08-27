@@ -107,17 +107,17 @@ export class ChatWindowComponent implements OnInit {
     }
 
     setTimeout(() => {
-      console.log(event);
+      // console.log(event);
       this.onAttachment.emit({ event: event, index: this.index });
     }, 50);
   }
 
   check() {
-    console.log(this.index);
+    // console.log(this.index);
   }
 
   async send_message(message) {
-    console.log(this.index);
+    // console.log(this.index);
 
     // if (message.value == '' && this.files.length == 0) {
     //   return;
@@ -172,7 +172,7 @@ export class ChatWindowComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner = false;
-    console.log(this.index);
+    // console.log(this.index);
   }
 
   ngAfterViewInit(): void {

@@ -270,6 +270,7 @@ export class LiveSessionChatComponent implements OnInit {
       (res: any) => {
         this.active_student_list = res.data;
         this.sorting(this.active_student_list);
+        console.log(this.active_student_list);
         this.spinner = false;
         const timer = interval(120000);
 

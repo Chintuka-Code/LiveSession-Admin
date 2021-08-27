@@ -53,6 +53,10 @@ export class LiveSessionChatService {
     this.socket.emit('update-notification-read', data);
   }
 
+  user_status(user) {
+    this.socket.emit('user-status', user);
+  }
+
   new_message_received() {
     return new Observable<any>((observer) => {
       this.socket.on('new message', (res, chat) => {
@@ -118,6 +122,13 @@ export class LiveSessionChatService {
   new_chat() {
     return new Observable<any>((observer) => {
       this.socket.on('new-chat-assign', (data) => observer.next(data));
+      return () => this.socket.disconnect();
+    });
+  }
+
+  update_user() {
+    return new Observable<any>((observer) => {
+      this.socket.on('update-user-status', (data) => observer.next(data));
       return () => this.socket.disconnect();
     });
   }

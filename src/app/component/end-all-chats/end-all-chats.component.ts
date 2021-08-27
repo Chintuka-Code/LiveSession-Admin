@@ -37,7 +37,7 @@ export class EndAllChatsComponent implements OnInit {
     });
   }
 
-  end_all_chat() {
+  end_all_chat_admins() {
     this.spinner = true;
     this.chat_service.get_chat_batch_admin(this.selected_batch).subscribe(
       (res: any) => {

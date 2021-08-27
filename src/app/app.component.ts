@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
 Quill.register('modules/imageResize', ImageResize);
@@ -24,9 +24,17 @@ export class AppComponent {
       const body: HTMLBodyElement = document.querySelector('body');
       if (isConnected) {
         this.status = 'ONLINE';
+        this.live_session_chat_service.user_status({
+          user_id: localStorage.getItem('uid'),
+          status: 'Online',
+        });
         body.style.overflow = 'auto';
       } else {
         this.status = 'OFFLINE';
+        this.live_session_chat_service.user_status({
+          user_id: localStorage.getItem('uid'),
+          status: 'Offline',
+        });
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         body.style.overflow = 'hidden';
       }

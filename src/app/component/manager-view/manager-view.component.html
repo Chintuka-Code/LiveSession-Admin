@@ -240,6 +240,62 @@
                 </ng-container>
               </div>
             </div>
+
+            <!-- chat form -->
+            <div class="">
+              <ng-container>
+                <div class="col-12 mt-3 mt-md-4">
+                  <div>
+                    <textarea
+                      name=""
+                      id=""
+                      cols="30"
+                      rows="2"
+                      #textarea
+                      class="form-control"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center mt-3">
+                  <div class="file">
+                    <p class="p-0 m-0">Attachment</p>
+                    <input
+                      type="file"
+                      multiple
+                      (change)="attchment($event)"
+                      name="file"
+                      id="file"
+                    />
+                    <label for="file" title="select files">
+                      <span><i class="fas fa-paperclip"></i></span>
+                      <span *ngIf="files.length > 0"> {{ files.length }} </span>
+                    </label>
+                  </div>
+
+                  <div class="button ml-3" style="margin: 2rem 0 0rem 3rem">
+                    <button
+                      *ngIf="!message_sending; else wait"
+                      class="btn btn-primary"
+                      [disabled]="!textarea.value && files.length == 0"
+                      (click)="send_message(textarea)"
+                    >
+                      Send
+                    </button>
+                    <ng-template #wait>
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-spin pi-spinner"
+                        class="p-button-rounded"
+                        disabled="true"
+                      ></button>
+                    </ng-template>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
           </ng-container>
 
           <ng-template #warning>
@@ -255,6 +311,43 @@
       <div class="card">
         <div class="card-body">
           <h4 class="h4">Admins</h4>
+          <ul class="p-0 m-0 admin-status-list">
+            <li
+              class="d-flex align-items-center mt-3"
+              *ngFor="let admin of chats_admins"
+            >
+              <img
+                style="width: 35px"
+                src="../../assets/images/avatars/profile-image-2.png"
+                alt=""
+              />
+              <div class="info pl-3">
+                <h6 class="h6">{{ admin.name }}</h6>
+                <ng-container>
+                  <small class="text-success" *ngIf="admin.isOnline"
+                    >online</small
+                  >
+
+                  <small class="text-danger" *ngIf="!admin.isOnline"
+                    >Offline</small
+                  >
+                </ng-container>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <button
+            type="button"
+            class="btn btn-danger"
+            [disabled]="!selected_batch"
+            (click)="end_all_chat_admins()"
+          >
+            End All Chat
+          </button>
         </div>
       </div>
     </div>

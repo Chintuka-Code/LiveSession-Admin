@@ -136,12 +136,12 @@ export class LiveSessionMultiComponent implements OnInit {
 
     // End Chat
     this.live_session_chat_service.end_chat().subscribe((res) => {
-      console.log(res);
+      // console.log(res);
       res.forEach((element) => {
         const index = this.active_student_list.findIndex(
           (chat) => chat._id === element._id
         );
-        console.log(index);
+        // console.log(index);
         if (index > -1) {
           this.active_student_list.splice(index, 1);
         }
@@ -426,7 +426,7 @@ export class LiveSessionMultiComponent implements OnInit {
   }
 
   end_chat(stu, index) {
-    console.log(this.slots);
+    // console.log(this.slots);
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to end this chat',

@@ -38,7 +38,7 @@ export class TrainerModeComponent implements OnInit {
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.message.sender_type !== 'admin') {
         this.all_chats.push(res.message);
       }
@@ -230,7 +230,7 @@ export class TrainerModeComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: `Yes, Enable it!`,
       }).then(async (result) => {
-        console.log(result);
+        // console.log(result);
         if (result.isConfirmed) {
           this.enable_student_name = true;
         } else {

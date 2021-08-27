@@ -29,7 +29,7 @@ export class ViewBatchStudentComponent implements OnInit {
   }
 
   error_handler(error) {
-    console.log(error);
+    // console.log(error);
   }
 
   ngOnInit(): void {

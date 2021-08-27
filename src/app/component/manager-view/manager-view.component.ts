@@ -8,6 +8,10 @@ import { Calculate_time } from 'src/app/utilities/calculate_color';
 import Swal from 'sweetalert2';
 import { interval } from 'rxjs/internal/observable/interval';
 import { UserService } from 'src/app/service/user.service';
+import { FormativeData } from 'src/app/utilities/formative_data';
+import { AttachmentService } from 'src/app/service/attachment.service';
+import { Detect_URL } from 'src/app/utilities/detect_url';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 
 @Component({
   selector: 'app-manager-view',
@@ -24,13 +28,19 @@ export class ManagerViewComponent implements OnInit {
   @ViewChild('sound') sound: ElementRef;
   interval: Subscription;
   admins_list: any[] = [];
-
+  message_sending: boolean = false;
+  files: any[] = [];
+  @ViewChild('textarea') textarea: ElementRef;
+  user: any;
+  manual_check_available_chat: Subscription;
+  chats_admins: any[] = [];
   constructor(
     private batch_service: BatchService,
     private router: Router,
     private chat_service: ChatService,
     private live_session_chat_service: LiveSessionChatService,
-    private user_service: UserService
+    private user_service: UserService,
+    private attachment_service: AttachmentService
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
@@ -53,8 +63,6 @@ export class ManagerViewComponent implements OnInit {
             message: [res.message],
           });
         }
-
-        console.log(res.message);
       }
 
       // update admin read counter
@@ -63,7 +71,7 @@ export class ManagerViewComponent implements OnInit {
           stu.admin_unread_count = 0;
         }
       });
-
+      this.message_sending = false;
       this.sorting(this.active_student_list);
       setTimeout(() => {
         this.scroll_chat_container();
@@ -101,6 +109,16 @@ export class ManagerViewComponent implements OnInit {
       }
       this.spinner = false;
     });
+
+    // admin online status
+    this.live_session_chat_service.update_user().subscribe((res) => {
+      const index = this.chats_admins.findIndex(
+        (admin) => admin._id === res.user_id
+      );
+
+      this.chats_admins[index].isOnline =
+        res.status === 'Online' ? true : false;
+    });
   }
 
   get_all_batch() {
@@ -125,6 +143,24 @@ export class ManagerViewComponent implements OnInit {
     });
   }
 
+  // get_all_student_chat() {
+  //   this.spinner = true;
+  //   this.selected_student = '';
+  //   this.student_message = [];
+  //   this.chat_service
+  //     .get_batch_chat_manager_view(this.selected_batch)
+  //     .subscribe(
+  //       (res: any) => {
+  //         this.active_student_list = res.data;
+  //         this.sorting(this.active_student_list);
+  //         console.log(this.active_student_list);
+  //         this.spinner = false;
+  //       },
+  //       (error) => this.error_handler(error)
+  //     );
+  // }
+
+  // after batch select get all the student list
   get_all_student_chat() {
     this.spinner = true;
     this.selected_student = '';
@@ -135,11 +171,27 @@ export class ManagerViewComponent implements OnInit {
         (res: any) => {
           this.active_student_list = res.data;
           this.sorting(this.active_student_list);
-          console.log(this.active_student_list);
+          // console.log(this.active_student_list);
           this.spinner = false;
+          const timer = interval(120000);
+
+          this.manual_check_available_chat = timer.subscribe(() =>
+            this.check_available_chat()
+          );
         },
         (error) => this.error_handler(error)
       );
+  }
+
+  check_available_chat() {
+    this.chat_service.get_batch_chat(this.selected_batch).subscribe(
+      (res: any) => {
+        this.active_student_list = res.data;
+        this.sorting(this.active_student_list);
+        this.spinner = false;
+      },
+      (error) => this.error_handler(error)
+    );
   }
 
   get_selected_student_chat(student) {
@@ -153,12 +205,10 @@ export class ManagerViewComponent implements OnInit {
     this.selected_student = '';
     this.selected_student = student;
 
-    if (this.selected_student.sme_id === localStorage.getItem('uid')) {
-      this.live_session_chat_service.join_room({
-        room_id:
-          this.selected_student.student_id + this.selected_student.batch_id,
-      });
-    }
+    this.live_session_chat_service.join_room({
+      room_id:
+        this.selected_student.student_id + this.selected_student.batch_id,
+    });
 
     this.chat_service
       .get_selected_studentChat(this.selected_student._id)
@@ -247,8 +297,8 @@ export class ManagerViewComponent implements OnInit {
     this.user_service.get_all_admin().subscribe(
       (res: any) => {
         this.admins_list = res.data;
-
-        this.spinner = false;
+        this.user = ACTIVE_USER();
+        this.chats_admin();
       },
       (error) => {
         Swal.fire({
@@ -291,8 +341,90 @@ export class ManagerViewComponent implements OnInit {
     });
   }
 
+  // attachment
+  attchment(event) {
+    this.files = [];
+    for (let i = 0; i < event.target.files.length; i++) {
+      this.files.push(event.target.files[i]);
+    }
+  }
+
+  // send message
+  async send_message(text) {
+    this.message_sending = true;
+    const message_obj = {
+      text_message: Detect_URL(text.value),
+      sme_id: localStorage.getItem('uid'),
+      sender_name: this.user.name,
+      sender_type: 'wishper',
+      attachment: [],
+      created_at: new Date(),
+    };
+    const data = {
+      room_id:
+        this.selected_student.student_id + this.selected_student.batch_id,
+      chat_id: this.selected_student._id,
+      chat: this.selected_student,
+    };
+
+    // this.text = '';
+    try {
+      if (this.files.length > 0) {
+        const files: any = await this.attachment_service.upload_files(
+          this.files
+        );
+        message_obj['attachment'] = FormativeData.concat_url_with_files(
+          files.files_paths
+        );
+      }
+      // this.selected_student_chat_message.push(message_obj);
+      this.live_session_chat_service.send_message(message_obj, data);
+      setTimeout(() => {
+        this.scroll_chat_container();
+      }, 50);
+
+      this.files = [];
+      this.textarea.nativeElement.value = '';
+    } catch (error) {
+      // console.log(error);
+    }
+  }
+
+  chats_admin() {
+    this.user_service.admins_chats().subscribe((res: any) => {
+      this.chats_admins = res.data;
+      this.spinner = false;
+    });
+  }
+
+  end_all_chat_admins() {
+    this.spinner = true;
+
+    this.chat_service.get_chat_batch_admin(this.selected_batch).subscribe(
+      (res: any) => {
+        console.log(res);
+        res.data.forEach((chat) => {
+          this.live_session_chat_service.leave({
+            room_id: chat.student_id + this.selected_batch,
+          });
+        });
+
+        this.live_session_chat_service.end_all_chat(res.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Yeah...',
+          text: 'All Chats have Ended',
+        }).then(() => {
+          this.spinner = false;
+        });
+      },
+      (error) => this.error_handler(error)
+    );
+  }
+
   ngOnInit(): void {
     this.get_all_batch();
+    this.chats_admin();
   }
 
   ngOnDestroy(): void {
@@ -304,7 +436,8 @@ export class ManagerViewComponent implements OnInit {
           this.selected_student.student_id + this.selected_student.batch_id,
       });
     }
-
-    this.interval ? this.interval.unsubscribe() : '';
+    this.manual_check_available_chat
+      ? this.manual_check_available_chat.unsubscribe()
+      : '';
   }
 }
