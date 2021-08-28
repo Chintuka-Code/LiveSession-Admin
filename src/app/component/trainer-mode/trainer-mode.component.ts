@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { LiveSessionChatService } from 'src/app/service/live-session-chat.service';
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Detect_URL } from 'src/app/utilities/detect_url';
+import { group_by_date } from 'src/app/utilities/group-by-data';
 
 @Component({
   selector: 'app-trainer-mode',
@@ -27,6 +28,8 @@ export class TrainerModeComponent implements OnInit {
   message_sending: boolean = false;
   enable_student_name: boolean;
   @ViewChild('textarea') textarea: ElementRef;
+  selected_student: any = {};
+  pop_up: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -38,14 +41,29 @@ export class TrainerModeComponent implements OnInit {
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.message.sender_type !== 'admin') {
         if (this.all_chats) {
           const index = this.all_chats.findIndex(
             (ch) => ch.date == res.message.created_at.split('T')[0]
           );
 
+          // for pop-up student
+          if (res.chat.chat_id === this.selected_student.chat_id) {
+            const i = this.selected_student.data.findIndex(
+              (ch) => ch.date == res.message.created_at.split('T')[0]
+            );
+            if (i > -1) {
+              this.selected_student.data[i].message.push(res.message);
+            } else {
+              this.selected_student.push({
+                date: res.message.created_at.split('T')[0],
+                message: [res.message],
+              });
+            }
+          }
           if (index > -1) {
+            res.message.chat_id = res.chat.chat_id;
             this.all_chats[index].message.push(res.message);
           } else {
             this.all_chats.push({
@@ -58,6 +76,7 @@ export class TrainerModeComponent implements OnInit {
       this.message_sending = false;
       setTimeout(() => {
         this.scroll_chat_container();
+        this.scroll_chat_container2();
       }, 50);
     });
   }
@@ -186,6 +205,17 @@ export class TrainerModeComponent implements OnInit {
     } else {
       setTimeout(() => {
         this.scroll_chat_container();
+      }, 200);
+    }
+  }
+
+  scroll_chat_container2() {
+    const div = document.getElementById('chat-body2');
+    if (div != null) {
+      div.scrollTop = div.scrollHeight - div.clientHeight;
+    } else {
+      setTimeout(() => {
+        this.scroll_chat_container2();
       }, 200);
     }
   }
@@ -319,6 +349,29 @@ export class TrainerModeComponent implements OnInit {
     });
     this.all_chats = groupArrays;
     this.spinner = false;
+  }
+
+  single_student_chat(data: any) {
+    this.pop_up = false;
+    this.selected_student = {};
+    this.spinner = true;
+    this.chat_service
+      .get_selected_studentChat(data.chat_id)
+      .subscribe((res: any) => {
+        const message = group_by_date(res.data.message);
+        this.selected_student = {
+          chat_id: data.chat_id,
+          data: message,
+        };
+        this.pop_up = true;
+        console.log(this.selected_student);
+
+        setTimeout(() => {
+          this.scroll_chat_container();
+          this.scroll_chat_container2();
+        }, 200);
+        this.spinner = false;
+      });
   }
 
   ngOnInit(): void {
