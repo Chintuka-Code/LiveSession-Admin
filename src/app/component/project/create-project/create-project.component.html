@@ -1,0 +1,237 @@
+<div class="card" *ngIf="!spinner; else showspinner">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Create Project</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+      <div class="container-fluid">
+        <form
+          action=""
+          [formGroup]="create_project_form"
+          (ngSubmit)="create_project()"
+          class="w-100"
+        >
+
+            <div class="row">
+                <div class="col-12 col-md-4 mt-4">
+                <span class="p-float-label w-100">
+                    <input
+                    type="text"
+                    id="inputtext"
+                    class="form-control"
+                    pInputText
+                    formControlName="name"
+                    />
+                    <label for="inputtext">Project Name *</label>
+                </span>
+                </div>
+                <div class="col-12 col-md-4 mt-4">
+                    <span class="p-float-label w-100">
+                        <p-dropdown
+                    
+                        inputId="project_category"
+                        [autoDisplayFirst]="false"
+                        optionLabel="name"
+                        optionValue="_id"
+                        [options]="project_category_list"
+                        [style]="{ minWidth: '100%' }"
+                        formControlName="project_category"
+                        required
+                    ></p-dropdown>
+        
+                    <label for="project_category">Project Category *</label>
+                    </span>
+                </div>
+
+                <div class="col-12 col-md-4 mt-4">
+                    <span class="p-float-label w-100">
+                        <input
+                        type="text"
+                        id="tag"
+                        class="form-control"
+                        pInputText
+                        formControlName="tags"
+                        />
+                        <label for="inputtext">Tags(with comma separated)</label>
+                    </span>
+                </div>
+            </div>
+            <div class="row my-2"></div>
+            <div class="col-12 mt-12 mt-md-12">
+                <label for="description">Description *</label>
+                <quill-editor
+                id="description"
+                [styles]="{ 'min-height': '100px', 'padding-top': '2rem' }"
+                [modules]="modules"
+                formControlName="description"
+                >
+                </quill-editor>
+            </div>
+<hr>
+            <div class="row my-4">
+                <div class="col-12 col-md-6 mt-6">
+                    <span class="p-float-label w-100">
+                        <input
+                        type="number"
+                        id="marks"
+                        class="form-control"
+                        min="0"
+                        formControlName="total_marks"
+                        />
+                        <label for="marks">Total Marks</label>
+                    </span>
+                </div>
+                <div class="col-12 col-md-6 mt-6">
+                    <div class="p-field-checkbox">
+                        <p-checkbox  formControlName="is_marking_scheme" binary="true" inputId="is_marking_scheme"></p-checkbox>
+                        <label for="is_marking_scheme" class="padding-sm">Add Marking Scheme</label>
+                    </div>
+                </div>
+                
+            </div>
+
+            <ng-container *ngIf="create_project_form.controls['is_marking_scheme'].value" formArrayName="marking_schemes">
+                <div class="row my-4" *ngFor="let _ of marking_schemes.controls; index as i">
+                    <ng-container [formGroupName]="i">
+                        <div class="col-5" >
+                            <span class="p-float-label w-100">
+                                <input
+                                type="text"
+                                id="name"
+                                pInputText
+                                formControlName="name"
+                                class="form-control"
+                                />
+                                <label for="name">name</label>
+                            </span>
+                        </div>
+                        <div class="col-5" >
+                            <span class="p-float-label w-100">
+                                <input
+                                type="number"
+                                id="value"
+                                pInputText
+                                min="0"
+                                formControlName="value"
+                                class="form-control"
+                                />
+                                <label for="value">value</label>
+                            </span>
+                        </div>
+
+                        <div class="col-2 d-flex">
+                            <div>
+                                <button
+                                pButton
+                                pRipple
+                                type="button"
+                                (click)="addMarkingScheme()"
+                                icon="pi pi-plus"
+                                class="p-button-rounded p-button-success"
+                                ></button>
+                            </div>
+                
+                            <div style="margin-left: 1rem">
+                                <button
+                                pButton
+                                pRipple
+                                type="button"
+                                (click)="removeMarkingScheme(i)"
+                                icon="pi pi-minus"
+                                class="p-button-rounded p-button-danger"
+                                ></button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+    
+<hr>
+
+            <ng-container formArrayName="links">
+                <div class="row my-4" *ngFor="let _ of links.controls; index as i">
+                  <div class="col-10">
+                    <span class="p-float-label w-100">
+                      <input
+                        type="text"
+                        id="link"
+                        pInputText
+                        [formControlName]="i"
+                        class="form-control"
+                      />
+                      <label for="link">Insert Links</label>
+                    </span>
+                  </div>
+
+                  <div class="col-2 d-flex">
+                    <div>
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        (click)="addTag()"
+                        icon="pi pi-plus"
+                        class="p-button-rounded p-button-success"
+                      ></button>
+                    </div>
+      
+                    <div style="margin-left: 1rem">
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        (click)="removeTag(i)"
+                        icon="pi pi-minus"
+                        class="p-button-rounded p-button-danger"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              
+              <div class="row">
+                <div class="d-flex align-items-center mt-3">
+                    <div class="file">
+                      <p class="p-0 m-0">Attachment</p>
+                      <input
+                        type="file"
+                        multiple
+                        (change)="attchment($event)"
+                        name="file"
+                        id="file"
+                      />
+                      <label for="file" title="select files">
+                        <span><i class="fas fa-paperclip"></i></span>
+                        <span *ngIf="files.length > 0"> {{ files.length }} </span>
+                      </label>
+                    </div>
+  
+                  </div>
+              </div>
+
+            <div class="row">
+                <div class="col-12 col-md-4 mt-5">
+                <button
+                    class="btn btn-primary"
+                    [disabled]="create_project_form.invalid"
+                >
+                    Create
+                </button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  
