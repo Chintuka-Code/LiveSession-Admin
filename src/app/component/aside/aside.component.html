@@ -234,6 +234,16 @@
             >
           </a>
         </li>
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('C00')"
+        >
+          <a [routerLink]="['project/assign-project']">
+            <span class="pointer-none"
+              ><i class="fab fa-contao px-3"></i>Assign Project</span
+            >
+          </a>
+        </li>
       </ul>
     </li>
 

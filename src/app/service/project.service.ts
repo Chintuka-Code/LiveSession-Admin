@@ -35,4 +35,22 @@ export class ProjectService {
       `${environment.BASE_SERVER_URL}/project/create`, {data}
     );
   }
+
+  get_batch_and_project() {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/assigned/project/getBatchProjects`
+    );
+  }
+  get_assigned_project() {
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/assigned/project/getAll`
+    );
+  }
+
+  create_assigned_project(data) {
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/assigned/project/create`, {data}
+    );
+  }
+
 }

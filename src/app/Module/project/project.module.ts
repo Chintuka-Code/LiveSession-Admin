@@ -9,10 +9,12 @@ import { PrimengModule } from 'src/app/SharedModule/primeng/primeng.module';
 import { SharedUtilitiesModule } from 'src/app/SharedModule/shared-utilities/shared-utilities.module';
 import { CreateCategoryComponent } from '../../component/project/create-category/create-category.component';
 import { CreateProjectComponent } from '../../component/project/create-project/create-project.component';
+import { AssignProjectComponent } from '../../component/project/assign-project/assign-project.component';
+import { CreateAssignProjectComponent } from '../../component/project/create-assign-project/create-assign-project.component';
 
 
 @NgModule({
-  declarations: [ProjectComponent, CategoryComponent,CreateCategoryComponent, CreateProjectComponent],
+  declarations: [ProjectComponent, CategoryComponent,CreateCategoryComponent, CreateProjectComponent, AssignProjectComponent, CreateAssignProjectComponent],
   imports: [
     CommonModule,
     ProjectRoutingModule,

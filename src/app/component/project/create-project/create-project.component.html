@@ -21,12 +21,12 @@
                 <span class="p-float-label w-100">
                     <input
                     type="text"
-                    id="inputtext"
+                    id="project_name"
                     class="form-control"
                     pInputText
                     formControlName="name"
                     />
-                    <label for="inputtext">Project Name *</label>
+                    <label for="project_name">Project Name *</label>
                 </span>
                 </div>
                 <div class="col-12 col-md-4 mt-4">
@@ -56,7 +56,7 @@
                         pInputText
                         formControlName="tags"
                         />
-                        <label for="inputtext">Tags(with comma separated)</label>
+                        <label for="tag">Tags(with comma separated)</label>
                     </span>
                 </div>
             </div>
@@ -101,25 +101,25 @@
                             <span class="p-float-label w-100">
                                 <input
                                 type="text"
-                                id="name"
+                                id="name{{i}}"
                                 pInputText
                                 formControlName="name"
                                 class="form-control"
                                 />
-                                <label for="name">name</label>
+                                <label for="name{{i}}">name</label>
                             </span>
                         </div>
                         <div class="col-5" >
                             <span class="p-float-label w-100">
                                 <input
                                 type="number"
-                                id="value"
+                                id="value{{i}}"
                                 pInputText
                                 min="0"
                                 formControlName="value"
                                 class="form-control"
                                 />
-                                <label for="value">value</label>
+                                <label for="value{{i}}">value</label>
                             </span>
                         </div>
 
@@ -158,12 +158,12 @@
                     <span class="p-float-label w-100">
                       <input
                         type="text"
-                        id="link"
+                        id="link{{i}}"
                         pInputText
                         [formControlName]="i"
                         class="form-control"
                       />
-                      <label for="link">Insert Links</label>
+                      <label for="link{{i}}">Insert Links</label>
                     </span>
                   </div>
 
