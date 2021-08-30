@@ -13,23 +13,32 @@ import Swal from 'sweetalert2';
 export class CreateAssignProjectComponent implements OnInit {
 
   create_assign_project_form: FormGroup;
-  batch_List = [{_id:1,name:'AAAA'}]
-  project_List = [{_id:1,name:'AAAA'}]
+  batch_List = [];
+  batch_id = '';
+  project_List = [];
   spinner: boolean = false;
   minDateValue:Date = new Date();
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
+    private activated_route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.activated_route.queryParams.subscribe((params) => {
+      this.batch_id = params.batch_id;
+      console.log(this.batch_id);
+      
+    });
     this.validation();
+   
+
     this.get_batch_and_project();
   }
 
   validation() {
     this.create_assign_project_form = this.fb.group({
-      batch_id: ['', Validators.required],
+      batch_id: [this.batch_id, Validators.required],
       project_id: ['', Validators.required],
       projects: this.fb.array([]),
     });

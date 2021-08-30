@@ -17,7 +17,7 @@
         <div>
           <p-table
             #question_bank_table
-            [value]="assigned_project_list"
+            [value]="batchList"
             dataKey="id"
             [rows]="10"
             [showCurrentPageReport]="true"
@@ -51,12 +51,14 @@
             <ng-template pTemplate="header">
               <tr>
                 <th>Batch Name</th>
+                <th>Project Count</th>
                 <th>Action</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-assigned_project>
+            <ng-template pTemplate="body" let-batch>
               <tr>
-                <td>{{assigned_project.batch_name}}</td>
+                <td>{{batch.batch_name}}</td>
+                <td>{{projectCount(batch._id)}}</td>
                 <td class="position-relative">
                   
                     <button
@@ -72,7 +74,7 @@
                       #menu
                       [popup]="true"
                       [model]="items"
-                      (click)="category_action(assigned_project)"
+                      (click)="assign_action(batch)"
                     ></p-menu>
                   
                 </td>

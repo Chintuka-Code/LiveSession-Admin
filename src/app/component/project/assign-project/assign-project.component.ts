@@ -15,6 +15,7 @@ export class AssignProjectComponent implements OnInit {
   items: any = [{ label: 'Actions', items: [] }];
 
   assigned_project_list = [];
+  batchList:any = [] ;
 
   constructor(private router: Router, private projectService: ProjectService) { }
 
@@ -43,16 +44,42 @@ export class AssignProjectComponent implements OnInit {
         this.menu_type = 'edit';
       },
     });
+    this.items[0].items.push({
+      label: 'Assign Project',
+      icon: 'pi pi-user-edit',
+      command: () => {
+        this.menu_type = 'assign_project';
+      },
+    });
 
 
   }
 
+  assign_action(batch) {
+    console.log(batch);
+
+    switch (this.menu_type) {
+      case 'view':
+        console.log('view category');
+        
+        break;
+      case 'edit':
+        console.log('edit category');
+        break;
+      case 'assign_project':
+        this.router.navigate(['/main/project/create-assign-project'], { queryParams: { batch_id: batch._id} });
+        break;
+      default:
+        console.log('jkjkh');
+    }
+  }
+
+
   getAllAssignedProject(){
     this.projectService.get_assigned_project().subscribe((res:any)=>{
+      this.batchList = res.batches;
       if(res.data)
-        this.assigned_project_list = res.data.map(data=>data.batch_id);
-      console.log(this.assigned_project_list);
-      
+        this.assigned_project_list = res.data
     },
     (error) => {
       Swal.fire({
@@ -62,12 +89,21 @@ export class AssignProjectComponent implements OnInit {
       }).then(() => {
         this.spinner = false;
       });
-    }
-    )};
+    })
+  };
 
 
     assignProject(){
       this.router.navigate(['/main/project/create-assign-project']);
+    }
+
+    projectCount(batch_id){
+
+      let currentBatchProject = this.assigned_project_list.find(batch => batch.batch_id === batch_id)
+      if(currentBatchProject){
+        return currentBatchProject.projects.length;
+      }
+      return 0
     }
 
 }
