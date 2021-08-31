@@ -69,6 +69,9 @@
                             >
                               {{ student.last_message | amTimeAgo }}
                             </small>
+                            <small *ngIf="student.sme_name" class="text-dark">
+                              SME : {{ student.sme_name }}
+                            </small>
                           </span>
                         </div>
                         <span
@@ -306,7 +309,10 @@
     </div>
 
     <!-- Admin Status -->
-    <div class="col-sm-12 col-md-3 m-b-md">
+    <div
+      class="col-sm-12 col-md-3 m-b-md"
+      *ngIf="selected_batch_admins.length > 0"
+    >
       <!-- student list -->
       <div class="card">
         <div class="card-body">
@@ -314,7 +320,7 @@
           <ul class="p-0 m-0 admin-status-list">
             <li
               class="d-flex align-items-center mt-3"
-              *ngFor="let admin of chats_admins"
+              *ngFor="let admin of selected_batch_admins"
             >
               <img
                 style="width: 35px"
