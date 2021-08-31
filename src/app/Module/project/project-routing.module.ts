@@ -7,6 +7,7 @@ import { CreateCategoryComponent } from '../../component/project/create-category
 import { CreateProjectComponent } from '../../component/project/create-project/create-project.component';
 import { AssignProjectComponent } from '../../component/project/assign-project/assign-project.component';
 import { CreateAssignProjectComponent } from '../../component/project/create-assign-project/create-assign-project.component';
+import { EvaluatorComponent } from '../../component/project/evaluator/evaluator.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'create-project', component: CreateProjectComponent },
   { path: 'assign-project', component: AssignProjectComponent },
   { path: 'create-assign-project', component: CreateAssignProjectComponent },
+  { path: 'evaluator', component: EvaluatorComponent },
 ];
 
 @NgModule({

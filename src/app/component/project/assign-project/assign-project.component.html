@@ -52,6 +52,7 @@
               <tr>
                 <th>Batch Name</th>
                 <th>Project Count</th>
+                <th>Evaluator</th>
                 <th>Action</th>
               </tr>
             </ng-template>
@@ -59,6 +60,8 @@
               <tr>
                 <td>{{batch.batch_name}}</td>
                 <td>{{projectCount(batch._id)}}</td>
+                <td *ngIf="evaluatorName(batch._id)">{{evaluatorName(batch._id)}}</td>
+                <td *ngIf="!evaluatorName(batch._id)">--</td>
                 <td class="position-relative">
                   
                     <button

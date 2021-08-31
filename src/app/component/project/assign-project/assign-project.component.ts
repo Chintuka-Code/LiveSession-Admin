@@ -15,6 +15,7 @@ export class AssignProjectComponent implements OnInit {
   items: any = [{ label: 'Actions', items: [] }];
 
   assigned_project_list = [];
+  evaluatorList = []
   batchList:any = [] ;
 
   constructor(private router: Router, private projectService: ProjectService) { }
@@ -51,6 +52,14 @@ export class AssignProjectComponent implements OnInit {
         this.menu_type = 'assign_project';
       },
     });
+    
+    this.items[0].items.push({
+      label: 'Assign Project Evaluator',
+      icon: 'pi pi-user-edit',
+      command: () => {
+        this.menu_type = 'evaluator';
+      },
+    });
 
 
   }
@@ -65,6 +74,9 @@ export class AssignProjectComponent implements OnInit {
         break;
       case 'edit':
         console.log('edit category');
+        break;
+      case 'evaluator':
+        this.router.navigate(['/main/project/evaluator'], { queryParams: { batch_id: batch._id} });
         break;
       case 'assign_project':
         this.router.navigate(['/main/project/create-assign-project'], { queryParams: { batch_id: batch._id} });
@@ -99,11 +111,23 @@ export class AssignProjectComponent implements OnInit {
 
     projectCount(batch_id){
 
-      let currentBatchProject = this.assigned_project_list.find(batch => batch.batch_id === batch_id)
+      let currentBatchProject = this.currentBatchProject(batch_id);
       if(currentBatchProject){
         return currentBatchProject.projects.length;
       }
       return 0
+    }
+
+    currentBatchProject(batch_id){
+      return this.assigned_project_list.find(batch => batch.batch_id === batch_id)
+    }
+    evaluatorName(batch_id){
+
+      let currentBatchProject = this.currentBatchProject(batch_id);
+      if(currentBatchProject){
+        return currentBatchProject.evaluator.map(data=>data.name).toString();
+      }
+      return 0;
     }
 
 }

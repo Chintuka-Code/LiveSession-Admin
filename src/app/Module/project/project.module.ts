@@ -11,10 +11,11 @@ import { CreateCategoryComponent } from '../../component/project/create-category
 import { CreateProjectComponent } from '../../component/project/create-project/create-project.component';
 import { AssignProjectComponent } from '../../component/project/assign-project/assign-project.component';
 import { CreateAssignProjectComponent } from '../../component/project/create-assign-project/create-assign-project.component';
+import { EvaluatorComponent } from '../../component/project/evaluator/evaluator.component';
 
 
 @NgModule({
-  declarations: [ProjectComponent, CategoryComponent,CreateCategoryComponent, CreateProjectComponent, AssignProjectComponent, CreateAssignProjectComponent],
+  declarations: [ProjectComponent, CategoryComponent,CreateCategoryComponent, CreateProjectComponent, AssignProjectComponent, CreateAssignProjectComponent, EvaluatorComponent],
   imports: [
     CommonModule,
     ProjectRoutingModule,

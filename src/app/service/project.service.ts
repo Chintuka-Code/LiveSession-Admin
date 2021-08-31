@@ -53,4 +53,15 @@ export class ProjectService {
     );
   }
 
+  get_evaluator(){
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/assigned/project/getEvaluator`
+    );
+  }
+  create_evaluator(data){
+    return this.http.post(
+      `${environment.BASE_SERVER_URL}/assigned/project/createEvaluator`, {data}
+    );
+  }
+
 }
