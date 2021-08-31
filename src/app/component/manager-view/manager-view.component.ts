@@ -34,6 +34,7 @@ export class ManagerViewComponent implements OnInit {
   user: any;
   manual_check_available_chat: Subscription;
   chats_admins: any[] = [];
+  selected_batch_admins: any[] = [];
   constructor(
     private batch_service: BatchService,
     private router: Router,
@@ -118,6 +119,7 @@ export class ManagerViewComponent implements OnInit {
 
       this.chats_admins[index].isOnline =
         res.status === 'Online' ? true : false;
+      this.selected_batch_admin();
     });
   }
 
@@ -171,10 +173,10 @@ export class ManagerViewComponent implements OnInit {
         (res: any) => {
           this.active_student_list = res.data;
           this.sorting(this.active_student_list);
-          // console.log(this.active_student_list);
-          this.spinner = false;
-          const timer = interval(120000);
 
+          this.find_sme_name();
+          const timer = interval(120000);
+          this.chats_admin();
           this.manual_check_available_chat = timer.subscribe(() =>
             this.check_available_chat()
           );
@@ -184,14 +186,30 @@ export class ManagerViewComponent implements OnInit {
   }
 
   check_available_chat() {
-    this.chat_service.get_batch_chat(this.selected_batch).subscribe(
-      (res: any) => {
-        this.active_student_list = res.data;
-        this.sorting(this.active_student_list);
-        this.spinner = false;
-      },
-      (error) => this.error_handler(error)
-    );
+    console.log(this.selected_batch);
+    this.chat_service
+      .get_batch_chat_manager_view(this.selected_batch)
+      .subscribe(
+        (res: any) => {
+          this.active_student_list = res.data;
+          this.sorting(this.active_student_list);
+          this.find_sme_name();
+        },
+        (error) => this.error_handler(error)
+      );
+  }
+
+  find_sme_name() {
+    this.active_student_list.map((stu) => {
+      const index = this.chats_admins.findIndex(
+        (admin) => stu.sme_id === admin._id
+      );
+
+      index > -1
+        ? (stu['sme_name'] = this.chats_admins[index].name)
+        : (stu['sme_name'] = null);
+    });
+    this.spinner = false;
   }
 
   get_selected_student_chat(student) {
@@ -393,8 +411,18 @@ export class ManagerViewComponent implements OnInit {
   chats_admin() {
     this.user_service.admins_chats().subscribe((res: any) => {
       this.chats_admins = res.data;
-      this.spinner = false;
+      this.selected_batch_admin();
     });
+  }
+
+  selected_batch_admin() {
+    this.selected_batch_admins = this.chats_admins.filter((admin) => {
+      const index = admin.batch_ids.findIndex(
+        (id) => id === this.selected_batch
+      );
+      return index > -1 ? admin : '';
+    });
+    this.spinner = false;
   }
 
   end_all_chat_admins() {
@@ -424,7 +452,6 @@ export class ManagerViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_all_batch();
-    this.chats_admin();
   }
 
   ngOnDestroy(): void {
