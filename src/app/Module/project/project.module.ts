@@ -12,10 +12,26 @@ import { CreateProjectComponent } from '../../component/project/create-project/c
 import { AssignProjectComponent } from '../../component/project/assign-project/assign-project.component';
 import { CreateAssignProjectComponent } from '../../component/project/create-assign-project/create-assign-project.component';
 import { EvaluatorComponent } from '../../component/project/evaluator/evaluator.component';
+import { ProjectEvaluatorComponent } from '../../component/project/project-evaluator/project-evaluator.component';
+import { SubmissionComponent } from '../../component/project/submission/submission.component';
+import { StudentSubmissionComponent } from '../../component/project/student-submission/student-submission.component';
+import { BatchProjectComponent } from '../../component/project/batch-project/batch-project.component';
+import { SubmissionEvaluationComponent } from '../../component/project/submission-evaluation/submission-evaluation.component';
 
 
 @NgModule({
-  declarations: [ProjectComponent, CategoryComponent,CreateCategoryComponent, CreateProjectComponent, AssignProjectComponent, CreateAssignProjectComponent, EvaluatorComponent],
+  declarations: [ProjectComponent, 
+    CategoryComponent,
+    CreateCategoryComponent, 
+    CreateProjectComponent, AssignProjectComponent, 
+    CreateAssignProjectComponent, 
+    EvaluatorComponent,
+    ProjectEvaluatorComponent,
+    SubmissionComponent,
+    StudentSubmissionComponent,
+    BatchProjectComponent,
+    SubmissionEvaluationComponent
+  ],
   imports: [
     CommonModule,
     ProjectRoutingModule,

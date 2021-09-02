@@ -8,6 +8,15 @@ import { environment } from 'src/environments/environment';
 })
 export class ProjectService {
 
+  submissionDetail = [];
+  batchDetail;
+  studentSubmission ;
+  assignedBatches = [];
+  projectSubmissions = [];
+  batchSubmission = [];
+  students = [];
+  studentDetails;
+  submittion;
   constructor(
     private http: HttpClient
   ) { }
@@ -58,10 +67,58 @@ export class ProjectService {
       `${environment.BASE_SERVER_URL}/assigned/project/getEvaluator`
     );
   }
+  get_project_evaluation(){
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/project/submission/findProjectEvaluation`
+    );
+  }
+  get_btanch(){
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/project/submission/branch`
+    );
+  }
   create_evaluator(data){
     return this.http.post(
       `${environment.BASE_SERVER_URL}/assigned/project/createEvaluator`, {data}
     );
+  }
+
+  getProject(project_id){
+    return this.http.get(
+      `${environment.BASE_SERVER_URL}/project/findOne/${project_id}`
+    );
+  }
+
+  getSubmissionDetail(){
+    return this.submissionDetail;
+  }
+
+  getStudentSubmission(){
+    return this.studentSubmission;
+  }
+
+  getBatchDetail(){
+    return this.batchDetail;
+  }
+  getAssignedBatches(){
+    return this.assignedBatches;
+  }
+  getProjectSubmissions(){
+    return this.projectSubmissions;
+  }
+
+  getBatchSubmission(){
+    return this.batchSubmission;
+  }
+
+  getStudent(){
+    return this.students;
+  }
+  getStudentDeatail(){
+    return this.studentDetails;
+  }
+  getSubmittion(){
+    return this.submittion;
   }
 
 }

@@ -8,6 +8,11 @@ import { CreateProjectComponent } from '../../component/project/create-project/c
 import { AssignProjectComponent } from '../../component/project/assign-project/assign-project.component';
 import { CreateAssignProjectComponent } from '../../component/project/create-assign-project/create-assign-project.component';
 import { EvaluatorComponent } from '../../component/project/evaluator/evaluator.component';
+import { ProjectEvaluatorComponent } from '../../component/project/project-evaluator/project-evaluator.component';
+import { SubmissionComponent } from '../../component/project/submission/submission.component';
+import { StudentSubmissionComponent } from '../../component/project/student-submission/student-submission.component';
+import { BatchProjectComponent } from '../../component/project/batch-project/batch-project.component';
+import { SubmissionEvaluationComponent } from '../../component/project/submission-evaluation/submission-evaluation.component';
 
 
 const routes: Routes = [
@@ -18,6 +23,11 @@ const routes: Routes = [
   { path: 'assign-project', component: AssignProjectComponent },
   { path: 'create-assign-project', component: CreateAssignProjectComponent },
   { path: 'evaluator', component: EvaluatorComponent },
+  { path: 'project-evaluation', component: ProjectEvaluatorComponent },
+  { path: 'submission', component: SubmissionComponent },
+  { path: 'student-submission', component: StudentSubmissionComponent },
+  { path: 'batch-project', component: BatchProjectComponent },
+  { path: 'submittion-evaluation', component: SubmissionEvaluationComponent },
 ];
 
 @NgModule({

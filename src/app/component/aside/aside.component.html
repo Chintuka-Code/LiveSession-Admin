@@ -244,6 +244,16 @@
             >
           </a>
         </li>
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('C00')"
+        >
+          <a [routerLink]="['project/project-evaluation']">
+            <span class="pointer-none"
+              ><i class="fab fa-contao px-3"></i>Project Evaluation</span
+            >
+          </a>
+        </li>
       </ul>
     </li>
 
