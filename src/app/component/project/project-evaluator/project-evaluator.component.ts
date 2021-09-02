@@ -132,7 +132,8 @@ export class ProjectEvaluatorComponent implements OnInit {
 
    
     let batch_submission = this.project_evaluation_list.filter(data=>data.batch_id._id === batch_id);
-
+    console.log(this.project_evaluation_list);
+    
     return batch_submission.filter(data =>data.status === status).length;
     // return this.gp_project_evaluation_list[index].filter(data =>data.status === status).length;
     // return 0;

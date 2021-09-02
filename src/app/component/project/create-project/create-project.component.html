@@ -86,7 +86,7 @@
                 </div>
                 <div class="col-12 col-md-6 mt-6">
                     <div class="p-field-checkbox">
-                        <p-checkbox  formControlName="is_marking_scheme" binary="true" inputId="is_marking_scheme"></p-checkbox>
+                        <p-checkbox  (onChange)="toggleVisibility($event)" formControlName="is_marking_scheme" binary="true" inputId="is_marking_scheme"></p-checkbox>
                         <label for="is_marking_scheme" class="padding-sm">Add Marking Scheme</label>
                     </div>
                 </div>

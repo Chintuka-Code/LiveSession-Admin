@@ -252,7 +252,7 @@
                          
                          <div *ngIf="isAccepted">
                             <hr>
-                            <div class="row my-4" >
+                            <!-- <div class="row my-4" >
                                 <div class="col-12 col-md-6 mt-6" *ngIf="!projectDetails.is_marking_scheme">
                                     <span class="p-float-label w-100">
                                         <input
@@ -297,12 +297,121 @@
                                         </div>
                                     </div>
                                 </div>
-                            </ng-container>
+                            </ng-container> -->
 
+                            <form
+                            action=""
+                            [formGroup]="evaluation_form"
+                            (ngSubmit)="create_evaluation()"
+                            class="w-100"
+                          >
+                              <div class="row my-4">
+                                  <div class="col-12 col-md-6 mt-6">
+                                    <label for="marks">Total Marks</label>
+                                      <span class="p-float-label w-100">
+                                          <input
+                                          type="number"
+                                          id="marks"
+                                          class="form-control"
+                                          min="0"
+                                          formControlName="total_marks"
+                                          />
+                                         
+                                      </span>
+                                  </div>
+                                  <div class="col-12 col-md-6 mt-6">
+                                    <label for="marks">Remark</label>
+                                    <span class="p-float-label w-100">
+                                        <input
+                                        type="text"
+                                        id="remark"
+                                        class="form-control"
+                                        formControlName="remark"
+                                        />
+                                       
+                                    </span>
+                                      <!-- <div class="p-field-checkbox">
+                                          <p-checkbox  formControlName="is_marking_scheme" binary="true" inputId="is_marking_scheme"></p-checkbox>
+                                          <label for="is_marking_scheme" class="padding-sm">Add Marking Scheme</label>
+                                      </div> -->
+                                  </div>
+                                  
+                              </div>
+                  
+                              <ng-container *ngIf="evaluation_form.controls['is_marking_scheme'].value" formArrayName="marking_schemes">
+                                  <div class="row my-4" *ngFor="let _ of marking_schemes.controls; index as i">
+                                      <ng-container [formGroupName]="i">
+                                          <div class="col-6" >
+                                              <span class="p-float-label w-100">
+                                                  <input
+                                                  type="text"
+                                                  id="name{{i}}"
+                                                  pInputText
+                                                  formControlName="name"
+                                                  class="form-control"
+                                                  />
+                                                  <label for="name{{i}}">name</label>
+                                              </span>
+                                          </div>
+                                          <div class="col-6" >
+                                              <span class="p-float-label w-100">
+                                                  <input
+                                                  type="number"
+                                                  id="value{{i}}"
+                                                  pInputText
+                                                  min="0"
+                                                  formControlName="value"
+                                                  class="form-control"
+                                                  />
+                                                  <label for="value{{i}}">value</label>
+                                              </span>
+                                          </div>
+                  
+                                          <!-- <div class="col-2 d-flex">
+                                              <div>
+                                                  <button
+                                                  pButton
+                                                  pRipple
+                                                  type="button"
+                                                  (click)="addMarkingScheme()"
+                                                  icon="pi pi-plus"
+                                                  class="p-button-rounded p-button-success"
+                                                  ></button>
+                                              </div>
+                                  
+                                              <div style="margin-left: 1rem">
+                                                  <button
+                                                  pButton
+                                                  pRipple
+                                                  type="button"
+                                                  (click)="removeMarkingScheme(i)"
+                                                  icon="pi pi-minus"
+                                                  class="p-button-rounded p-button-danger"
+                                                  ></button>
+                                              </div>
+                                          </div> -->
+                                      </ng-container>
+                                  </div>
+                              </ng-container>
+                      
+
+                  
+                              <div class="row">
+                                  <div class="col-12 col-md-4 mt-5">
+                                  <button
+                                      class="btn btn-primary"
+                                      [disabled]="evaluation_form.invalid"
+                                  >
+                                      Create
+                                  </button>
+                                  </div>
+                              </div>
+                          </form>
+<!-- 
                             <div class="col-md-12 text-center">
                                 <button type="button" class="btn btn-primary m-3" (click)="submit()">Submit</button>
                                
-                            </div>
+                            </div> -->
                          </div>
 
                          <div *ngIf="isRejected">
@@ -312,11 +421,11 @@
                                     <span class="p-float-label w-100">
                                         <input
                                         type="text"
-                                        id="marks"
+                                        id="remark"
                                         class="form-control"
                                         placeholder="remark"
                                         />
-                                        <label for="marks">Remark</label>
+                                        <label for="remark">Remark</label>
                                     </span>
                                 </div>
                             </div>

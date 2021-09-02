@@ -40,7 +40,7 @@ export class CreateProjectComponent implements OnInit {
       tags: ['', ],
       total_marks: ['', ],
       is_marking_scheme:[false, Validators.required],
-      marking_schemes: this.fb.array([this.marking_schemes_form()]),
+      marking_schemes: this.fb.array([]),
      
       links: new FormArray([new FormControl('', )]),
     });
@@ -98,6 +98,24 @@ export class CreateProjectComponent implements OnInit {
     )};
 
 
+  toggleVisibility(event){
+ 
+    if(this.create_project_form.get('is_marking_scheme').value){
+      this.addMarkingScheme();
+    }else{
+
+      this.clearSchime(this.create_project_form.get('marking_schemes') as FormArray);
+    }
+      
+
+  }
+
+  clearSchime(formArray: FormArray) {
+
+    while (formArray.length !== 0) {
+      formArray.removeAt(0)
+    }
+  }
   async create_project() {
     this.spinner = true;
     let data = this.create_project_form.getRawValue();
@@ -124,7 +142,8 @@ export class CreateProjectComponent implements OnInit {
           text: 'Project Created',
         }).then(() => {
           this.spinner = false;
-          this.create_project_form.reset();
+          // this.create_project_form.reset();
+          this.router.navigate(['/main/project']);
         });
       },
       (error) => {
