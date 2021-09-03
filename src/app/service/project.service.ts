@@ -15,8 +15,9 @@ export class ProjectService {
   projectSubmissions = [];
   batchSubmission = [];
   students = [];
-  studentDetails;
+  studentSubmissionDetails;
   submittion;
+  assignedProjectDetail;
   constructor(
     private http: HttpClient
   ) { }
@@ -77,6 +78,10 @@ export class ProjectService {
       `${environment.BASE_SERVER_URL}/project/submission/branch`
     );
   }
+
+  store_evaluation(data){
+    return this.http.post(`${environment.BASE_SERVER_URL}/project/submission/evaluate`, {data} );
+  }
   create_evaluator(data){
     return this.http.post(
       `${environment.BASE_SERVER_URL}/assigned/project/createEvaluator`, {data}
@@ -114,11 +119,14 @@ export class ProjectService {
   getStudent(){
     return this.students;
   }
-  getStudentDeatail(){
-    return this.studentDetails;
+  getStudentSubmissionDeatail(){
+    return this.studentSubmissionDetails;
   }
   getSubmittion(){
     return this.submittion;
+  }
+  getAssignedProjectDetail(){
+    return this.assignedProjectDetail;
   }
 
 }
