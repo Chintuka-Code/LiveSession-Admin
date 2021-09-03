@@ -1,0 +1,58 @@
+<div class="card" *ngIf="!spinner; else showspinner">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Assign Project</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../assign-project']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+      <div class="container-fluid">
+        <form>
+            <div class="row">
+                <div class="col-12 col-md-6 mt-6">
+                    <span class="p-float-label w-100">
+                        <p-multiSelect 
+                          display="chip"
+                          inputId="project"
+                          [autoDisplayFirst]="false"
+                          name="evaluator"
+                          optionLabel="name"
+                          [options]="evaluator_list"
+                          [style]="{ minWidth: '100%' }"
+                          [(ngModel)]="evaluator"
+                          (onChange)="evaluatorChange($event)"
+                          required
+                         >
+                         </p-multiSelect>
+                      
+                    <label for="project">Select Evaluator *</label>
+                    </span>
+                </div>
+              
+               
+            </div>
+
+
+            <div class="row">
+                <div class="col-12 col-md-4 mt-5">
+                    <button
+                        class="btn btn-primary"
+                        (click)="createEvaluator()"
+                    >
+                        Create
+                    </button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  

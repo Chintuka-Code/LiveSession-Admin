@@ -1,0 +1,105 @@
+<section *ngIf="!spinner; else showspinner">
+    <!-- Enabled Course -->
+    <div class="card">
+      <div class="card-body">
+        <div class="header">
+          <h3 class="">Project List</h3>
+  
+          <div class="d-flex align-items-center">
+            <button class="btn btn-primary" (click)="createCategory()">
+              <a>
+                Create Project <i class="fas fa-plus"></i>
+              </a>
+            </button>
+          </div>
+        </div>
+  
+        <div>
+          <p-table
+            #question_bank_table
+            [value]="project_list"
+            dataKey="id"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="p-datatable-customers"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'name',
+              'tags',
+              'project_category.name'
+            ]"
+          >
+            <ng-template pTemplate="caption" class="w-100">
+              <div class="p-d-flex w-100">
+                <span class="p-input-icon-left p-ml-auto w-100">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      question_bank_table.filterGlobal(
+                        $event.target.value,
+                        'contains'
+                      )
+                    "
+                    placeholder="Search keyword"
+                    class="w-100"
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Total Marks</th>
+                <th>Tags</th>
+                <th>Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-project>
+              <tr>
+                <td>{{project.name}}</td>
+                <td>{{project.project_category.name}}</td>
+                <td>{{project.total_marks}}</td>
+                <td>{{project.tags}}</td>
+                <td class="position-relative">
+
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-ellipsis-h"
+                      class="p-button-rounded p-button-text"
+                      (click)="menu.toggle($event)"
+                    ></button>
+  
+                    <p-menu
+                      #menu
+                      [popup]="true"
+                      [model]="items"
+                      (click)="project_action(project)"
+                    ></p-menu>
+
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5">No Projects found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  

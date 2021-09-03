@@ -327,6 +327,13 @@ const routes: Routes = [
             (m) => m.EndAllChatsModule
           ),
       },
+      {
+        path: 'project',
+        loadChildren: () =>
+          import('../project/project.module').then(
+            (m) => m.ProjectModule
+          ),
+      },
     ],
   },
 ];

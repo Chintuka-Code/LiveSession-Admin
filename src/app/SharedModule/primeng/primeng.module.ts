@@ -29,6 +29,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { CardModule } from 'primeng/card';
 import {CascadeSelectModule} from 'primeng/cascadeselect';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import {TabViewModule} from 'primeng/tabview';
 
 const primeng = [
   AutoCompleteModule,
@@ -59,7 +60,8 @@ const primeng = [
   InputSwitchModule,
   CardModule,
   CascadeSelectModule,
-  RadioButtonModule
+  RadioButtonModule,
+  TabViewModule,
 ];
 
 @NgModule({
