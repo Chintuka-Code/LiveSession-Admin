@@ -327,6 +327,11 @@ const routes: Routes = [
             (m) => m.EndAllChatsModule
           ),
       },
+      {
+        path: 'log',
+        loadChildren: () =>
+          import('../log/log.module').then((m) => m.LogModule),
+      },
     ],
   },
 ];

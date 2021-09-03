@@ -12,6 +12,8 @@ import { FormativeData } from 'src/app/utilities/formative_data';
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Detect_URL } from 'src/app/utilities/detect_url';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
+import { LogService } from 'src/app/service/log.service';
+import { create_log } from 'src/app/utilities/log';
 
 @Component({
   selector: 'app-manager-view',
@@ -41,7 +43,8 @@ export class ManagerViewComponent implements OnInit {
     private chat_service: ChatService,
     private live_session_chat_service: LiveSessionChatService,
     private user_service: UserService,
-    private attachment_service: AttachmentService
+    private attachment_service: AttachmentService,
+    private log_service: LogService
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
@@ -452,6 +455,16 @@ export class ManagerViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_all_batch();
+    create_log(
+      {
+        html_content: 'bhatti',
+        created_at: new Date(),
+        chat_id: '',
+        log_code: '',
+        user_id: '',
+      },
+      this.log_service
+    );
   }
 
   ngOnDestroy(): void {
