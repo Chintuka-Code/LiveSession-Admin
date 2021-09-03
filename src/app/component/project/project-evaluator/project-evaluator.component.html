@@ -4,14 +4,6 @@
       <div class="card-body">
         <div class="header">
           <h3 class="">Project Evaluation List</h3>
-  
-          <!-- <div class="d-flex align-items-center">
-            <button class="btn btn-primary" (click)="createCategory()">
-              <a>
-                Create Category <i class="fas fa-plus"></i>
-              </a>
-            </button>
-          </div> -->
         </div>
   
         <div>
@@ -54,16 +46,16 @@
                 <th>New</th>
                 <th>Rejected</th>
                 <th>Evaluated</th>
-                <th>Action</th>
+                <!-- <th>Action</th> -->
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-batch let-rowIndex="rowIndex">
               <tr>
-                <td> <a href="javascript:void(0);" (click)="submissionDetail(batch)">{{batch.batch_id.batch_name}}</a></td>
+                <td> <a href="javascript:void(0);" (click)="batchProject(batch)">{{batch.batch_id.batch_name}}</a></td>
                 <td>{{statusCount(batch.batch_id._id, 'new')}}</td>
                 <td>{{statusCount(batch.batch_id._id, 'rejected')}}</td>
                 <td>{{statusCount(batch.batch_id._id, 'evaluated')}}</td>
-                <td class="position-relative">
+                <!-- <td class="position-relative">
                   
                     <button
                       pButton
@@ -81,7 +73,7 @@
                       (click)="category_action(rowIndex)"
                     ></p-menu>
                   
-                </td>
+                </td> -->
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">

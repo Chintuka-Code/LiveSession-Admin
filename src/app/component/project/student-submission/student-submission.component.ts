@@ -11,10 +11,10 @@ import Swal from 'sweetalert2';
 export class StudentSubmissionComponent implements OnInit {
 
   spinner:boolean = false;
-  branchList = [];
-
   students = [];
   status = ['new', 'evaluated', 'rejected', 'not submited'];
+  batchDetail;
+  
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -23,14 +23,12 @@ export class StudentSubmissionComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.studentSubmission = this.projectService.getStudentSubmission();
+    
     this.students = this.projectService.getStudent();
-   
-    if(!this.students.length){
+    this.batchDetail = this.projectService.getBatchDetail();
+    
+    if(!this.batchDetail){
       this.router.navigate(['/main/project/project-evaluation']);
-    }else{
-      console.log(this.students);
-      
     }
   }
 
@@ -39,9 +37,7 @@ export class StudentSubmissionComponent implements OnInit {
   }
 
   studentSubmission(submissions){
-    console.log(submissions);
-
-    this.projectService.studentDetails = submissions;
+    this.projectService.studentSubmissionDetails = submissions;
     return this.router.navigate(['/main/project/submission']);
   }
 

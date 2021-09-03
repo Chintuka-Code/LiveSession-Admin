@@ -31,26 +31,26 @@ export class ProjectEvaluatorComponent implements OnInit {
   }
 
 
-  getprojectEvaluation(){
-    this.projectService.get_project_evaluation().subscribe((res:any)=>{
-      this.project_evaluation_list = res.data;
-      console.log(this.project_evaluation_list);
+  // getprojectEvaluation(){
+  //   this.projectService.get_project_evaluation().subscribe((res:any)=>{
+  //     this.project_evaluation_list = res.data;
+  //     console.log(this.project_evaluation_list);
       
-      let gp = this.groupByBatch(this.project_evaluation_list);
-      this.gp_project_evaluation_list = Object.values(gp);
-      this.branchList = Object.keys(gp);
+  //     let gp = this.groupByBatch(this.project_evaluation_list);
+  //     this.gp_project_evaluation_list = Object.values(gp);
+  //     this.branchList = Object.keys(gp);
       
-    },
-    (error) => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: error.errorMessage,
-      }).then(() => {
-        this.spinner = false;
-      });
-    })
-  };
+  //   },
+  //   (error) => {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Oops...',
+  //       text: error.errorMessage,
+  //     }).then(() => {
+  //       this.spinner = false;
+  //     });
+  //   })
+  // };
 
 
   getBranch(){
@@ -129,27 +129,17 @@ export class ProjectEvaluatorComponent implements OnInit {
   }
 
   statusCount(batch_id, status){
-
-   
     let batch_submission = this.project_evaluation_list.filter(data=>data.batch_id._id === batch_id);
-    console.log(this.project_evaluation_list);
-    
     return batch_submission.filter(data =>data.status === status).length;
-    // return this.gp_project_evaluation_list[index].filter(data =>data.status === status).length;
-    // return 0;
   }
 
 
-  submissionDetail(batch){
+  batchProject(batch){
     
-    // this.projectService.submissionDetail = this.gp_project_evaluation_list[index];
     this.projectService.batchDetail = batch;
-    this.projectService.batchSubmission = this.projectSubmissions.filter(data=>data.batch_id._id === batch.batch_id._id);
-
     // console.log(batch);
-    // console.log(this.projectService.batchSubmission);
     
-    
+    this.projectService.batchSubmission = this.projectSubmissions.filter(data=>data.batch_id._id === batch.batch_id._id);
     return this.router.navigate(['/main/project/batch-project']);
   }
 

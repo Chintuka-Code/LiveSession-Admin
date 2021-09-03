@@ -6,7 +6,7 @@
           <h3 class="">Submission Details</h3>
         </div>
   
-        <div *ngIf="students.length">
+        <div>
             <!-- <p-table
               #question_bank_table
               [value]="students"
@@ -65,8 +65,8 @@
                     <p-table [value]="filterStudent(state)" responsiveLayout="scroll">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Student Name</th>
-                                </tr>
+                              <th>Student Email</th>
+                            </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-student>
                             <tr>

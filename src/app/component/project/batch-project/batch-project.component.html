@@ -47,36 +47,19 @@
                 <th>Rejected</th>
                 <th>Evaluated</th>
                 <th>Due Date</th>
-                <!-- <th>Action</th> -->
+                
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-project let-rowIndex="rowIndex">
               <tr>
-                <td> <a href="javascript:void(0);" (click)="students(project.project_id)">{{project.project_name}}</a></td>
-                <td *ngIf="!project.due_date">--</td>
+                <td> <a href="javascript:void(0);" (click)="submitedStudents(project)">{{project.project_name}}</a></td>
+                
                 <td>{{statusCount(project.project_id, 'new')}}</td>
                 <td>{{statusCount(project.project_id, 'rejected')}}</td>
                 <td>{{statusCount(project.project_id, 'evaluated')}}</td>
                 <td *ngIf="project.due_date"> {{project.due_date | date:'medium'}}</td>
-                <!-- <td class="position-relative">
-                  
-                    <button
-                      pButton
-                      pRipple
-                      type="button"
-                      icon="pi pi-ellipsis-h"
-                      class="p-button-rounded p-button-text"
-                      (click)="menu.toggle($event)"
-                    ></button>
-  
-                    <p-menu
-                      #menu
-                      [popup]="true"
-                      [model]="items"
-                      (click)="category_action(rowIndex)"
-                    ></p-menu>
-                  
-                </td> -->
+                <td *ngIf="!project.due_date">--</td>
+              
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">

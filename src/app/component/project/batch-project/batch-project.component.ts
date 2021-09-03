@@ -24,10 +24,6 @@ export class BatchProjectComponent implements OnInit {
     this.batchSubmission = this.projectService.getBatchSubmission();
     if(!this.batchDetail){
       this.router.navigate(['/main/project/project-evaluation']);
-    }else{
-      console.log(this.batchDetail);
-      console.log(this.projectSubmissions);
-      
     }
   }
 
@@ -36,11 +32,13 @@ export class BatchProjectComponent implements OnInit {
 
   }
 
-  students(project_id){
+  submitedStudents(project){
 
-    let students = this.batchSubmission.filter(data => data.project_id._id === project_id)
+
+    let students = this.batchSubmission.filter(data => data.project_id._id === project.project_id)
     this.projectService.students = students;
-    // console.log(students);
+    this.projectService.assignedProjectDetail = project;
+
     return this.router.navigate(['/main/project/student-submission']);
     
     

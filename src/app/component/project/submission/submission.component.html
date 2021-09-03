@@ -1,454 +1,341 @@
-<!-- <section *ngIf="!spinner; else showspinner">
-
-  
-    <div class="card" *ngIf="studentSubmissions">
-      <div class="card-body">
-        <div class="header">
-          <h3 class="">Project Evaluation List</h3>
-        </div>
-  
-        <div>
-          <p-table
-            #question_bank_table
-            [value]="studentSubmissions.submission"
-            dataKey="id"
-            [rows]="10"
-            [showCurrentPageReport]="true"
-            [rowsPerPageOptions]="[10, 25, 50]"
-            styleClass="p-datatable-customers"
-            [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [globalFilterFields]="[
-              'project_name'
-            ]"
-          >
-            <ng-template pTemplate="caption" class="w-100">
-              <div class="p-d-flex w-100">
-                <span class="p-input-icon-left p-ml-auto w-100">
-                  <i class="pi pi-search"></i>
-                  <input
-                    pInputText
-                    type="text"
-                    (input)="
-                      question_bank_table.filterGlobal(
-                        $event.target.value,
-                        'contains'
-                      )
-                    "
-                    placeholder="Search keyword"
-                    class="w-100"
-                  />
-                </span>
-              </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Status</th>
-                <th>Submission Date</th>
-               
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-submission >
-              <tr>
-                <td> <a href="javascript:void(0);" (click)="submittionEvaluation(submission)">{{submission.submission_status}}</a></td>
-                <td> {{submission.submission_date | date:'medium'}} </td>
-               
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="5">No Project Evaluation found.</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <ng-template #showspinner>
-    <div class="spinner">
-      <app-spinner></app-spinner>
-    </div>
-  </ng-template>
-   -->
-
 
    
 <section *ngIf="!spinner; else showspinner">
-    <div class="row" *ngIf="studentSubmissions">
-        <div class="col-sm-12">
-            <div class="card" >
-                <div class="card-body p-2 p-md-4">
-                <h1>Submittion Details</h1>
-                    <!-- <h3>{{assignedProject.project_name}}</h3>
+  <div class="card" *ngIf="projectDetails">
+    <div class="card-body p-2 p-md-4">
+      <div class="row " style="text-align: center;"><h3>Project Details</h3></div>
+      <div class="row">
+        <div class="col-lg-9">
+          <h3>{{projectDetails.name}}</h3>
+          <div>
+            <small *ngIf="!assignedProjectDetail.due_date">Due Date: --</small>
+            <small *ngIf="assignedProjectDetail.due_date">Due Date: {{assignedProjectDetail.due_date | date:'medium'}}</small>
+            <!-- <div style="display: inline-block;">
+              <small style="padding: 0px 10px;">|</small>
+              <small style="text-transform: capitalize;">Status:
+                <p-tag styleClass="p-mr-2" *ngIf="studentSubmissions?.status ==='evaluated' " severity="success" value="{{studentSubmissions.status | titlecase}}" [rounded]="true"></p-tag>
+                <p-tag styleClass="p-mr-2" *ngIf="studentSubmissions?.status ==='new' " severity="info" value="{{'submited' | titlecase}}" [rounded]="true"></p-tag>
+                <p-tag styleClass="p-mr-2" *ngIf="studentSubmissions?.status ==='rejected' " severity="danger" value="{{studentSubmissions.status | titlecase}}" [rounded]="true"></p-tag>
+
+              </small>
+            </div>     -->
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <h6 style="text-align:right;">Total Marks: {{projectDetails.total_marks}}</h6>
+        </div>
+      </div>
+
+      <div class="row my-4">
+        <div class="col-lg-12">
+          <h5>Project Description</h5>
+          <div [innerHTML]="projectDetails.description"></div>
+        </div>
+      </div>
+
+      <div class="row my-4" *ngIf="projectDetails.links.length">
+        <div class="col-lg-12">
+          <h5>Reference Links</h5>
+          <ol type="1" >
+            <li *ngFor="let link of projectDetails.links"><a  [href]="link" target="_blank">{{link}}</a></li>
+          </ol> 
+        </div>
+      </div>
+
+      <div class="row my-4" *ngIf="projectDetails.attachment.length">
+        <div class="col-lg-12">
+          <h5>File Attachments</h5>
+          <ol type="1" >
+            <li *ngFor="let file of projectDetails.attachment; let i = index "><a  [href]="file" target="_blank">Click to download</a></li>
+          </ol> 
+        </div>
+      </div>
+      <div class="row my-4" *ngIf="projectDetails.is_marking_scheme">
+        <div class="col-lg-12">
+          <h5>Marking Scheme</h5>
+          <ul >
+            <li *ngFor="let scheme of projectDetails.marking_schemes; let i = index ">{{scheme.name}} : {{scheme.value}}</li>
+          </ul> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" *ngIf="studentSubmissions">
+    <div class="card-body p-2 p-md-4">             
+        <div class="container-fluid">
+          <h4>Student Submittions</h4>
+
+          <p-accordion>
+            <ng-container *ngFor="let submission of studentSubmissions.submission.reverse(); let i=index;">
+              <p-accordionTab 
+               style="width: 100%;">
+              <p-header>
+                <div class="row">
+                  <div class="col-lg-4">
+                    Submission: {{studentSubmissions.submission.length - i}}
                     
-                    <h4>Description:</h4>
-                    <div [innerHTML]="assignedProject.project_id.description"></div>
-                    <p *ngIf="assignedProject.due_date">Due Date: {{assignedProject.due_date | date:'medium'}}</p>
-                    <p *ngIf="!assignedProject.due_date">Due Date: --</p>
-                    <p>Total Marks: {{assignedProject.project_id.total_marks}}</p>
-                    <ul *ngIf="assignedProject.project_id.is_marking_scheme">
-                        <li *ngFor="let scheme of assignedProject.project_id.marking_schemes">
-                            {{scheme.name}} : {{scheme.value}}
-                        </li>
-                    </ul>
-                    <h4>Links:</h4>
-                    <ul *ngIf="assignedProject.project_id.links.length">
-                        <li *ngFor="let link of assignedProject.project_id.links">
-                            <a  [href]="link" target="_blank">{{link}}</a>
-                        </li>
-                    </ul>
-
-                    <h4>Files:</h4>
-                    <ul *ngIf="assignedProject.project_id.attachment.length">
-                        <li *ngFor="let link of assignedProject.project_id.attachment; let i = index ">
-                            <a  [href]="link" target="_blank">file {{i+1}}</a>
-                        </li>
-                    </ul> -->
-
+                  </div>
+                  <div class="col-lg-3">
+                    <p-tag styleClass="p-mr-2" *ngIf="submission.submission_status ==='evaluated' " severity="success" value="{{submission.submission_status | titlecase}}" [rounded]="true"></p-tag>
+                    <p-tag styleClass="p-mr-2" *ngIf="submission.submission_status ==='new' " severity="info" value="{{submission.submission_status | titlecase}}" [rounded]="true"></p-tag>
+                    <p-tag styleClass="p-mr-2" *ngIf="submission.submission_status ==='rejected' " severity="danger" value="{{submission.submission_status | titlecase}}" [rounded]="true"></p-tag>
+                    
+                  </div>
+                  <div class="col-lg-5" >
+                    <small> Submitted On: {{submission.submission_date | date:'medium'}}</small>
+                  </div>
                 </div>
-            </div>
-
-            <!-- <div class="card" *ngIf="!submitedProject || submitedProject && submitedProject.status ==='rejected'">
-                <div class="card-body p-2 p-md-4">
-                    <div class="container-fluid">
-                        <form
-                          action=""
-                          [formGroup]="create_project_form"
-                          (ngSubmit)="create_project()"
-                          class="w-100"
-                        >
-                
-                            <h4>Make a submission</h4>
-                            <div class="row my-2"></div>
-                            <div class="col-12 mt-12 mt-md-12">
-                                <label for="description">Description *</label>
-                                <quill-editor
-                                id="description"
-                                [styles]="{ 'min-height': '100px', 'padding-top': '2rem' }"
-                                [modules]="modules"
-                                formControlName="description"
-                                >
-                                </quill-editor>
-                            </div>
-            
-                
-                            <ng-container formArrayName="links">
-                                <div class="row my-4" *ngFor="let _ of links.controls; index as i">
-                                  <div class="col-10">
-                                    <span class="p-float-label w-100">
-                                      <input
-                                        type="text"
-                                        id="link{{i}}"
-                                        pInputText
-                                        [formControlName]="i"
-                                        class="form-control"
-                                      />
-                                      <label for="link{{i}}">Insert Links</label>
-                                    </span>
-                                  </div>
-                
-                                  <div class="col-2 d-flex">
-                                    <div>
-                                      <button
-                                        pButton
-                                        pRipple
-                                        type="button"
-                                        (click)="addLink()"
-                                        icon="pi pi-plus"
-                                        class="p-button-rounded p-button-success"
-                                      ></button>
-                                    </div>
-                      
-                                    <div style="margin-left: 1rem">
-                                      <button
-                                        pButton
-                                        pRipple
-                                        type="button"
-                                        (click)="removeLink(i)"
-                                        icon="pi pi-minus"
-                                        class="p-button-rounded p-button-danger"
-                                      ></button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </ng-container>
-                
-                              
-                              <div class="row">
-                                <div class="d-flex align-items-center mt-3">
-                                    <div class="file">
-                                      <p class="p-0 m-0">Attachment</p>
-                                      <input
-                                        type="file"
-                                        multiple
-                                        (change)="attchment($event)"
-                                        name="file"
-                                        id="file"
-                                      />
-                                      <label for="file" title="select files">
-                                        <span><i class="fas fa-paperclip"></i></span>
-                                        <span *ngIf="files.length > 0"> {{ files.length }} </span>
-                                      </label>
-                                    </div>
-                  
-                                  </div>
-                              </div>
-                
-                            <div class="row">
-                                <div class="col-12 col-md-4 mt-5">
-                                <button
-                                    class="btn btn-primary"
-                                    [disabled]="create_project_form.invalid"
-                                >
-                                {{submitedProject && submitedProject.status ==='rejected'? 'Make Re-Submittion':'Make Submittion'}}
-                                </button>
-                                </div>
-                            </div>
-                        </form>
-                      </div>
-
-                </div>
-            </div> -->
-
+             </p-header>
 
             
-              <div class="card" *ngIf="studentSubmissions">
-                <div class="card-body p-2 p-md-4">             
-                    <div class="container-fluid">
-                      <h4>Student Submittions</h4>
-                      <div *ngFor="let submission of studentSubmissions.submission.reverse()">
-                        <div class="card">
-                          <div class="card-body p-2 p-md-4">
-                            <h3>{{submission.submission_status}}</h3> 
-                            <h4>Evaluation remark:</h4>
-                            <div [innerHTML]="submission.evaluation_remark"></div>
-                            <h4>Description:</h4>
-                            <div [innerHTML]="submission.description"></div>
-                            <p >Submittion Date: {{submission.submission_date | date:'medium'}}</p>
-                            <h4>Links:</h4>
-                            <ul *ngIf="submission.links.length">
-                                <li *ngFor="let link of submission.links">
-                                    <a  [href]="link" target="_blank">{{link}}</a>
-                                </li>
-                            </ul>
-                            <h4>Files:</h4>
-                            <ul *ngIf="submission.attachment.length">
-                                <li *ngFor="let link of submission.attachment; let i = index ">
-                                    <a  [href]="link" download="true">file {{i+1}}</a>
-                                </li>
-                            </ul>
-                          </div>
-                          <hr>
-                          <div *ngIf="projectDetails">
-                          <!-- <div class="container bg-light"> -->
-                            <div class="col-md-12 text-center">
-                                <button type="button" class="btn btn-primary m-3" (click)="accept()">Accep</button>
-                                <button type="button" class="btn btn-danger m-3" (click)="reject()">Reject</button>
-                            </div>
-                        <!-- </div> -->
-                            
-                         
-                         <div *ngIf="isAccepted">
-                            <hr>
-                            <!-- <div class="row my-4" >
-                                <div class="col-12 col-md-6 mt-6" *ngIf="!projectDetails.is_marking_scheme">
-                                    <span class="p-float-label w-100">
-                                        <input
-                                        type="number"
-                                        id="marks"
-                                        class="form-control"
-                                        min="0"
-                                        max="{{projectDetails.total_marks}}"
-                                        [(ngModel)]="totalMarks"
-                                        />
-                                        <label for="marks">Total Marks{{projectDetails.total_marks}}</label>
-                                    </span>
-                                </div>
-                                <div class="col-12 col-md-6 mt-6">
-                                    <span class="p-float-label w-100">
-                                        <input
-                                        type="text"
-                                        id="remark"
-                                        class="form-control"
-                                        [(ngModel)]="remark"
-                                        />
-                                        <label for="remark">Remark</label>
-                                    </span>
-                                </div>
-                            </div>
-                            <ng-container *ngIf="projectDetails.is_marking_scheme">
-                                <div class="row my-4" *ngFor="let schime of projectDetails.marking_schemes let i=index">
-                                    <div class="col-12 col-md-12 mt-12">
-                                        <div class="col-12 col-md-6 mt-6">
-                                            <span class="p-float-label w-100">
-                                                <input
-                                                type="number"
-                                                id="marks"
-                                                name="schime"
-                                                class="form-control"
-                                                min="0"
-                                                max="{{schime.value}}"
-                                                [(ngModel)]="schime[i]"
-                                                />
-                                                <label for="marks">{{schime.name}}({{schime.value}})</label>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-container> -->
 
-                            <form
-                            action=""
-                            [formGroup]="evaluation_form"
-                            (ngSubmit)="create_evaluation()"
-                            class="w-100"
-                          >
-                              <div class="row my-4">
-                                  <div class="col-12 col-md-6 mt-6">
-                                    <label for="marks">Total Marks</label>
-                                      <span class="p-float-label w-100">
-                                          <input
-                                          type="number"
-                                          id="marks"
-                                          class="form-control"
-                                          min="0"
-                                          formControlName="total_marks"
-                                          />
-                                         
-                                      </span>
-                                  </div>
-                                  <div class="col-12 col-md-6 mt-6">
-                                    <label for="marks">Remark</label>
-                                    <span class="p-float-label w-100">
-                                        <input
-                                        type="text"
-                                        id="remark"
-                                        class="form-control"
-                                        formControlName="remark"
-                                        />
-                                       
-                                    </span>
-                                      <!-- <div class="p-field-checkbox">
-                                          <p-checkbox  formControlName="is_marking_scheme" binary="true" inputId="is_marking_scheme"></p-checkbox>
-                                          <label for="is_marking_scheme" class="padding-sm">Add Marking Scheme</label>
-                                      </div> -->
-                                  </div>
-                                  
-                              </div>
-                  
-                              <ng-container *ngIf="evaluation_form.controls['is_marking_scheme'].value" formArrayName="marking_schemes">
-                                  <div class="row my-4" *ngFor="let _ of marking_schemes.controls; index as i">
-                                      <ng-container [formGroupName]="i">
-                                          <div class="col-6" >
-                                              <span class="p-float-label w-100">
-                                                  <input
-                                                  type="text"
-                                                  id="name{{i}}"
-                                                  pInputText
-                                                  formControlName="name"
-                                                  class="form-control"
-                                                  />
-                                                  <label for="name{{i}}">name</label>
-                                              </span>
-                                          </div>
-                                          <div class="col-6" >
-                                              <span class="p-float-label w-100">
-                                                  <input
-                                                  type="number"
-                                                  id="value{{i}}"
-                                                  pInputText
-                                                  min="0"
-                                                  formControlName="value"
-                                                  class="form-control"
-                                                  />
-                                                  <label for="value{{i}}">value</label>
-                                              </span>
-                                          </div>
-                  
-                                          <!-- <div class="col-2 d-flex">
-                                              <div>
-                                                  <button
-                                                  pButton
-                                                  pRipple
-                                                  type="button"
-                                                  (click)="addMarkingScheme()"
-                                                  icon="pi pi-plus"
-                                                  class="p-button-rounded p-button-success"
-                                                  ></button>
-                                              </div>
-                                  
-                                              <div style="margin-left: 1rem">
-                                                  <button
-                                                  pButton
-                                                  pRipple
-                                                  type="button"
-                                                  (click)="removeMarkingScheme(i)"
-                                                  icon="pi pi-minus"
-                                                  class="p-button-rounded p-button-danger"
-                                                  ></button>
-                                              </div>
-                                          </div> -->
-                                      </ng-container>
-                                  </div>
-                              </ng-container>
-                      
-
-                  
-                              <div class="row">
-                                  <div class="col-12 col-md-4 mt-5">
-                                  <button
-                                      class="btn btn-primary"
-                                      [disabled]="evaluation_form.invalid"
-                                  >
-                                      Create
-                                  </button>
-                                  </div>
-                              </div>
-                          </form>
-<!-- 
-                            <div class="col-md-12 text-center">
-                                <button type="button" class="btn btn-primary m-3" (click)="submit()">Submit</button>
-                               
-                            </div> -->
-                         </div>
-
-                         <div *ngIf="isRejected">
-                            <hr>
-                            <div class="row my-4" >
-                                <div class="col-12 col-md-6 mt-6">
-                                    <span class="p-float-label w-100">
-                                        <input
-                                        type="text"
-                                        id="remark"
-                                        class="form-control"
-                                        placeholder="remark"
-                                        />
-                                        <label for="remark">Remark</label>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 text-center">
-                                <button type="button" class="btn btn-primary m-3" (click)="submit()">Submit</button>
-                               
-                            </div>
-                            
-                         </div>
-                            
-
-                            
-                        </div>
-                            <!-- </div> -->
-                          <!-- </div> -->
-                        </div>
-                      </div>
-                    </div>
+              <div class="row my-4">
+                <div class="col-lg-12">
+                  <h5>Description</h5>
+                  <div [innerHTML]="submission.description"></div>
                 </div>
               </div>
+
+              <div class="row my-4">
+                <div class="col-lg-12" *ngIf="submission.links.length">
+                  <h5>Added Links</h5>
+                  <ol type="1" >
+                    <li *ngFor="let link of submission.links"><a  [href]="link" target="_blank">{{link}}</a></li>
+                  </ol> 
+                </div>
+              </div>
+
+              <div class="row my-4">
+                <div class="col-lg-12" *ngIf="submission.attachment.length">
+                  <h5>File Attachments</h5>
+                  <ol type="1" >
+                    <li *ngFor="let file of submission.attachment; let i = index "><a  [href]="file" target="_blank">Click to download</a></li>
+                  </ol> 
+                </div>
+              </div>
+              <hr>
+
+              <div class="row my-4" *ngIf="submission.submission_status ==='new'">
+                <div class="col-md-12 text-center">
+                  <button type="button" class="btn btn-primary m-3" (click)="accept()">Acept</button>
+                  <button type="button" class="btn btn-danger m-3" (click)="reject()">Reject</button>
+                </div>
+                <div>
+
+                  <form action="" *ngIf="isRejected">
+                    <quill-editor 
+                    id="evaluation_remark"
+                    name="rejectRemark"
+                    [styles]="{ 'min-height': '100px', 'padding-top': '2rem' }"
+                    [modules]="modules"
+                    [(ngModel)]="rejectRemark"
+                    >
+                 
+                    
+                  </quill-editor>
+
+                  <div class="row">
+                    <div class="col-12 col-md-4 mt-5">
+                      <button type="button" class="btn btn-primary m-3" (click)="create_evaluation()">Submit</button>
+                   
+                    </div>
+                </div>
+                </form>
+                
+                <form *ngIf="isAccepted"
+                action=""
+                [formGroup]="evaluation_form"
+                (ngSubmit)="create_evaluation()"
+                class="w-100"
+              >
+              <div class="col-12 mt-12 mt-md-12">
+                <label for="evaluation_remark">Evaluation Remark *</label>
+                <quill-editor
+                id="evaluation_remark"
+                [styles]="{ 'min-height': '100px', 'padding-top': '2rem' }"
+                [modules]="modules"
+                formControlName="evaluation_remark"
+                >
+                </quill-editor>
+            </div>
+                 
+                  <div class="row my-4">
+                      <div class="col-12 col-md-6 mt-6">
+                        <label for="total_marks">Total Marks</label>
+                          <span class="p-float-label w-100">
+                              <input
+                              type="number"
+                              id="total_marks"
+                              class="form-control"
+                              min="0"
+                              formControlName="total_marks"
+                              />
+                           
+                          </span>
+                      </div>
+                  </div>
+
+                  <ng-container  formArrayName="marking_schemes">
+                      <div class="row my-4" *ngFor="let f of marking_schemes.controls; index as i">
+                          <ng-container [formGroupName]="i">
+                              <!-- <div class="col-5" >
+                                  <span class="p-float-label w-100">
+                                      <input
+                                      type="text"
+                                      id="name{{i}}"
+                                      pInputText
+                                      formControlName="name"
+                                      class="form-control"
+                                      />
+                                      <label for="name{{i}}">name</label>
+                                  </span>
+                              </div> -->
+                              <label for="{{f.value.name}}">{{f.value.name}}</label>
+                              <div class="col-5" >
+                                  <span class="p-float-label w-100">
+                                      <input
+                                      type="number"
+                                      id="{{f.value.name}}"
+                                      pInputText
+                                      min="0"
+                                      
+                                      formControlName="value"
+                                      class="form-control"
+                                      />
+                                      
+                                  </span>
+                              </div>
+      
+                              <!-- <div class="col-2 d-flex">
+                                  <div>
+                                      <button
+                                      pButton
+                                      pRipple
+                                      type="button"
+                                      (click)="addMarkingScheme()"
+                                      icon="pi pi-plus"
+                                      class="p-button-rounded p-button-success"
+                                      ></button>
+                                  </div>
+                      
+                                  <div style="margin-left: 1rem">
+                                      <button
+                                      pButton
+                                      pRipple
+                                      type="button"
+                                      (click)="removeMarkingScheme(i)"
+                                      icon="pi pi-minus"
+                                      class="p-button-rounded p-button-danger"
+                                      ></button>
+                                  </div>
+                              </div> -->
+                          </ng-container>
+                      </div>
+                  </ng-container>
+          
+      <hr>
+      
+                  <!-- <ng-container formArrayName="links">
+                      <div class="row my-4" *ngFor="let _ of links.controls; index as i">
+                        <div class="col-10">
+                          <span class="p-float-label w-100">
+                            <input
+                              type="text"
+                              id="link{{i}}"
+                              pInputText
+                              [formControlName]="i"
+                              class="form-control"
+                            />
+                            <label for="link{{i}}">Insert Links</label>
+                          </span>
+                        </div>
+      
+                        <div class="col-2 d-flex">
+                          <div>
+                            <button
+                              pButton
+                              pRipple
+                              type="button"
+                              (click)="addTag()"
+                              icon="pi pi-plus"
+                              class="p-button-rounded p-button-success"
+                            ></button>
+                          </div>
+            
+                          <div style="margin-left: 1rem">
+                            <button
+                              pButton
+                              pRipple
+                              type="button"
+                              (click)="removeTag(i)"
+                              icon="pi pi-minus"
+                              class="p-button-rounded p-button-danger"
+                            ></button>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+      
+                    
+                    <div class="row">
+                      <div class="d-flex align-items-center mt-3">
+                          <div class="file">
+                            <p class="p-0 m-0">Attachment</p>
+                            <input
+                              type="file"
+                              multiple
+                              (change)="attchment($event)"
+                              name="file"
+                              id="file"
+                            />
+                            <label for="file" title="select files">
+                              <span><i class="fas fa-paperclip"></i></span>
+                              <span *ngIf="files.length > 0"> {{ files.length }} </span>
+                            </label>
+                          </div>
+        
+                        </div>
+                    </div> -->
+      
+                  <div class="row">
+                      <div class="col-12 col-md-4 mt-5">
+                      <button
+                          class="btn btn-primary"
+                          [disabled]="evaluation_form.invalid"
+                      >
+                          Submit
+                      </button>
+                      </div>
+                  </div>
+                </form>
+              </div>
+              </div>
+
+              <div class="row my-4" *ngIf="submission.evaluation_remark">
+                <div class="col-lg-12">
+                  <h5>Evaluator's Remark:</h5> 
+                  <div>{{submission.evaluation_remark}}</div>
+                </div>
+              </div>
+              <div class="row my-4" *ngIf="submission.submission_status ==='evaluated'">
+                <div class="col-lg-12">
+                <h5>Total Marks: {{studentSubmissions.total_marks}}</h5>
+                <h5>Marks Scheme:</h5>
+                  <ul>
+                    <li *ngFor="let scheme of submission.marking_schemes;">{{scheme.name}} : {{scheme.value}}</li>
+                  </ul>
+                </div>
+              </div>
+              </p-accordionTab>
+            </ng-container>
+            
+        </p-accordion>
+
         </div>
     </div>
+  </div>
+
 </section>
       
                 
