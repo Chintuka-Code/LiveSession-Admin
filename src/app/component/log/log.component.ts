@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HTTP_Response } from 'src/app/Interface/http_response';
 import { LOG } from 'src/app/Interface/log';
 import { LogService } from 'src/app/service/log.service';
@@ -14,7 +14,12 @@ export class LogComponent implements OnInit {
   spinner: boolean = false;
   logs: any[] = [];
   raw_logs: any[] = [];
-  constructor(private log_service: LogService, private router: Router) {}
+  user_id: String;
+  constructor(
+    private log_service: LogService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   onScroll() {
     this.get_logs(this.raw_logs.length, false);
@@ -22,16 +27,27 @@ export class LogComponent implements OnInit {
 
   get_logs(length: number, spinner: boolean) {
     this.spinner = spinner;
-    this.log_service.get_logs(length).subscribe(
-      (res: HTTP_Response<LOG[]>) => {
-        const data = this.raw_logs.concat(res.data);
-        this.raw_logs = data;
-        console.log(this.raw_logs);
-        this.logs = this.group_by_date(this.raw_logs);
-        this.spinner = false;
-      },
-      (error) => this.error_handler(error)
-    );
+    if (this.user_id) {
+      this.log_service.get_logs_by_id(length, this.user_id).subscribe(
+        (res: HTTP_Response<LOG[]>) => {
+          const data = this.raw_logs.concat(res.data);
+          this.raw_logs = data;
+          this.logs = this.group_by_date(this.raw_logs);
+          this.spinner = false;
+        },
+        (error) => this.error_handler(error)
+      );
+    } else {
+      this.log_service.get_logs(length).subscribe(
+        (res: HTTP_Response<LOG[]>) => {
+          const data = this.raw_logs.concat(res.data);
+          this.raw_logs = data;
+          this.logs = this.group_by_date(this.raw_logs);
+          this.spinner = false;
+        },
+        (error) => this.error_handler(error)
+      );
+    }
   }
 
   group_by_date(data) {
@@ -66,6 +82,9 @@ export class LogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get_logs(0, true);
+    this.activatedRoute.queryParamMap.subscribe((param: any) => {
+      this.user_id = param.params.user_id;
+      this.get_logs(0, true);
+    });
   }
 }

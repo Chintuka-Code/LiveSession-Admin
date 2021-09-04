@@ -24,4 +24,10 @@ export class LogService {
       `${environment.BASE_SERVER_URL}/log/get-logs/${length}`
     );
   }
+
+  get_logs_by_id(length, user_id): Observable<HTTP_Response<LOG[]>> {
+    return this.http.get<HTTP_Response<LOG[]>>(
+      `${environment.BASE_SERVER_URL}/log/get-logs-by-id/${length}/${user_id}`
+    );
+  }
 }
