@@ -28,8 +28,15 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CardModule } from 'primeng/card';
+
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
+
+import {CascadeSelectModule} from 'primeng/cascadeselect';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {TabViewModule} from 'primeng/tabview';
+import { TagModule } from 'primeng/tag';
+
 
 const primeng = [
   AutoCompleteModule,
@@ -61,7 +68,12 @@ const primeng = [
   CardModule,
   CascadeSelectModule,
   RadioButtonModule,
+
   ChipModule,
+
+  TabViewModule,
+  TagModule
+
 ];
 
 @NgModule({

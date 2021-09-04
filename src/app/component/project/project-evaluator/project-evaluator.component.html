@@ -1,0 +1,95 @@
+<section *ngIf="!spinner; else showspinner">
+    <!-- Enabled Course -->
+    <div class="card">
+      <div class="card-body">
+        <div class="header">
+          <h3 class="">Project Evaluation List</h3>
+        </div>
+  
+        <div>
+          <p-table
+            #question_bank_table
+            [value]="assignedBatchProject"
+            dataKey="id"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="p-datatable-customers"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'name'
+            ]"
+          >
+            <ng-template pTemplate="caption" class="w-100">
+              <div class="p-d-flex w-100">
+                <span class="p-input-icon-left p-ml-auto w-100">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      question_bank_table.filterGlobal(
+                        $event.target.value,
+                        'contains'
+                      )
+                    "
+                    placeholder="Search keyword"
+                    class="w-100"
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Batch Name</th>
+                <th>New</th>
+                <th>Rejected</th>
+                <th>Evaluated</th>
+                <!-- <th>Action</th> -->
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-batch let-rowIndex="rowIndex">
+              <tr>
+                <td> <a href="javascript:void(0);" (click)="batchProject(batch)">{{batch.batch_id.batch_name}}</a></td>
+                <td>{{statusCount(batch.batch_id._id, 'new')}}</td>
+                <td>{{statusCount(batch.batch_id._id, 'rejected')}}</td>
+                <td>{{statusCount(batch.batch_id._id, 'evaluated')}}</td>
+                <!-- <td class="position-relative">
+                  
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-ellipsis-h"
+                      class="p-button-rounded p-button-text"
+                      (click)="menu.toggle($event)"
+                    ></button>
+  
+                    <p-menu
+                      #menu
+                      [popup]="true"
+                      [model]="items"
+                      (click)="category_action(rowIndex)"
+                    ></p-menu>
+                  
+                </td> -->
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5">No Project Evaluation found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  

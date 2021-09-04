@@ -1,0 +1,141 @@
+<div class="card" *ngIf="!spinner; else showspinner">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Assign Project</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../assign-project']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+      <div class="container-fluid">
+        <form
+          action=""
+          [formGroup]="create_assign_project_form"
+          (ngSubmit)="create_assign_project()"
+          class="w-100"
+        >
+
+            <div class="row">
+                <div class="col-12 col-md-6 mt-6">
+                <span class="p-float-label w-100">
+                    <p-dropdown
+                    
+                        inputId="batch"
+                        [autoDisplayFirst]="false"
+                        optionLabel="batch_name"
+                        optionValue="_id"
+                        [options]="batch_List"
+                        [style]="{ minWidth: '100%' }"
+                        formControlName="batch_id"
+                        required
+                    ></p-dropdown>
+                    <label for="batch">Select Batch *</label>
+                </span>
+                </div>
+                <div class="col-12 col-md-6 mt-6">
+                    <span class="p-float-label w-100">
+                        <p-multiSelect 
+                          display="chip"
+                          inputId="project"
+                          [autoDisplayFirst]="false"
+                          optionLabel="name"
+                          [options]="project_List"
+                          [style]="{ minWidth: '100%' }"
+                          formControlName="project_id"
+                          (onChange)="projectChange($event)"
+                          required
+                         >
+                         </p-multiSelect>
+                      
+                    <label for="project">Select Project *</label>
+                    </span>
+                </div>
+              
+               
+            </div>
+  
+            <ng-container *ngIf="create_assign_project_form.controls['project_id'].value" formArrayName="projects">
+              <div class="row my-4" *ngFor="let _ of projects.controls; index as i">
+                  <ng-container [formGroupName]="i">
+                      <div class="col-5" >
+                          <span class="p-float-label w-100">
+                              <input
+                              type="hidden"
+                              pInputText
+                              formControlName="project_id"
+                              class="form-control"
+                              />
+                              <input
+                              type="text"
+                              id="project_name{{i}}"
+                              pInputText
+                              formControlName="project_name"
+                              readonly="true"
+                              class="form-control"
+                              />
+                              <label for="project_name{{i}}">Project Name</label>
+                          </span>
+                      </div>
+                      <div class="col-5" >
+                        <span class="p-float-label w-100">
+                          <p-calendar
+                            inputId="due_date{{i}}"
+                            [style]="{ minWidth: '100%' }"
+                            formControlName="due_date"
+                            dateFormat="dd.mm.yy"
+                            [minDate]="minDateValue"
+                          ></p-calendar>
+                
+                          <label for="due_date{{i}}">Due Date</label>
+                        </span>
+                      </div>
+
+                      <div class="col-2 d-flex">
+                          <!-- <div>
+                              <button
+                              pButton
+                              pRipple
+                              type="button"
+                              (click)="addMarkingScheme()"
+                              icon="pi pi-plus"
+                              class="p-button-rounded p-button-success"
+                              ></button>
+                          </div> -->
+              
+                          <div style="margin-left: 1rem">
+                              <button
+                              pButton
+                              pRipple
+                              type="button"
+                              (click)="removeProject(i)"
+                              icon="pi pi-minus"
+                              class="p-button-rounded p-button-danger"
+                              ></button>
+                          </div>
+                      </div>
+                  </ng-container>
+              </div>
+          </ng-container>
+
+            <div class="row">
+                <div class="col-12 col-md-4 mt-5">
+                    <button
+                        class="btn btn-primary"
+                        [disabled]="create_assign_project_form.invalid"
+                    >
+                        Create
+                    </button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  

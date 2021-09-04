@@ -1,0 +1,71 @@
+<div class="card" *ngIf="!spinner; else showspinner">
+    <div class="card-body">
+      <div class="header">
+        <h3 class="">Create Category</h3>
+        <button class="btn btn-primary">
+          <a [routerLink]="['../category']">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </button>
+      </div>
+      <div class="container-fluid mt-3">
+        <form [formGroup]="create_category_form" (ngSubmit)="create_category()">
+          <ng-container formArrayName="subject">
+            <div class="row my-4" *ngFor="let _ of subject.controls; index as i">
+              <div class="col-10">
+                <span class="p-float-label w-100">
+                  <input
+                    type="text"
+                    id="inputtext{{i}}"
+                    pInputText
+                    [formControlName]="i"
+                    class="form-control"
+                  />
+                  <label for="inputtext{{i}}">Category Name</label>
+                </span>
+              </div>
+              <div class="col-2 d-flex">
+                <div>
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    (click)="addCategory()"
+                    icon="pi pi-plus"
+                    class="p-button-rounded p-button-success"
+                  ></button>
+                </div>
+  
+                <div style="margin-left: 1rem">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    (click)="removeCategory(i)"
+                    icon="pi pi-minus"
+                    class="p-button-rounded p-button-danger"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div class="col-12">
+            <button
+              type="submit"
+              [disabled]="create_category_form.invalid"
+              style="margin-left: 0.5rem"
+              class="btn btn-primary"
+            >
+              Create Category
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  

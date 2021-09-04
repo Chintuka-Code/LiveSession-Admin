@@ -204,6 +204,58 @@
         >
       </a>
     </li>
+    <li
+      routerLinkActive="active-page"
+    >
+      <a href="javascript:void(0)" (click)="accordion_list($event)"
+        ><i class="fas fa-user-tag px-3"></i>Project<i
+          class="fas fa-chevron-right dropdown-icon"
+        ></i
+      ></a>
+      <ul class="d-none px-3">
+        <li
+          routerLinkActive="active-page"
+         
+        >
+          <a [routerLink]="['project/category']">
+            <span class="pointer-none"
+              ><i class="fas fa-book px-3"></i>Category</span
+            >
+          </a>
+        </li>
+
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('C00')"
+        >
+          <a [routerLink]="['project']">
+            <span class="pointer-none"
+              ><i class="fab fa-contao px-3"></i>Projects</span
+            >
+          </a>
+        </li>
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('C00')"
+        >
+          <a [routerLink]="['project/assign-project']">
+            <span class="pointer-none"
+              ><i class="fab fa-contao px-3"></i>Assign Project</span
+            >
+          </a>
+        </li>
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('C00')"
+        >
+          <a [routerLink]="['project/project-evaluation']">
+            <span class="pointer-none"
+              ><i class="fab fa-contao px-3"></i>Project Evaluation</span
+            >
+          </a>
+        </li>
+      </ul>
+    </li>
 
     <li routerLinkActive="active-page">
       <a [routerLink]="['view-question-bank']">

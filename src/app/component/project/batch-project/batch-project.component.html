@@ -1,0 +1,81 @@
+<section *ngIf="!spinner; else showspinner">
+    <!-- Enabled Course -->
+    <div class="card" *ngIf="batchDetail">
+      <div class="card-body">
+        <div class="header">
+          <h3 class="">Project Evaluation List</h3>
+        </div>
+  
+        <div>
+          <p-table
+            #question_bank_table
+            [value]="batchDetail.projects"
+            dataKey="id"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="p-datatable-customers"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'project_name'
+            ]"
+          >
+            <ng-template pTemplate="caption" class="w-100">
+              <div class="p-d-flex w-100">
+                <span class="p-input-icon-left p-ml-auto w-100">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      question_bank_table.filterGlobal(
+                        $event.target.value,
+                        'contains'
+                      )
+                    "
+                    placeholder="Search keyword"
+                    class="w-100"
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Project Name</th>
+                <th>New</th>
+                <th>Rejected</th>
+                <th>Evaluated</th>
+                <th>Due Date</th>
+                
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-project let-rowIndex="rowIndex">
+              <tr>
+                <td> <a href="javascript:void(0);" (click)="submitedStudents(project)">{{project.project_name}}</a></td>
+                
+                <td>{{statusCount(project.project_id, 'new')}}</td>
+                <td>{{statusCount(project.project_id, 'rejected')}}</td>
+                <td>{{statusCount(project.project_id, 'evaluated')}}</td>
+                <td *ngIf="project.due_date"> {{project.due_date | date:'medium'}}</td>
+                <td *ngIf="!project.due_date">--</td>
+              
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5">No Project Evaluation found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  
