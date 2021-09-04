@@ -328,6 +328,12 @@ const routes: Routes = [
           ),
       },
       {
+
+        path: 'view-log',
+        loadChildren: () =>
+          import('../log/log.module').then((m) => m.LogModule),
+}
+        {
         path: 'project',
         loadChildren: () =>
           import('../project/project.module').then(

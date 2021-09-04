@@ -12,6 +12,8 @@ import { FormativeData } from 'src/app/utilities/formative_data';
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Detect_URL } from 'src/app/utilities/detect_url';
 import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
+import { LogService } from 'src/app/service/log.service';
+import { create_log } from 'src/app/utilities/log';
 
 @Component({
   selector: 'app-manager-view',
@@ -41,7 +43,8 @@ export class ManagerViewComponent implements OnInit {
     private chat_service: ChatService,
     private live_session_chat_service: LiveSessionChatService,
     private user_service: UserService,
-    private attachment_service: AttachmentService
+    private attachment_service: AttachmentService,
+    private log_service: LogService
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
@@ -165,6 +168,23 @@ export class ManagerViewComponent implements OnInit {
   // after batch select get all the student list
   get_all_student_chat() {
     this.spinner = true;
+    const batch_name = this.batches.filter(
+      (batch) => batch._id === this.selected_batch
+    );
+
+    create_log(
+      {
+        html_content: `<p>
+        <a href=""> ${this.user.name} </a> has opened batch <a href=""> ${batch_name[0].batch_name} </a>  chat in manager view
+      </p>`,
+        created_at: new Date(),
+        chat_id: null,
+        log_code: '#CHAT',
+        user_id: localStorage.getItem('uid'),
+        batch_id: this.selected_batch,
+      },
+      this.log_service
+    );
     this.selected_student = '';
     this.student_message = [];
     this.chat_service
@@ -222,6 +242,23 @@ export class ManagerViewComponent implements OnInit {
     }
     this.selected_student = '';
     this.selected_student = student;
+    const batch_name = this.batches.filter(
+      (batch) => batch._id === this.selected_batch
+    );
+
+    create_log(
+      {
+        html_content: `<p>
+        <a href=""> ${this.user.name} </a> has opened Student:- <a href=""> ${student.student_name} </a>  chat in manager view
+        </p> <div> <strong> Batch-Name :- </strong> <small> ${batch_name[0].batch_name}  </small> </div> `,
+        created_at: new Date(),
+        chat_id: student._id,
+        log_code: '#CHAT',
+        user_id: localStorage.getItem('uid'),
+        batch_id: student.batch_id,
+      },
+      this.log_service
+    );
 
     this.live_session_chat_service.join_room({
       room_id:
@@ -297,6 +334,30 @@ export class ManagerViewComponent implements OnInit {
       if (result.isConfirmed) {
         this.spinner = true;
         this.student_message = [];
+
+        const new_sme = this.admins_list.filter(
+          (admin) => admin._id === doc.value
+        );
+
+        const batch_name = this.batches.filter(
+          (batch) => batch._id === this.selected_batch
+        );
+
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has transferred   ${this.selected_student.student_name} chat from ${this.selected_student.sme_name} to ${new_sme[0].name} in the manager view
+          </p> <strong>Previous Sme</strong> <small> ${this.selected_student.sme_name} </small> 
+          <strong>New Sme</strong> <small> ${new_sme[0].name} </small>     <strong>Batch-Name</strong> <small> ${batch_name[0].batch_name} </small>  `,
+            created_at: new Date(),
+            chat_id: this.selected_student._id,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_student.batch_id,
+          },
+          this.log_service
+        );
+
         this.selected_student.sme_id = doc.value;
         this.live_session_chat_service.transfer(this.selected_student);
         this.live_session_chat_service.leave({
@@ -343,6 +404,20 @@ export class ManagerViewComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has ended  ${this.selected_student.student_name} chat from manager view
+          </p> <strong>Previous Sme</strong> <small> ${this.selected_student.sme_name} </small>  `,
+            created_at: new Date(),
+            chat_id: this.selected_student._id,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_student.batch_id,
+          },
+          this.log_service
+        );
+
         this.student_message = [];
         this.live_session_chat_service.leave({
           room_id:
@@ -437,6 +512,23 @@ export class ManagerViewComponent implements OnInit {
           });
         });
 
+        const batch_name = this.batches.filter(
+          (batch) => batch._id === this.selected_batch
+        );
+
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has ended all chats of batch ${batch_name[0].batch_name}`,
+            created_at: new Date(),
+            chat_id: null,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_student.batch_id,
+          },
+          this.log_service
+        );
+
         this.live_session_chat_service.end_all_chat(res.data);
         Swal.fire({
           icon: 'success',
@@ -452,6 +544,19 @@ export class ManagerViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_all_batch();
+    const user: any = ACTIVE_USER();
+    create_log(
+      {
+        html_content: `<p>
+        <a href=""> ${user.name} </a> has opened manager view
+      </p>`,
+        created_at: new Date(),
+        chat_id: null,
+        log_code: '#CHAT',
+        user_id: localStorage.getItem('uid'),
+      },
+      this.log_service
+    );
   }
 
   ngOnDestroy(): void {

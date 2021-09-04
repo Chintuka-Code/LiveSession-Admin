@@ -325,6 +325,15 @@
             </span>
           </a>
         </li>
+
+        <li
+          routerLinkActive="active-page"
+          *ngIf="user.permissions.includes('LOG11')"
+        >
+          <a [routerLink]="['view-log']">
+            <span class="pointer-none"><i class="fas fa-book"></i>Log</span>
+          </a>
+        </li>
       </ul>
     </li>
   </ul>

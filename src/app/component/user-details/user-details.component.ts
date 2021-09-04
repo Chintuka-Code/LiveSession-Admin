@@ -84,6 +84,16 @@ export class UserDetailsComponent implements OnInit {
       });
     }
 
+    if (this.user_profile.permissions.includes('LOG11')) {
+      this.items[0].items.push({
+        label: 'View Log',
+        icon: 'pi pi-eye',
+        command: () => {
+          this.menu_type = 'view-log';
+        },
+      });
+    }
+
     if (this.user_profile.permissions.includes('LSS11')) {
       this.items[0].items.push({
         label: 'Live Session Setting',
@@ -107,6 +117,12 @@ export class UserDetailsComponent implements OnInit {
 
       case 'live_session':
         this.router.navigate(['main/assign-batch-to-admin', id]);
+        break;
+
+      case 'view-log':
+        this.router.navigate(['main/view-log'], {
+          queryParams: { user_id: id },
+        });
         break;
 
       default:
