@@ -348,6 +348,7 @@ export class TrainerModeComponent implements OnInit {
       };
     });
     this.all_chats = groupArrays;
+    this.all_chats.reverse();
     this.spinner = false;
   }
 
