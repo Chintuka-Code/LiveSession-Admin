@@ -328,7 +328,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'log',
+        path: 'view-log',
         loadChildren: () =>
           import('../log/log.module').then((m) => m.LogModule),
       },

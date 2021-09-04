@@ -1,77 +1,34 @@
 <div
   class="history-tl-container"
   infiniteScroll
-  [infiniteScrollDistance]="4"
+  [infiniteScrollDistance]="2"
   [infiniteScrollThrottle]="50"
   (scrolled)="onScroll()"
   [scrollWindow]="false"
+  *ngIf="!spinner; else showspinner"
 >
   <ul class="tl">
-    <li class="tl-item" ng-repeat="item in retailer_history">
-      <div class="timestamp">
-        3rd March 2015<br />
-        7:00 PM
-      </div>
-      <div class="mb-2">
-        <div class="item-title">Start from Shire</div>
-        <div class="item-detail">
-          Don't forget the ring Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Rerum quos ullam reiciendis laborum. Aliquid
-          deserunt est libero quo consequuntur excepturi sunt facere nemo sint
-          autem, asperiores in omnis, error quas saepe perferendis eveniet ut
-          distinctio numquam fugiat facilis sit voluptatibus. Numquam minus
-          animi alias officia explicabo quis mollitia rem nemo? Facere accusamus
-          id rerum excepturi et error, dolore at similique distinctio impedit
-          non totam perspiciatis itaque minima ducimus, libero ex. Id,
-          asperiores nam! Accusantium impedit totam, enim ratione mollitia vel
-          libero iusto repellat quia, aspernatur atque nulla. Ea expedita quia,
-          id facilis animi rerum dolore! Similique aliquid veritatis sunt
-          quaerat, eius, eveniet pariatur facilis provident quae, velit placeat
-          et earum debitis nemo repudiandae quis delectus vel vero. Nobis
-          aperiam sint assumenda soluta repellendus harum commodi illo earum, ad
-          quod iure sapiente, corrupti repudiandae maiores non tenetur ipsum
-          modi eveniet eos. Ipsam recusandae possimus labore nesciunt alias
-          praesentium tempora esse. Aperiam doloribus vel dolorem eos, autem
-          commodi. Nobis veritatis perspiciatis totam eligendi dolor laboriosam
-          quidem iusto ea eum, earum exercitationem et accusantium corporis in
-          cum suscipit rerum aperiam recusandae alias mollitia eius autem
-          reiciendis! Quo, assumenda necessitatibus voluptates id in, suscipit
-          ad voluptate dolore distinctio odit, corrupti optio dolor reiciendis
-          quidem? Repellendus, et veniam labore commodi quas tempore assumenda
-          tenetur. Delectus voluptatum temporibus earum sunt aspernatur cumque
-          sapiente recusandae omnis, perferendis libero, eius saepe eaque in.
-          Ab, delectus. Tenetur consequatur laudantium animi eos inventore
-          dolore pariatur dolores! Soluta maxime, ipsa reprehenderit dolores
-          fugit vel natus unde voluptate adipisci, laboriosam fugiat similique,
-          necessitatibus velit ducimus mollitia dolorum numquam? Commodi velit
-          atque illo labore cupiditate illum possimus voluptatum accusantium
-          fugiat omnis asperiores distinctio, cumque veritatis dolorem minima
-          quam! Aperiam quasi eum consequatur commodi doloremque inventore! Ad,
-          molestiae accusamus quae amet quos necessitatibus repudiandae saepe
-          dolore. Enim sed illum, perspiciatis veritatis sequi itaque, nihil,
-          quaerat odio hic exercitationem et molestias error dolore amet minima
-          aliquam nobis sit! Veniam atque, debitis id ipsa quo culpa incidunt
-          doloribus illum, nulla illo harum cupiditate neque qui iure nobis in
-          distinctio exercitationem corporis? Nobis labore ducimus quaerat
-          laboriosam optio, itaque reprehenderit, non officiis impedit molestias
-          explicabo libero eligendi? Tempora explicabo voluptatem sint aperiam,
-          dicta soluta maxime eius repellat inventore reiciendis, quidem rem
-          officia! Voluptatem modi architecto consequuntur excepturi laboriosam
-          porro rerum neque non consequatur dolor optio vitae, tenetur at
-          voluptatibus, quos eum delectus autem. Tenetur nihil voluptatem fugiat
-          cumque unde saepe optio, omnis vero debitis perferendis, dolore cum?
+    <li class="tl-item" *ngFor="let log of logs">
+      <div class="timestamp">{{ log.date }} <br /></div>
+      <ng-container *ngFor="let item of log.data">
+        <div class="mb-2">
+          <div class="item-title">{{ item.log_code }}</div>
+          <div class="item-detail" [innerHTML]="item.html_content"></div>
+          <div class="links">
+            <a href="javascript:void(0)" *ngIf="item.user_id"> User </a>
+            <a href="javascript:void(0)" *ngIf="item.batch_id"> Batch </a>
+            <a href="javascript:void(0)" *ngIf="item.chat_id"> Chat </a>
+          </div>
+          <strong> {{ item.createdAt | date: "medium" }} </strong>
+          <hr />
         </div>
-        <hr />
-      </div>
-      <div class="mb-2">
-        <div class="item-title">Start from Shire</div>
-        <div class="item-detail">
-          Don't forget the ring Lorem ipsum, dolor sit amet consectetur
-          adipisicing elit. Voluptatem, laudantium? Ab expedita magni
-          dignissimos rem vel et aperiam, aut voluptatem?
-        </div>
-        <hr />
-      </div>
+      </ng-container>
     </li>
   </ul>
 </div>
+
+<ng-template #showspinner>
+  <div class="spinner">
+    <app-spinner></app-spinner>
+  </div>
+</ng-template>

@@ -4,6 +4,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChipsModule } from 'primeng/chips';
+import { ChipModule } from 'primeng/chip';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -27,8 +28,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CardModule } from 'primeng/card';
-import {CascadeSelectModule} from 'primeng/cascadeselect';
-import {RadioButtonModule} from 'primeng/radiobutton';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 const primeng = [
   AutoCompleteModule,
@@ -59,7 +60,8 @@ const primeng = [
   InputSwitchModule,
   CardModule,
   CascadeSelectModule,
-  RadioButtonModule
+  RadioButtonModule,
+  ChipModule,
 ];
 
 @NgModule({

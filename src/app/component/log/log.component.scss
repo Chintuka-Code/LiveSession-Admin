@@ -58,3 +58,22 @@ ul.tl li .timestamp {
   text-align: right;
   font-size: 12px;
 }
+
+hr {
+  margin: 0;
+}
+
+strong {
+  font-size: 10px;
+}
+
+.links {
+  margin-top: 0.5rem;
+  a {
+    padding: 0.5em;
+    background-color: #dee2e6;
+    border-radius: 12px;
+    margin-right: 0.5rem;
+    font-size: 10px;
+  }
+}

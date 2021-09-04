@@ -18,4 +18,10 @@ export class LogService {
       )
       .toPromise();
   }
+
+  get_logs(length): Observable<HTTP_Response<LOG[]>> {
+    return this.http.get<HTTP_Response<LOG[]>>(
+      `${environment.BASE_SERVER_URL}/log/get-logs/${length}`
+    );
+  }
 }
