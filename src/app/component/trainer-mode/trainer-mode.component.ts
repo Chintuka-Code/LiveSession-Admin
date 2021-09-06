@@ -186,7 +186,12 @@ export class TrainerModeComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.all_chats = res.data;
-          this.all_chats.sort((a, b) => a.created_at - b.created_at);
+          this.all_chats.sort(function (a, b) {
+            const c = new Date(a.created_at).getTime();
+            const d = new Date(b.created_at).getTime();
+            return c - d;
+          });
+          console.log(this.all_chats);
           this.group_by_date(this.all_chats);
 
           this.join_room();
@@ -348,7 +353,6 @@ export class TrainerModeComponent implements OnInit {
       };
     });
     this.all_chats = groupArrays;
-    this.all_chats.reverse();
     this.spinner = false;
   }
 
