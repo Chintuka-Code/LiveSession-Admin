@@ -52,7 +52,9 @@ export class PublishComponent implements OnInit {
       formData.publish['slot_start_time'] = null;
       formData.publish['slot_end_time'] = null;
     }
-    // console.log(formData);
+    console.log(formData);
+
+    // return 0
 
     if (this.is_exam_id) {
       delete formData['createdAt'];

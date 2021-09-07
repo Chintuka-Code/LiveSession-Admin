@@ -8,87 +8,293 @@
             Add question for this exam
         </ng-template>
         <ng-template pTemplate="content">
-            <div class="row">
-                <div class="col-12 col-md-4 mt-5" >
+
+          <div class="row">
+            <div class="col-12 col-md-12 mt-12" >
+              <h5>Do you want to add section?</h5>
+              <div class="p-field-radiobutton">
+                <p-radioButton name="add_section" value="Yes" (onClick)="addSectionChange()" [(ngModel)]="add_section" inputId="add_section_yes"></p-radioButton>
+                <label for="add_section_yes">Yes</label>
+              </div>
+              <div class="p-field-radiobutton">
+                <p-radioButton name="add_section" value="No" (onClick)="addSectionChange()" [(ngModel)]="add_section" inputId="add_section_no"></p-radioButton>
+                <label for="add_section_no">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="add_section === 'Yes'">
+            <div class="container-fluid">
+              <form
+                action=""
+                [formGroup]="create_assign_project_form"
+                class="w-100"
+              >
+        
+                  <ng-container  formArrayName="sections">
+                    <div class="my-4" *ngFor="let sect of sections.controls; index as i">
+                      <ng-container [formGroupName]="i">
+
+                        <div class="row">
+                          <div class="col-12 col-md-12 mt-5" >
+                            <span class="p-float-label w-100">
+                              <input
+                                type="text"
+                                id="section_name"
+                                pInputText
+                                formControlName="section_name"
+                                class="form-control"
+                              />
+                              <label for="question_bank">Section Name</label>
+                              
+                            </span>
+                          </div>
+                        </div>
+                        <div class="row">
+    
+                          <div class="col-12 mt-12 mt-md-4">
+                            <div>
+                              <label for="question_bank">Description</label>
+                              <quill-editor
+                                [styles]="{ 'min-height': '100px' }"
+                                [modules]="modules"
+                                formControlName="description"
+                               
+                              >
+                              
+                              </quill-editor>
+                              
+                            </div>
+                          </div>
+                         
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-4 mt-5" >
+                              <span class="p-float-label w-100">
+                                <p-multiSelect 
+                                
+                                  display="chip"
+                                  inputId="question_bank"
+                                  [autoDisplayFirst]="false"
+                                  optionLabel="question_bank_name"
+                                  optionValue="_id"
+                                  [options]="question_banks"
+                                  [style]="{ minWidth: '100%' }"
+                                  formControlName="question_bank"
+                                 
+                                  (onChange)="questionBankChange($event)"
+                                  required
+                                  
+                                  >
+              
+                                </p-multiSelect>
+                                <label for="question_bank">Select question bank</label>
+                               
+                              </span>
+                            </div>
+                    
+                            <div class="col-12 col-md-4 mt-5" >
+                                <span class="p-float-label w-100">
+                                  <p-multiSelect 
+                                
+                                  [options]="QB_questions" 
+                                  [group]="true" 
+                                  optionLabel="question_name"
+                                  [autoDisplayFirst]="false"
+                                  formControlName="question"
+                                  
+                                  scrollHeight="250px" 
+                                  (onChange)="sectionQuestionChange($event, i)"
+                                  display="chip"
+                                  required
+                                  
+                                  >
+                                    <ng-template let-group pTemplate="group">
+                                        <div class="p-d-flex p-ai-center">
+                                            <span>{{group.question_bank_name}}</span>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                                <label for="question_bank">Select question</label>
+                           
+                              </span>
+                            </div>
+              
+                            <div class="col-12 col-md-4 mt-5" >
+                              <span class="p-float-label w-100">
+                          
+                                <input
+                              
+                                type="number"
+                                id="show_question_count"
+                                class="form-control"
+                                pInputText
+                                required
+                               
+                                [min] = "show_question_count_min"
+                                
+                                formControlName="show_question_count"
+
+                              />
+                              <label for="show_question_count">Show no of question</label>
+                             
+                            </span>
+              
+                          </div>
+
+                        </div>
+                        <div class="row mt-5">
+                          <div class="col-10 "></div>
+                          <div class="col-2 d-flex">
+                            <div>
+                                <button
+                                pButton
+                                pRipple
+                                type="button"
+                                (click)="addSection()"
+                                icon="pi pi-plus"
+                                class="p-button-rounded p-button-success"
+                                ></button>
+                            </div>
+
+                            <div style="margin-left: 1rem">
+                                <button
+                                pButton
+                                pRipple
+                                type="button"
+                                (click)="removeSection(i)"
+                                icon="pi pi-minus"
+                                class="p-button-rounded p-button-danger"
+                                ></button>
+                            </div>
+                        </div>
+
+                        </div>
+                            <!-- <div class="col-2 d-flex">
+                                <div>
+                                    <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    (click)="addSection()"
+                                    icon="pi pi-plus"
+                                    class="p-button-rounded p-button-success"
+                                    ></button>
+                                </div>
+                    
+                                <div style="margin-left: 1rem">
+                                    <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    (click)="removeSection(i)"
+                                    icon="pi pi-minus"
+                                    class="p-button-rounded p-button-danger"
+                                    ></button>
+                                </div>
+                            </div> -->
+
+
+              
+              
+                        </ng-container>
+                    </div>
+                </ng-container>
+      
+                  <!-- <div class="row">
+                      <div class="col-12 col-md-4 mt-5">
+                          <button
+                              class="btn btn-primary"
+                              [disabled]="create_assign_project_form.invalid"
+                          >
+                              Create
+                          </button>
+                      </div>
+                  </div> -->
+              </form>
+            </div>
+          </div>
+          <div class="row" *ngIf="add_section === 'No'">
+              <div class="col-12 col-md-4 mt-5" >
+                <span class="p-float-label w-100">
+                  <p-multiSelect 
+                  #question_bank_arr="ngModel"
+                    display="chip"
+                    inputId="question_bank"
+                    [autoDisplayFirst]="false"
+                    optionLabel="question_bank_name"
+                    optionValue="_id"
+                    [options]="question_banks"
+                    [style]="{ minWidth: '100%' }"
+                    [(ngModel)]="selected_question.question_bank"
+                    (onChange)="questionBankChange($event)"
+                    required
+                    [ngClass]="{'ng-dirty': (question_bank_arr.invalid && submitted) || (question_bank_arr.dirty && question_bank_arr.invalid)}"
+                    >
+
+                  </p-multiSelect>
+                  <label for="question_bank">Select question bank</label>
+                  <small *ngIf="(question_bank_arr.invalid && submitted) || (question_bank_arr.dirty && question_bank_arr.invalid)" class="p-error">Question bank is required.</small>
+                </span>
+              </div>
+      
+              <div class="col-12 col-md-4 mt-5" >
                   <span class="p-float-label w-100">
                     <p-multiSelect 
-                    #question_bank_arr="ngModel"
-                      display="chip"
-                      inputId="question_bank"
-                      [autoDisplayFirst]="false"
-                      optionLabel="question_bank_name"
-                      optionValue="_id"
-                      [options]="question_banks"
-                      [style]="{ minWidth: '100%' }"
-                      [(ngModel)]="selected_question.question_bank"
-                      (onChange)="questionBankChange($event)"
-                      required
-                      [ngClass]="{'ng-dirty': (question_bank_arr.invalid && submitted) || (question_bank_arr.dirty && question_bank_arr.invalid)}"
-                     >
-
-                    </p-multiSelect>
-                    <label for="question_bank">Select question bank</label>
-                    <small *ngIf="(question_bank_arr.invalid && submitted) || (question_bank_arr.dirty && question_bank_arr.invalid)" class="p-error">Question bank is required.</small>
-                  </span>
-                </div>
-        
-                <div class="col-12 col-md-4 mt-5" >
-                    <span class="p-float-label w-100">
-                      <p-multiSelect 
-                      #question_arr="ngModel"
-                      [options]="QB_questions" 
-                      [group]="true" 
-                      optionLabel="question_name"
-                      [autoDisplayFirst]="false"
-                      [(ngModel)]="selected_question.question" 
-                      scrollHeight="250px" 
-                      (onChange)="questionChange($event)"
-                      display="chip"
-                      required
-                      [ngClass]="{'ng-dirty': (question_arr.invalid && submitted) || (question_arr.dirty && question_arr.invalid)}"
-                      >
-                        <ng-template let-group pTemplate="group">
-                            <div class="p-d-flex p-ai-center">
-                                <span>{{group.question_bank_name}}</span>
-                            </div>
-                        </ng-template>
-                    </p-multiSelect>
-                    <label for="question_bank">Select question</label>
-                    <small *ngIf="(question_arr.invalid && submitted) || (question_arr.dirty && question_arr.invalid)" class="p-error">Question is required.</small>
-                  </span>
-                </div>
-
-                <div class="col-12 col-md-4 mt-5" >
-                  <span class="p-float-label w-100">
-              
-                    <input
-                    #show_question_count="ngModel"
-                    type="number"
-                    id="show_question_count"
-                    class="form-control"
-                    pInputText
+                    #question_arr="ngModel"
+                    [options]="QB_questions" 
+                    [group]="true" 
+                    optionLabel="question_name"
+                    [autoDisplayFirst]="false"
+                    [(ngModel)]="selected_question.question" 
+                    scrollHeight="250px" 
+                    (onChange)="questionChange($event)"
+                    display="chip"
                     required
-                    [max] = "show_question_count_max"
-                    [min] = "show_question_count_min"
-                    [(ngModel)]="exam_form.show_question_count"
-                    [ngClass]="{'ng-dirty': (show_question_count.invalid && submitted) || (show_question_count.dirty && show_question_count.invalid)}"
-                  />
-                  <label for="show_question_count">Show no of question</label>
-                  <small *ngIf="(show_question_count.invalid && submitted) || (show_question_count.dirty && show_question_count.invalid)" class="p-error">Show no of question is required.</small>
+                    [ngClass]="{'ng-dirty': (question_arr.invalid && submitted) || (question_arr.dirty && question_arr.invalid)}"
+                    >
+                      <ng-template let-group pTemplate="group">
+                          <div class="p-d-flex p-ai-center">
+                              <span>{{group.question_bank_name}}</span>
+                          </div>
+                      </ng-template>
+                  </p-multiSelect>
+                  <label for="question_bank">Select question</label>
+                  <small *ngIf="(question_arr.invalid && submitted) || (question_arr.dirty && question_arr.invalid)" class="p-error">Question is required.</small>
                 </span>
-
               </div>
 
-
-              
+              <div class="col-12 col-md-4 mt-5" >
+                <span class="p-float-label w-100">
+            
+                  <input
+                  #show_question_count="ngModel"
+                  type="number"
+                  id="show_question_count"
+                  class="form-control"
+                  pInputText
+                  required
+                  [max] = "show_question_count_max"
+                  [min] = "show_question_count_min"
+                  [(ngModel)]="exam_form.show_question_count"
+                  [ngClass]="{'ng-dirty': (show_question_count.invalid && submitted) || (show_question_count.dirty && show_question_count.invalid)}"
+                />
+                <label for="show_question_count">Show no of question</label>
+                <small *ngIf="(show_question_count.invalid && submitted) || (show_question_count.dirty && show_question_count.invalid)" class="p-error">Show no of question is required.</small>
+              </span>
 
             </div>
+
+
+            
+
+          </div>
           
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="p-grid p-nogutter p-justify-between">
                 <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
-                <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right" [style]="{'margin-left': '0.5rem'}" ></p-button>
+                <p-button label="Next" (onClick)="nextPage()" [disabled]=" add_section === 'Yes' && !create_assign_project_form.valid"  icon="pi pi-angle-right" iconPos="right" [style]="{'margin-left': '0.5rem'}" ></p-button>
             </div>
         </ng-template>
     </p-card>

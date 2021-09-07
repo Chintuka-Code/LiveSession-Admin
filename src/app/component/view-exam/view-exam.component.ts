@@ -218,6 +218,8 @@ export class ViewExamComponent implements OnInit {
       questions: [],
       publish: {},
       selected_question: [],
+      add_section:'',
+      section:[]
     };
     this.router.navigate(['/main/create-exam']);
   }
