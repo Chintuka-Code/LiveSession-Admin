@@ -82,7 +82,7 @@
                                   [style]="{ minWidth: '100%' }"
                                   formControlName="question_bank"
                                  
-                                  (onChange)="questionBankChange($event)"
+                                  (onChange)="sectionQuestionBankChange($event, i)"
                                   required
                                   
                                   >
@@ -97,7 +97,7 @@
                                 <span class="p-float-label w-100">
                                   <p-multiSelect 
                                 
-                                  [options]="QB_questions" 
+                                  [options]="QB_section_questions[i]" 
                                   [group]="true" 
                                   optionLabel="question_name"
                                   [autoDisplayFirst]="false"

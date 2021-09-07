@@ -19,6 +19,7 @@ export class AddQuestionComponent implements OnInit {
   selected_question = [];
   question_banks = [];
   QB_questions = [];
+  QB_section_questions = [];
   exam_form;
   section:any = [];
   instruction:any
@@ -45,7 +46,7 @@ export class AddQuestionComponent implements OnInit {
     this.exam_form = this.examService.examDetails.exam_form;
     this.get_question_banks()
     if(this.selected_question['question_bank']){
-      this.show_question_count_max = this.selected_question['question'].length;
+      this.show_question_count_max = this.selected_question['question']?.length;
       this.get_question_by_qb(this.selected_question['question_bank']);
     }
 
@@ -55,6 +56,11 @@ export class AddQuestionComponent implements OnInit {
 
   questionBankChange(event) {
     this.get_question_by_qb(event.value);
+  }
+
+  sectionQuestionBankChange(event, i){
+
+    this.get_section_question_by_qb(event.value , i);
   }
 
   sectionQuestionChange(event, i){
@@ -96,14 +102,15 @@ export class AddQuestionComponent implements OnInit {
       this.examService.examDetails.questions = this.selected_question;
       console.log(this.section);
       
-      if(this.section.length){
-        this.section.forEach(element => {
+      if(this.section?.length){
+        this.section.forEach((data, i) => {
           this.addSection();
+          this.get_section_question_by_qb(data.question_bank, i);
         });
         this.sections.patchValue(this.section);
-
+        
       }else {
-        if(!this.sections.controls.length){
+        if(!this.sections?.controls?.length){
 
           this.addSection();
         }
@@ -135,7 +142,7 @@ export class AddQuestionComponent implements OnInit {
       this.examService.examDetails.section = this.section;
     }
     if(this.add_section === 'No'){
-      if (!this.selected_question.length) {
+      if (!this.selected_question?.length) {
         if (
           !this.selected_question['question'] ||
           !this.selected_question['question'].length
@@ -164,7 +171,7 @@ export class AddQuestionComponent implements OnInit {
     this.spinner = true;
     this.examService.get_all_question_bank().subscribe(
       (res: any) => {
-        // console.log(res);
+        console.log(res);
         this.question_banks = res.data;
         this.spinner = false;
       },
@@ -187,6 +194,29 @@ export class AddQuestionComponent implements OnInit {
     this.examService.get_question_by_qb(ids).subscribe(
       (res: any) => {
         this.QB_questions = res.data;
+        // console.log(this.QB_questions);
+
+        this.spinner = false;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.errorMessage,
+        }).then(() => {
+          this.spinner = false;
+        });
+      }
+    );
+  }
+
+  get_section_question_by_qb(ids: [], i) {
+    // console.log(ids);
+
+    this.spinner = true;
+    this.examService.get_question_by_qb(ids).subscribe(
+      (res: any) => {
+        this.QB_section_questions[i] = res.data;
         // console.log(this.QB_questions);
 
         this.spinner = false;

@@ -57,7 +57,7 @@
                 <th>Action</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-exam>
+            <ng-template pTemplate="body" let-exam let-rowIndex="rowIndex">
               <tr>
                 <td>
                   {{ exam.exam_form.exam_name }}
@@ -65,7 +65,7 @@
                 <td>{{ exam.publish.start_date | date }} {{ exam.publish.start_time | date:'h:mm a z' }}</td>
                 <td *ngIf="exam.publish.end_date">{{ exam.publish.end_date | date }} {{ exam.publish.end_time | date:'h:mm a z' }}</td>
                 <td *ngIf="!exam.publish.end_date">Not Applicable</td>
-                <td><span id="pwd_spn">{{ exam.publish.publish_url }} <a *ngIf="exam.publish.publish_url" href="javascript:void(0)" (click)="copy_password()"><i class="pi pi-copy" ></i></a> </span> </td>
+                <td><span id="pwd_spn{{rowIndex}}">{{ exam.publish.publish_url }} <a *ngIf="exam.publish.publish_url" href="javascript:void(0)" (click)="copy_password(rowIndex)"><i class="pi pi-copy" ></i></a> </span> </td>
                 <td class="position-relative">
                   <ng-container *ngIf="!question_bank_type_disabled; else enable">
                     <button
