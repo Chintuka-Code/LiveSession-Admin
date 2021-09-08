@@ -10,6 +10,9 @@ import { Detect_URL } from 'src/app/utilities/detect_url';
 import { Subscription } from 'rxjs';
 import { Calculate_time } from 'src/app/utilities/calculate_color';
 import { interval } from 'rxjs/internal/observable/interval';
+import { LogService } from 'src/app/service/log.service';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
+import { create_log } from 'src/app/utilities/log';
 
 @Component({
   selector: 'app-live-session-multi',
@@ -40,7 +43,8 @@ export class LiveSessionMultiComponent implements OnInit {
     private router: Router,
     private user_service: UserService,
     private attachment_service: AttachmentService,
-    private live_session_chat_service: LiveSessionChatService
+    private live_session_chat_service: LiveSessionChatService,
+    private log_service: LogService
   ) {
     // assign chat to admin
     this.live_session_chat_service.assign_chat().subscribe((res) => {
@@ -233,6 +237,22 @@ export class LiveSessionMultiComponent implements OnInit {
     this.slots = [];
     this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
       (res: any) => {
+        const batch_name = this.batch.filter(
+          (batch) => batch._id === this.selected_batch._id
+        );
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has opened batch <a href=""> ${batch_name[0].batch_name} </a>  chat in Multiple Window Agent mode
+          </p>`,
+            created_at: new Date(),
+            chat_id: null,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_batch._id,
+          },
+          this.log_service
+        );
         this.active_student_list = res.data;
         this.sorting(this.active_student_list);
 
@@ -315,6 +335,22 @@ export class LiveSessionMultiComponent implements OnInit {
     this.chat_service.get_selected_studentChat(student._id).subscribe(
       (res: any) => {
         const response = res.data;
+        const batch_name = this.batch.filter(
+          (batch) => batch._id === this.selected_batch._id
+        );
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has opened Student:- <a href=""> ${student.student_name} </a>  chat in multiple window agent mode
+            </p> <div> <strong> Batch-Name :- </strong> <small> ${batch_name[0].batch_name}  </small> </div> `,
+            created_at: new Date(),
+            chat_id: student._id,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: student.batch_id,
+          },
+          this.log_service
+        );
 
         this.slots.push({
           chat: student,
@@ -396,6 +432,23 @@ export class LiveSessionMultiComponent implements OnInit {
       created_at: new Date(),
     };
 
+    const batch_name = this.batch.filter(
+      (batch) => batch._id === this.selected_batch._id
+    );
+    create_log(
+      {
+        html_content: `<p>
+        <a href=""> ${this.user.name} </a> sent a message to:- <a href=""> ${this.slots[index].chat.student_name} </a>  from multiple window agent mode
+        </p> <div> <strong> Batch-Name :- </strong> <small> ${batch_name[0].batch_name}  </small> </div> `,
+        created_at: new Date(),
+        chat_id: this.slots[index].chat._id,
+        log_code: '#CHAT',
+        user_id: localStorage.getItem('uid'),
+        batch_id: this.slots[index].chat.batch_id,
+      },
+      this.log_service
+    );
+
     try {
       const data = {
         room_id:
@@ -438,6 +491,21 @@ export class LiveSessionMultiComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
+
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has ended  <a href="">${stu.chat.student_name}</a> chat from multiple window agent mode
+          </p>   `,
+            created_at: new Date(),
+            chat_id: stu.chat._id,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: stu.chat.batch_id,
+          },
+          this.log_service
+        );
+
         this.live_session_chat_service.leave({
           room_id: stu.chat.student_id + stu.chat.batch_id,
         });
@@ -485,6 +553,22 @@ export class LiveSessionMultiComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
+        const batch_name = this.batch.filter(
+          (batch) => batch._id === this.selected_batch._id
+        );
+
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has ended all chats of batch ${batch_name[0].batch_name} from single window agent mode`,
+            created_at: new Date(),
+            chat_id: null,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_batch._id,
+          },
+          this.log_service
+        );
 
         const data = this.active_student_list.filter(
           (chat) => chat.sme_id === localStorage.getItem('uid')
@@ -511,6 +595,19 @@ export class LiveSessionMultiComponent implements OnInit {
   ngOnInit(): void {
     this.get_admin_batch();
     this.get_all_admin();
+    const user: any = ACTIVE_USER();
+    create_log(
+      {
+        html_content: `<p>
+          <a href=""> ${user.name} </a> has opened Multiple Window agent mode
+        </p>`,
+        created_at: new Date(),
+        chat_id: null,
+        log_code: '#CHAT',
+        user_id: localStorage.getItem('uid'),
+      },
+      this.log_service
+    );
   }
 
   ngOnDestroy(): void {

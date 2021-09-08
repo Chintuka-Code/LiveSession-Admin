@@ -11,6 +11,10 @@ import { LiveSessionChatService } from 'src/app/service/live-session-chat.servic
 import { AttachmentService } from 'src/app/service/attachment.service';
 import { Detect_URL } from 'src/app/utilities/detect_url';
 import { group_by_date } from 'src/app/utilities/group-by-data';
+import { Logs } from 'selenium-webdriver';
+import { LogService } from 'src/app/service/log.service';
+import { create_log } from 'src/app/utilities/log';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 
 @Component({
   selector: 'app-trainer-mode',
@@ -37,7 +41,8 @@ export class TrainerModeComponent implements OnInit {
     private chat_service: ChatService,
     private user_service: UserService,
     private live_session_chat_service: LiveSessionChatService,
-    private attachment_service: AttachmentService
+    private attachment_service: AttachmentService,
+    private log_service: LogService
   ) {
     // new message
     this.live_session_chat_service.new_message_received().subscribe((res) => {
@@ -186,6 +191,22 @@ export class TrainerModeComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.all_chats = res.data;
+          const batch_name = this.batch.filter(
+            (batch) => batch._id === this.selected_batch._id
+          );
+          create_log(
+            {
+              html_content: `<p>
+              <a href=""> ${this.user.name} </a> has opened batch <a href=""> ${batch_name[0].batch_name} </a>  chat in trainer mode
+            </p>`,
+              created_at: new Date(),
+              chat_id: null,
+              log_code: '#CHAT',
+              user_id: localStorage.getItem('uid'),
+              batch_id: this.selected_batch._id,
+            },
+            this.log_service
+          );
           this.all_chats.sort(function (a, b) {
             const c = new Date(a.created_at).getTime();
             const d = new Date(b.created_at).getTime();
@@ -315,7 +336,22 @@ export class TrainerModeComponent implements OnInit {
           files.files_paths
         );
       }
-
+      const batch_name = this.batch.filter(
+        (batch) => batch._id === this.selected_batch._id
+      );
+      create_log(
+        {
+          html_content: `<p>
+          <a href=""> ${this.user.name} </a> sent a message in batch <a href=""> ${batch_name[0].batch_name} </a>  from trainer mode
+          </p> <div> <strong> Batch-Name :- </strong> <small> ${batch_name[0].batch_name}  </small> </div> `,
+          created_at: new Date(),
+          chat_id: null,
+          log_code: '#CHAT',
+          user_id: localStorage.getItem('uid'),
+          batch_id: this.selected_batch._id,
+        },
+        this.log_service
+      );
       // this.all_chats.push(message_obj);
       this.scroll_chat_container();
 
@@ -381,6 +417,19 @@ export class TrainerModeComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_user_all_batch();
+    const user: any = ACTIVE_USER();
+    create_log(
+      {
+        html_content: `<p>
+          <a href=""> ${user.name} </a> has opened Trainer mode
+        </p>`,
+        created_at: new Date(),
+        chat_id: null,
+        log_code: '#CHAT',
+        user_id: localStorage.getItem('uid'),
+      },
+      this.log_service
+    );
   }
 
   ngOnDestroy(): void {
