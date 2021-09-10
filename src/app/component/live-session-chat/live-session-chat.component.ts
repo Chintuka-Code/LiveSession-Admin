@@ -12,6 +12,9 @@ import 'quill-emoji/dist/quill-emoji.js';
 import { Detect_URL } from 'src/app/utilities/detect_url';
 import { Calculate_time } from 'src/app/utilities/calculate_color';
 import { interval, Observable, Subscription } from 'rxjs';
+import { LogService } from 'src/app/service/log.service';
+import { create_log } from 'src/app/utilities/log';
+import { ACTIVE_USER } from 'src/app/utilities/Decode_jwt';
 
 @Component({
   selector: 'app-live-session-chat',
@@ -47,7 +50,8 @@ export class LiveSessionChatComponent implements OnInit {
     private router: Router,
     private user_service: UserService,
     private attachment_service: AttachmentService,
-    private live_session_chat_service: LiveSessionChatService
+    private live_session_chat_service: LiveSessionChatService,
+    private log_service: LogService
   ) {
     this.modules = QUILL_TOOLBAR_SETTING;
     // assign chat to admin
@@ -268,6 +272,22 @@ export class LiveSessionChatComponent implements OnInit {
     this.selected_student_chat_message = [];
     this.chat_service.get_batch_chat(this.selected_batch._id).subscribe(
       (res: any) => {
+        const batch_name = this.batch.filter(
+          (batch) => batch._id === this.selected_batch._id
+        );
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has opened batch <a href=""> ${batch_name[0].batch_name} </a>  chat in Single Window Agent mode
+          </p>`,
+            created_at: new Date(),
+            chat_id: null,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_batch._id,
+          },
+          this.log_service
+        );
         this.active_student_list = res.data;
         this.sorting(this.active_student_list);
         console.log(this.active_student_list);
@@ -317,6 +337,22 @@ export class LiveSessionChatComponent implements OnInit {
       .get_selected_studentChat(this.selected_student._id)
       .subscribe(
         (res: any) => {
+          const batch_name = this.batch.filter(
+            (batch) => batch._id === this.selected_batch._id
+          );
+          create_log(
+            {
+              html_content: `<p>
+              <a href=""> ${this.user.name} </a> has opened Student:- <a href=""> ${student.student_name} </a>  chat in single window agent mode
+              </p> <div> <strong> Batch-Name :- </strong> <small> ${batch_name[0].batch_name}  </small> </div> `,
+              created_at: new Date(),
+              chat_id: student._id,
+              log_code: '#CHAT',
+              user_id: localStorage.getItem('uid'),
+              batch_id: student.batch_id,
+            },
+            this.log_service
+          );
           const response = res.data;
           this.selected_student_chat_message = response.message;
           this.scroll_chat_container();
@@ -380,6 +416,22 @@ export class LiveSessionChatComponent implements OnInit {
       setTimeout(() => {
         this.scroll_chat_container();
       }, 50);
+      const batch_name = this.batch.filter(
+        (batch) => batch._id === this.selected_batch._id
+      );
+      create_log(
+        {
+          html_content: `<p>
+          <a href=""> ${this.user.name} </a> sent a message to:- <a href=""> ${this.selected_student.student_name} </a>  from single window agent mode
+          </p> <div> <strong> Batch-Name :- </strong> <small> ${batch_name[0].batch_name}  </small> </div> `,
+          created_at: new Date(),
+          chat_id: this.selected_student._id,
+          log_code: '#CHAT',
+          user_id: localStorage.getItem('uid'),
+          batch_id: this.selected_student.batch_id,
+        },
+        this.log_service
+      );
       this.live_session_chat_service.send_message(message_obj, data);
 
       this.files = [];
@@ -411,7 +463,22 @@ export class LiveSessionChatComponent implements OnInit {
           (chat) => chat._id === this.selected_student._id
         );
         this.active_student_list.splice(index, 1);
-        console.log(this.active_student_list);
+        const pre = this.transfer_admin.filter(
+          (admin) => admin._id === this.selected_student.sme_id
+        );
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has ended  <a href="">${this.selected_student.student_name}</a> chat from single window agent mode
+          </p> <strong>Previous Sme</strong> <small>  ${pre[0].name}  </small>  `,
+            created_at: new Date(),
+            chat_id: this.selected_student._id,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_student.batch_id,
+          },
+          this.log_service
+        );
         this.selected_student = '';
         this.spinner = false;
       }
@@ -430,6 +497,32 @@ export class LiveSessionChatComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
+        const new_sme = this.transfer_admin.filter(
+          (admin) => admin._id === doc.value
+        );
+
+        const pre = this.transfer_admin.filter(
+          (admin) => admin._id === this.selected_student.sme_id
+        );
+
+        const batch_name = this.batch.filter(
+          (batch) => batch._id === this.selected_batch._id
+        );
+
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has transferred  <a href=""> ${this.selected_student.student_name}</a> chat from ${pre[0].name} to ${new_sme[0].name} in the single window agent mode
+          </p> <strong>Previous Sme</strong> <small> ${pre[0].name} </small> 
+          <strong>New Sme</strong> <small> ${new_sme[0].name} </small>     <strong>Batch-Name</strong> <small> ${batch_name[0].batch_name} </small>  `,
+            created_at: new Date(),
+            chat_id: this.selected_student._id,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_student.batch_id,
+          },
+          this.log_service
+        );
         this.selected_student_chat_message = [];
         this.selected_student.sme_id = doc.value;
 
@@ -440,7 +533,7 @@ export class LiveSessionChatComponent implements OnInit {
               stu.batch_id === this.selected_student.batch_id
             )
         );
-        // console.log(this.selected_student);
+
         this.live_session_chat_service.transfer(this.selected_student);
         this.live_session_chat_service.leave({
           room_id:
@@ -487,6 +580,22 @@ export class LiveSessionChatComponent implements OnInit {
     }).then(async (result) => {
       if (result.isConfirmed) {
         this.spinner = true;
+        const batch_name = this.batch.filter(
+          (batch) => batch._id === this.selected_batch._id
+        );
+
+        create_log(
+          {
+            html_content: `<p>
+            <a href=""> ${this.user.name} </a> has ended all chats of batch ${batch_name[0].batch_name} from single window agent mode`,
+            created_at: new Date(),
+            chat_id: null,
+            log_code: '#CHAT',
+            user_id: localStorage.getItem('uid'),
+            batch_id: this.selected_batch._id,
+          },
+          this.log_service
+        );
         this.selected_student_chat_message = [];
 
         const data = this.active_student_list.filter(
@@ -504,6 +613,7 @@ export class LiveSessionChatComponent implements OnInit {
 
         this.active_student_list = [];
         this.selected_student = '';
+
         this.spinner = false;
       }
     });
@@ -512,6 +622,19 @@ export class LiveSessionChatComponent implements OnInit {
   ngOnInit(): void {
     this.get_admin_batch();
     this.get_all_admin();
+    const user: any = ACTIVE_USER();
+    create_log(
+      {
+        html_content: `<p>
+          <a href=""> ${user.name} </a> has opened Single Window agent mode
+        </p>`,
+        created_at: new Date(),
+        chat_id: null,
+        log_code: '#CHAT',
+        user_id: localStorage.getItem('uid'),
+      },
+      this.log_service
+    );
   }
 
   ngOnDestroy(): void {

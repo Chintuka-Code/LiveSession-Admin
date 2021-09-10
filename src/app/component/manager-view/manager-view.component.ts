@@ -346,7 +346,7 @@ export class ManagerViewComponent implements OnInit {
         create_log(
           {
             html_content: `<p>
-            <a href=""> ${this.user.name} </a> has transferred   ${this.selected_student.student_name} chat from ${this.selected_student.sme_name} to ${new_sme[0].name} in the manager view
+            <a href=""> ${this.user.name} </a> has transferred  <a href=""> ${this.selected_student.student_name}</a> chat from ${this.selected_student.sme_name} to ${new_sme[0].name} in the manager view
           </p> <strong>Previous Sme</strong> <small> ${this.selected_student.sme_name} </small> 
           <strong>New Sme</strong> <small> ${new_sme[0].name} </small>     <strong>Batch-Name</strong> <small> ${batch_name[0].batch_name} </small>  `,
             created_at: new Date(),
@@ -407,7 +407,7 @@ export class ManagerViewComponent implements OnInit {
         create_log(
           {
             html_content: `<p>
-            <a href=""> ${this.user.name} </a> has ended  ${this.selected_student.student_name} chat from manager view
+            <a href=""> ${this.user.name} </a> has ended  <a href="">${this.selected_student.student_name}</a> chat from manager view
           </p> <strong>Previous Sme</strong> <small> ${this.selected_student.sme_name} </small>  `,
             created_at: new Date(),
             chat_id: this.selected_student._id,
@@ -524,7 +524,7 @@ export class ManagerViewComponent implements OnInit {
             chat_id: null,
             log_code: '#CHAT',
             user_id: localStorage.getItem('uid'),
-            batch_id: this.selected_student.batch_id,
+            batch_id: this.selected_batch,
           },
           this.log_service
         );

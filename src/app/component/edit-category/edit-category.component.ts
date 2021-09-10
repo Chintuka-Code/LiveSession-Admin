@@ -21,7 +21,7 @@ export class EditCategoryComponent implements OnInit {
     private category_service: CategoryService,
     private router: Router
   ) {
-    this.feature_type = ['Ticket', 'Chat', 'Knowledge'];
+    this.feature_type = ['Ticket', 'Chat', 'Knowledge', 'Project'];
   }
 
   validation() {
