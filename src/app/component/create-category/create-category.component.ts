@@ -21,7 +21,7 @@ export class CreateCategoryComponent implements OnInit {
     private activated_route: ActivatedRoute,
     private router: Router
   ) {
-    this.feature_type = ['Ticket', 'Chat', 'Knowledge'];
+    this.feature_type = ['Ticket', 'Chat', 'Knowledge', 'Project'];
   }
 
   check_permission() {
