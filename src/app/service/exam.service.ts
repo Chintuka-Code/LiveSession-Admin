@@ -16,6 +16,8 @@ export class ExamService {
     questions: [],
     publish: {},
     selected_question: [],
+    add_section:'',
+    section:[]
   };
 
   // private paymentComplete = new Subject<any>();

@@ -177,8 +177,8 @@ export class ViewExamComponent implements OnInit {
     console.log(event.target.innerText);
   }
 
-  copy_password() {
-    var copyText = document.getElementById('pwd_spn');
+  copy_password(index) {
+    var copyText = document.getElementById(`pwd_spn${index}`);
     var textArea = document.createElement('textarea');
     textArea.value = copyText.textContent;
     document.body.appendChild(textArea);
@@ -218,6 +218,8 @@ export class ViewExamComponent implements OnInit {
       questions: [],
       publish: {},
       selected_question: [],
+      add_section:'',
+      section:[]
     };
     this.router.navigate(['/main/create-exam']);
   }
