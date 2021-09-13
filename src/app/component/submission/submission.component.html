@@ -1,0 +1,83 @@
+<section *ngIf="!spinner; else showspinner">
+    <!-- Enabled Course -->
+    <div class="card">
+      <div class="card-body">
+        <div class="header">
+          <h3 class="">Exam Submission</h3>
+        </div>
+  
+        <div>
+          <p-table
+            #question_bank_table
+            [value]="exam_submission_list"
+            dataKey="id"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="p-datatable-customers"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'email',
+              'total_marks',
+              'total_obtain_marks'
+            ]"
+          >
+            <ng-template pTemplate="caption" class="w-100">
+              <div class="p-d-flex w-100">
+                <span class="p-input-icon-left p-ml-auto w-100">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      question_bank_table.filterGlobal(
+                        $event.target.value,
+                        'contains'
+                      )
+                    "
+                    placeholder="Search keyword"
+                    class="w-100"
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Student Email</th>
+                <th>Total Marks</th>
+                <th>Total Obtain Marks</th>
+                
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-submission let-rowIndex="rowIndex">
+            <tr>
+                <td>
+                    {{submission.email}}
+                </td>
+                <td>
+                    {{submission.total_marks}}
+                </td>
+                <td>
+                    {{submission.total_obtain_marks}}
+                </td>
+                
+            </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td >No Submission found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <ng-template #showspinner>
+    <div class="spinner">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+  

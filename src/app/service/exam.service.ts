@@ -39,6 +39,9 @@ export class ExamService {
   get_all_batch() {
     return this.http.get(`${environment.BASE_SERVER_URL}/batch/get-batch-exam`);
   }
+  get_all_submission(exam_id) {
+    return this.http.get(`${environment.BASE_SERVER_URL}/submission/all/${exam_id}`);
+  }
 
   get_students_by_batch(ids: []) {
     return this.http.post(
