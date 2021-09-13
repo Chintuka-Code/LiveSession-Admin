@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ExamService } from '../../service/exam.service';
 
 @Component({
@@ -13,9 +13,10 @@ export class SubmissionComponent implements OnInit {
   spinner: boolean = false;
   exam_submission_list:any[] = [];
   exam_id:string = '';
-  constructor(private router: Router, private examService: ExamService) { }
+  constructor(private router: Router, private examService: ExamService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.exam_id = this.route.snapshot.paramMap.get('exam_id');
     this.getAllSubmission(this.exam_id);
   }
 

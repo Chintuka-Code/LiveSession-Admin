@@ -4,7 +4,7 @@ export const environment = {
   FILES_URL: 'https://files.datatrained.com',
   time_api_url: 'https://ops-api.datatrained.org/time',
   // BASE_SERVER_URL: 'https://ops-api.datatrained.org',
-  //  BASE_SERVER_URL: 'https://test.support.datatrained.org',
-  BASE_SERVER_URL: 'http://localhost:4000',
+   BASE_SERVER_URL: 'https://test.support.datatrained.org',
+  // BASE_SERVER_URL: 'http://localhost:4000',
   STUDENT_BASE_SERVER_URL: 'localhost:4200',
 };

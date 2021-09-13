@@ -103,7 +103,7 @@ export class ViewExamComponent implements OnInit {
         this.publish_exam(exam);
         break;
       case 'submission':
-        this.router.navigate(['/main/view-exam/submission']);
+        this.router.navigate(['/main/view-exam/submission', exam._id]);
         break;
       default:
         console.log('');

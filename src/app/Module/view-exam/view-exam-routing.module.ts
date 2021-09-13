@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ViewExamComponent } from '../../component/view-exam/view-exam.component';
-import { SubmissionComponent } from '../../component/submission/submission.component';
+import { SubmissionComponent } from '../../component/submission/submission.component'
 
 const routes: Routes = [
   { 
@@ -10,7 +10,7 @@ const routes: Routes = [
     component: ViewExamComponent 
   },
   { 
-    path: 'submission', 
+    path: 'submission/:exam_id', 
     component: SubmissionComponent 
   }
 ];
