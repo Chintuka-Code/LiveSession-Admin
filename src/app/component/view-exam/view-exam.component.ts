@@ -102,6 +102,9 @@ export class ViewExamComponent implements OnInit {
       case 'publish':
         this.publish_exam(exam);
         break;
+      case 'submission':
+        this.router.navigate(['/main/view-exam/submission']);
+        break;
       default:
         console.log('');
     }
@@ -128,6 +131,7 @@ export class ViewExamComponent implements OnInit {
         this.menu_type = 'view';
       },
     });
+
     this.items[0].items.push({
       label: 'Disabled',
       icon: 'pi pi-trash',
@@ -149,6 +153,14 @@ export class ViewExamComponent implements OnInit {
       icon: 'pi pi-globe',
       command: () => {
         this.menu_type = 'publish';
+      },
+    });
+
+    this.items[0].items.push({
+      label: 'View Submission',
+      icon: 'pi pi-eye',
+      command: () => {
+        this.menu_type = 'submission';
       },
     });
   }
