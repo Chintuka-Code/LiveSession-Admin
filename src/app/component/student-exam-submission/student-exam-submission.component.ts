@@ -5,35 +5,35 @@ import { ExamService } from '../../service/exam.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-submission',
-  templateUrl: './submission.component.html',
-  styleUrls: ['./submission.component.scss']
+  selector: 'app-student-exam-submission',
+  templateUrl: './student-exam-submission.component.html',
+  styleUrls: ['./student-exam-submission.component.scss']
 })
-export class SubmissionComponent implements OnInit {
+export class StudentExamSubmissionComponent implements OnInit {
 
   spinner: boolean = false;
   exam_submission_list:any[] = [];
   exam_id:string = '';
+  email:string = '';
   answerUrl:string = '';
+
   constructor(private router: Router, private examService: ExamService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.exam_id = this.route.snapshot.paramMap.get('exam_id');
-    this.getAllSubmission(this.exam_id);
+    this.email = this.route.snapshot.paramMap.get('email');
+    this.getStudentExamSubmission(this.exam_id, this.email);
    this.answerUrl = `${environment.STUDENT_BASE_SERVER_URL}/exam/${this.exam_id}/`
   }
 
 
-  getAllSubmission(exam_id){
+  getStudentExamSubmission(exam_id, email){
 
     this.spinner = true;
-    this.examService.get_all_submission(exam_id).subscribe(
+    this.examService.get_student_exam_submission(exam_id, email).subscribe(
       (res: any) => {
         console.log(res);
         this.exam_submission_list = res.data;
-
-  //  this.answerUrl = `${environment.STUDENT_BASE_SERVER_URL}/exam/${this.exam_id}/show-answer/`
-
         this.spinner = false;
       },
       (error) => {
@@ -51,9 +51,9 @@ export class SubmissionComponent implements OnInit {
 
   getViewAnswerUrl(submission){
     if(submission.section?.length){
-      return `${environment.STUDENT_BASE_SERVER_URL}/exam/${this.exam_id}/show-answer/${submission.email}`;
+      return `${environment.STUDENT_BASE_SERVER_URL}/exam/${this.exam_id}/show-answer/${submission.email}?submission_id=${submission._id}`;
     }else{
-      return `${environment.STUDENT_BASE_SERVER_URL}/exam/${this.exam_id}/answer/${submission.email}`;
+      return `${environment.STUDENT_BASE_SERVER_URL}/exam/${this.exam_id}/answer/${submission.email}?submission_id=${submission._id}`;
     }
   }
 

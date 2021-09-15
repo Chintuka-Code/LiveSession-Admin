@@ -46,7 +46,6 @@
               <tr>
                 <th>Student Email</th>
                 <th>Total Marks</th>
-                <th>Total Attempt</th>
                 <th>Total Obtain Marks</th>
                 <th>Test Attempt Date</th>
                 <th>View Answer</th>
@@ -62,27 +61,22 @@
                     {{submission.total_marks}}
                 </td>
                 <td>
-                  <a [routerLink]="['/main/view-exam/submission', submission.exam_id, submission.email]">{{submission.submissions?.length}} </a>
-                </td>
-               
-                <td>
                     {{submission.total_obtain_marks}}
                 </td>
                 <td>
                     {{submission.attempt_end_date | date:'medium'}}
                 </td>
                 <td>
-                  <a href="{{getViewAnswerUrl(submission)}}" target="_blank">View Answer</a>
-                  <!-- <a ngIf="!submission.section?.length" href="{{answerUrl}}'answer/'{{submission.email}}?submission_id={{submission._id}}" target="_blank">View Answer</a> -->
-                    <!-- <a href="{{answerUrl}}{{submission.email}}" target="_blank">View Answer</a> -->
-                    <!-- <a href="{{answerUrl}}{{submission.email}}" target="_blank">View Answer</a> -->
+                    
+                    <a  href="{{getViewAnswerUrl(submission)}}" target="_blank">View Answer</a>
+                    <!-- <a ngIf="!submission.section?.length" href="{{answerUrl}}'answer/'{{submission.email}}?submission_id={{submission._id}}" target="_blank">View Answer</a> -->
                 </td>
                 
             </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
-                <td colspan="6">No Submission found.</td>
+                <td colspan="5" >No Submission found.</td>
               </tr>
             </ng-template>
           </p-table>

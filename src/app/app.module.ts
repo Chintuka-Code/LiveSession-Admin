@@ -16,9 +16,10 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { GlobalState } from './store/states/global.state';
+import { StudentExamSubmissionComponent } from './component/student-exam-submission/student-exam-submission.component';
 
 @NgModule({
-  declarations: [AppComponent, PagenotfoundComponent],
+  declarations: [AppComponent, PagenotfoundComponent, StudentExamSubmissionComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
