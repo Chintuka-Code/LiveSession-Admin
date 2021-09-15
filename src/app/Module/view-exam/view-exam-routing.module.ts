@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ViewExamComponent } from '../../component/view-exam/view-exam.component';
 import { SubmissionComponent } from '../../component/submission/submission.component'
+import { StudentExamSubmissionComponent } from '../../component/student-exam-submission/student-exam-submission.component'
 
 const routes: Routes = [
   { 
@@ -12,6 +13,10 @@ const routes: Routes = [
   { 
     path: 'submission/:exam_id', 
     component: SubmissionComponent 
+  },
+  { 
+    path: 'submission/:exam_id/:email', 
+    component: StudentExamSubmissionComponent 
   }
 ];
 
