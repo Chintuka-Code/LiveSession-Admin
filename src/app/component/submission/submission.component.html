@@ -1,4 +1,4 @@
-<section *ngIf="!spinner; else showspinner">
+<section>
     <!-- Enabled Course -->
     <div class="card">
       <div class="card-body">
@@ -6,7 +6,7 @@
           <h3 class="">Exam Submission</h3>
         </div>
   
-        <div>
+        <div *ngIf="!spinner; else showspinner">
           <p-table
             #question_bank_table
             [value]="exam_submission_list"
@@ -47,6 +47,7 @@
                 <th>Student Email</th>
                 <th>Total Marks</th>
                 <th>Total Obtain Marks</th>
+                <th>View Answer</th>
                 
               </tr>
             </ng-template>
@@ -60,6 +61,9 @@
                 </td>
                 <td>
                     {{submission.total_obtain_marks}}
+                </td>
+                <td>
+                    <a href="{{answerUrl}}{{submission.email}}" target="_blank">View Answer</a>
                 </td>
                 
             </tr>
