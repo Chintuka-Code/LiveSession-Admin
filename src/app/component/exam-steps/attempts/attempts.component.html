@@ -1,9 +1,7 @@
 <section *ngIf="!spinner; else showspinner">
-<div class="stepsdemo-content">
-  <p-card>
-      <ng-template pTemplate="title">
-        Access settings
-      </ng-template>
+  <div class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="title"> Access settings </ng-template>
       <ng-template pTemplate="subtitle">
         Access settings for this exam
       </ng-template>
@@ -17,125 +15,222 @@
                 id="max_attempt"
                 class="form-control"
                 pInputText
-                [min] = "0"
+                [min]="0"
                 required
                 [(ngModel)]="access_setting.max_attempt"
-                [ngClass]="{'ng-dirty': (max_attempt.invalid && submitted) || (max_attempt.dirty && max_attempt.invalid)}"
+                [ngClass]="{
+                  'ng-dirty':
+                    (max_attempt.invalid && submitted) ||
+                    (max_attempt.dirty && max_attempt.invalid)
+                }"
               />
               <label for="max_attempt">Max Attempt</label>
-              <small *ngIf="(max_attempt.invalid && submitted) || (max_attempt.dirty && max_attempt.invalid)" class="p-error">Max Attempts is required.</small>
-          </span>
+              <small
+                *ngIf="
+                  (max_attempt.invalid && submitted) ||
+                  (max_attempt.dirty && max_attempt.invalid)
+                "
+                class="p-error"
+                >Max Attempts is required.</small
+              >
+            </span>
           </div>
-  
-          
-          <div class="col-12 col-md-4 mt-5" >
-            <span class="p-float-label w-100">
 
-              <p-cascadeSelect 
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-cascadeSelect
                 #access_control1="ngModel"
-                [(ngModel)]="access_setting.access_control" 
-                [options]="access_control_opt" 
-                optionLabel="cname" 
-                optionGroupLabel="name" 
+                [(ngModel)]="access_setting.access_control"
+                [options]="access_control_opt"
+                optionLabel="cname"
+                optionGroupLabel="name"
                 optionValue="code"
-                [optionGroupChildren]="['restrict_opt']" 
-                [style]="{'minWidth': '100%'}" 
-                (onChange)="accessControlChange($event)"  
+                [optionGroupChildren]="['restrict_opt']"
+                [style]="{ minWidth: '100%' }"
+                (onChange)="accessControlChange($event)"
                 placeholder="Who can attempt this exam"
                 required
-                [ngClass]="{'ng-dirty': (access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)}"
-                >
+                [ngClass]="{
+                  'ng-dirty':
+                    (access_control1.invalid && submitted) ||
+                    (access_control1.dirty && access_control1.invalid)
+                }"
+              >
               </p-cascadeSelect>
-              <small *ngIf="(access_control1.invalid && submitted) || (access_control1.dirty && access_control1.invalid)" class="p-error">This field is required.</small>
-
+              <small
+                *ngIf="
+                  (access_control1.invalid && submitted) ||
+                  (access_control1.dirty && access_control1.invalid)
+                "
+                class="p-error"
+                >This field is required.</small
+              >
             </span>
           </div>
-  
-          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'manual enter email'">
-              <span class="p-float-label w-100">
-          
-                <textarea 
+
+          <div
+            class="col-12 col-md-4 mt-5"
+            *ngIf="access_setting.access_control == 'manual enter email'"
+          >
+            <span class="p-float-label w-100">
+              <textarea
                 #menual_student_arr="ngModel"
-                  [rows]="5" 
-                  [cols]="30" 
-                  pInputTextarea 
-                  autoResize="autoResize" 
-                  [(ngModel)]="access_setting.menual_student"
-                  required
-                  [ngClass]="{'ng-dirty': (menual_student_arr.invalid && submitted) || (menual_student_arr.dirty && menual_student_arr.invalid)}"
-                  >
-                </textarea>
+                [rows]="5"
+                [cols]="30"
+                pInputTextarea
+                autoResize="autoResize"
+                [(ngModel)]="access_setting.menual_student"
+                required
+                [ngClass]="{
+                  'ng-dirty':
+                    (menual_student_arr.invalid && submitted) ||
+                    (menual_student_arr.dirty && menual_student_arr.invalid)
+                }"
+              >
+              </textarea>
 
-                <label for="access_control">Enter email</label><br>
-                <small *ngIf="(menual_student_arr.invalid && submitted) || (menual_student_arr.dirty && menual_student_arr.invalid)" class="p-error">Enter email is required.</small>
+              <label for="access_control">Enter email</label><br />
+              <small
+                *ngIf="
+                  (menual_student_arr.invalid && submitted) ||
+                  (menual_student_arr.dirty && menual_student_arr.invalid)
+                "
+                class="p-error"
+                >Enter email is required.</small
+              >
             </span>
-
           </div>
-          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'align with batch'">
-              <span class="p-float-label w-100">
-                 
-                  <p-multiSelect 
-                  #batchArr="ngModel"
-                     display="chip"
-                     inputId="batch"
-                      [autoDisplayFirst]="false"
-                      optionLabel="batch_name"
-                      optionValue="_id"
-                      [options]="batchList"
-                      [style]="{ minWidth: '100%' }"
-                      [(ngModel)]="access_setting.batch"
-                      (onChange)="batchChange($event)"
-                      required
-                      [ngClass]="{'ng-dirty': (batchArr.invalid && submitted) || (batchArr.dirty && batchArr.invalid)}"
-                     >
-                    </p-multiSelect>
-                    <label for="batch">Select batch</label>
-                    <small *ngIf="(batchArr.invalid && submitted) || (batchArr.dirty && batchArr.invalid)" class="p-error">Select batch is required.</small>
+          <div
+            class="col-12 col-md-4 mt-5"
+            *ngIf="access_setting.access_control == 'align with batch'"
+          >
+            <span class="p-float-label w-100">
+              <p-multiSelect
+                #batchArr="ngModel"
+                display="chip"
+                inputId="batch"
+                [autoDisplayFirst]="false"
+                optionLabel="batch_name"
+                optionValue="_id"
+                [options]="batchList"
+                [style]="{ minWidth: '100%' }"
+                [(ngModel)]="access_setting.batch"
+                (onChange)="batchChange($event)"
+                required
+                [ngClass]="{
+                  'ng-dirty':
+                    (batchArr.invalid && submitted) ||
+                    (batchArr.dirty && batchArr.invalid)
+                }"
+              >
+              </p-multiSelect>
+              <label for="batch">Select batch</label>
+              <small
+                *ngIf="
+                  (batchArr.invalid && submitted) ||
+                  (batchArr.dirty && batchArr.invalid)
+                "
+                class="p-error"
+                >Select batch is required.</small
+              >
             </span>
-
           </div>
         </div>
-        
+
         <div class="row">
-          <div class="col-12 col-md-4 mt-5" *ngIf="access_setting.access_control == 'align with batch'">
+          <div
+            class="col-12 col-md-4 mt-5"
+            *ngIf="access_setting.access_control == 'align with batch'"
+          >
             <span class="p-float-label w-100">
-                <p-multiSelect 
+              <p-multiSelect
                 #studentArr="ngModel"
-                [options]="batchStudents" 
-                [group]="true" 
+                [options]="batchStudents"
+                [group]="true"
                 optionLabel="email"
                 optionValue="email"
-                [(ngModel)]="access_setting.student" 
-                scrollHeight="250px" 
+                [(ngModel)]="access_setting.student"
+                scrollHeight="250px"
                 [autoDisplayFirst]="false"
                 display="chip"
                 required
-                      [ngClass]="{'ng-dirty': (studentArr.invalid && submitted) || (studentArr.dirty && studentArr.invalid)}"
-                >
-                    <ng-template let-group pTemplate="group">
-                        <div class="p-d-flex p-ai-center">
-                            <span>{{group.batch.batch_name}}</span>
-                        </div>
-                    </ng-template>
-                </p-multiSelect>
-                <label for="batch">Select student</label>
-                <small *ngIf="(studentArr.invalid && submitted) || (studentArr.dirty && studentArr.invalid)" class="p-error">Select student is required.</small>
-               
-          </span>
-
+                [ngClass]="{
+                  'ng-dirty':
+                    (studentArr.invalid && submitted) ||
+                    (studentArr.dirty && studentArr.invalid)
+                }"
+              >
+                <ng-template let-group pTemplate="group">
+                  <div class="p-d-flex p-ai-center">
+                    <span>{{ group.batch.batch_name }}</span>
+                  </div>
+                </ng-template>
+              </p-multiSelect>
+              <label for="batch">Select student</label>
+              <small
+                *ngIf="
+                  (studentArr.invalid && submitted) ||
+                  (studentArr.dirty && studentArr.invalid)
+                "
+                class="p-error"
+                >Select student is required.</small
+              >
+            </span>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-12 col-md-4 mt-5">
+            <span class="p-float-label w-100">
+              <p-multiSelect
+                optionDisabled="inactive"
+                #fields="ngModel"
+                display="chip"
+                inputId="student_detail_fields"
+                optionLabel="label"
+                [autoDisplayFirst]="false"
+                [options]="student_fields_list"
+                [style]="{ minWidth: '100%' }"
+                [(ngModel)]="student_fields"
+                required
+                [ngClass]="{
+                  'ng-dirty':
+                    (fields.invalid && submitted) ||
+                    (fields.dirty && fields.invalid)
+                }"
+              >
+              </p-multiSelect>
+              <label for="student_detail_fields">Select fields</label>
+              <small
+                *ngIf="
+                  (fields.invalid && submitted) ||
+                  (fields.dirty && fields.invalid)
+                "
+                class="p-error"
+                >Select fileds is required.</small
+              >
+            </span>
+          </div>
         </div>
       </ng-template>
       <ng-template pTemplate="footer">
         <div class="p-grid p-nogutter p-justify-between">
-          <p-button label="Back" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
-          <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right" [style]="{'margin-left': '0.5rem'}" ></p-button>
-      </div>
+          <p-button
+            label="Back"
+            (onClick)="prevPage()"
+            icon="pi pi-angle-left"
+          ></p-button>
+          <p-button
+            label="Next"
+            (onClick)="nextPage()"
+            icon="pi pi-angle-right"
+            iconPos="right"
+            [style]="{ 'margin-left': '0.5rem' }"
+          ></p-button>
+        </div>
       </ng-template>
-  </p-card>
-</div>
+    </p-card>
+  </div>
 </section>
-
 
 <ng-template #showspinner>
   <div class="spinner">

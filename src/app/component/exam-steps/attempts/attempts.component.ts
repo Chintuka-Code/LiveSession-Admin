@@ -21,6 +21,37 @@ export class AttemptsComponent implements OnInit {
   batchStudents = [];
 
   selectedCity1: any;
+  student_fields = [];
+  student_fields_list = [
+    {
+      label: 'Email address',
+      name: 'email',
+      placeholder: 'name@example.com',
+      type: 'email',
+      inactive: true,
+    },
+    { label: 'Name', name: 'name', placeholder: 'Your name', type: 'text' },
+    {
+      label: 'Phone',
+      name: 'phone',
+      placeholder: 'Phone Number',
+      type: 'number',
+    },
+    {
+      label: 'Father name',
+      name: 'father_name',
+      placeholder: 'Father name',
+      type: 'text',
+    },
+    { label: 'State', name: 'state', placeholder: 'State name', type: 'text' },
+    { label: 'City', name: 'city', placeholder: 'City name', type: 'text' },
+    {
+      label: 'Education',
+      name: 'education',
+      placeholder: 'Education',
+      type: 'text',
+    },
+  ];
 
   access_control_opt = [
     { cname: 'Any one with link', code: 'Any one with link' },
@@ -42,6 +73,16 @@ export class AttemptsComponent implements OnInit {
 
   ngOnInit(): void {
     this.access_setting = this.examService.examDetails.access_setting;
+    this.student_fields = this.examService.examDetails.student_fields;
+    if (!this.student_fields.length) {
+      this.student_fields.push({
+        label: 'Email address',
+        name: 'email',
+        placeholder: 'name@example.com',
+        type: 'email',
+        inactive: true,
+      });
+    }
     if (!this.examService.examDetails['_id']) {
       this.access_setting['max_attempt'] = 0;
     }
@@ -56,6 +97,9 @@ export class AttemptsComponent implements OnInit {
     }
   }
 
+  // ngAfterViewInit() {
+
+  // }
   accessControlChange(event) {
     this.access_setting['batch'] = [];
     this.access_setting['student'] = [];
@@ -78,7 +122,13 @@ export class AttemptsComponent implements OnInit {
   nextPage() {
     this.submitted = true;
     this.examService.examDetails.access_setting = this.access_setting;
+    this.examService.examDetails.student_fields = this.student_fields;
+    console.log(this.student_fields);
+    // return;
 
+    if (!this.student_fields.length) {
+      return;
+    }
     if (
       this.access_setting['max_attempt'] >= 0 &&
       this.access_setting['access_control']
