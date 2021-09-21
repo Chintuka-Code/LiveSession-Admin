@@ -111,12 +111,15 @@
               </td>
               <td>
                 {{
-                  (submission.total_obtain_marks / submission.total_marks) *
-                    100
-                }}%
+                  (submission.total_obtain_marks / submission.total_marks) * 100
+                    | number: "1.2-2"
+                }}
               </td>
               <td>
-                {{ (submission.total_obtain_marks / max_obtan_marks) * 100 }}%
+                {{
+                  (submission.total_obtain_marks / max_obtan_marks) * 100
+                    | number: "1.2-2"
+                }}
               </td>
               <td>
                 {{ submission.attempt_end_date | date: "medium" }}
