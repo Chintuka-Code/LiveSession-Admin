@@ -337,6 +337,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('../project/project.module').then((m) => m.ProjectModule),
       },
+      {
+        path: 'edit-question-bank/:question_bank_id',
+        loadChildren: () =>
+          import('../edit-question-bank/edit-question-bank.module').then(
+            (m) => m.EditQuestionBankModule
+          ),
+      },
     ],
   },
 ];
