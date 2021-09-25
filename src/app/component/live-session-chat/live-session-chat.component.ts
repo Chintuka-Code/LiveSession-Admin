@@ -193,6 +193,7 @@ export class LiveSessionChatComponent implements OnInit {
 
   sorting(data) {
     this.active_student_list.sort((a, b) => b.updatedAt - a.updatedAt);
+    // calculate first time response
     this.active_student_list = Calculate_time(this.active_student_list);
 
     const timer = interval(2000);
@@ -203,6 +204,7 @@ export class LiveSessionChatComponent implements OnInit {
     });
   }
 
+  // arrange data into date-wise
   group_by_date(data) {
     const groups = data.reduce((groups, game) => {
       const date = game.created_at.split('T')[0];
@@ -230,6 +232,7 @@ export class LiveSessionChatComponent implements OnInit {
     tx.style.height = tx.scrollHeight + 'px';
   }
 
+  // Scroll chat
   scroll_chat_container() {
     const div = document.getElementById('chat-body');
     if (div != null) {
